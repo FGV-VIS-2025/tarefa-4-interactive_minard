@@ -1,3 +1,11 @@
+import {groupBy} from "lodash";
+
+// Função auxiliar para interpolar valores entre dois pontos
+function interpolate(previousValue, nextValue, pathPercentage)
+{
+    return previousValue + (nextValue - previousValue) * pathPercentage;
+}
+
 // Função que faz o join das tabelas de exército e temperatura
 // fazendo interpolação linear para os dados exatos inexistentes
 export function join(army, temperature)
@@ -6,12 +14,6 @@ export function join(army, temperature)
     const filteredArmy = army.filter(d => d.direction === "R");
     // Ordenando as temperaturas
     const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
-
-    // Função auxiliar para interpolar valores entre dois pontos
-    function interpolate(previousValue, nextValue, pathPercentage)
-    {
-        return previousValue + (nextValue - previousValue) * pathPercentage;
-    }
 
     // Função auxiliar para interpolar datas
     function interpolateDate(date1, date2, pathPercentage)
@@ -57,4 +59,48 @@ export function join(army, temperature)
     );
 
     return result;
+}
+
+// Função para converter string para timestamp
+export function parseDate(dateStr)
+{
+    return new Date(dateStr).getTime();
+}
+
+// Função para obter pontos interpolados
+export function interpolatePoints(time, data)
+{
+    // Separando por divisão
+    const groups = groupBy(data, d => d.division);
+
+    // Para cada divisão...
+    return Object.entries(groups).map(([division, points]) =>
+    {
+        // Ordena os pontos por data
+        const sorted = points.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        // Pega o anterior e o seguinte ao tempo atual
+        const prev = [...sorted].reverse().find(p => parseDate(p.date) <= time);
+        const next = sorted.find(p => parseDate(p.date) > time);
+
+        if (prev && next)
+        {
+            // Aplica a interpolação
+            const t0 = parseDate(prev.date);
+            const t1 = parseDate(next.date);
+            const pathPercentage = (time - t0)/(t1 - t0);
+
+            return {
+                lat: interpolate(prev.lat, next.lat, pathPercentage),
+                lon: interpolate(prev.lon, next.lon, pathPercentage),
+                size: interpolate(prev.size, next.size, pathPercentage),
+                division: +division,
+                direction: prev.direction,
+                date: new Date(time).toDateString()
+            };
+        }
+
+        // Caso só exista um ponto, tenta retornar ele
+        return prev || next || null;
+
+    }).filter(Boolean); // Remove divisões sem ponto próximo
 }
