@@ -1,10 +1,15 @@
 <script>
     import {onMount} from "svelte";
     import * as d3 from "d3";
+    import {join} from "$lib/join";
 
     export let data;
 
     var army = data.army;
+    var temperature = data.temperature;
+
+    const armyWithTemp = join(army, temperature);
+    console.log(armyWithTemp);
 
     let svgElement;
 
