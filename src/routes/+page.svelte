@@ -5,29 +5,39 @@
     import {interpolatePoints} from "$lib/utils";
     import {parseDate} from "$lib/utils";
 
+    // Pegando o dado
     export let data;
 
+    // Dados do exército e da temperatura
     var army = data.army;
     var temperature = data.temperature;
 
+    // Dados unidos do exército e da temperatura
     var armyWithTemp = join(army, temperature);
 
+    // Tempo selecionado no time scroller
     let currentTime;
 
+    // Convertendo a data de string para data
     armyWithTemp = armyWithTemp.filter(d => parseDate(d.date));
 
+    // Pegando todas as datas ordenadas
     const times = [...new Set(armyWithTemp.map(d => parseDate(d.date)))].sort((a, b) => a - b);
+    // Pegando as datas mínima e máxima (para os limites do time scroller)
     const minTime = times[0];
     const maxTime = times.at(-1);
+    // Começa o tempo no time scroller como o mínimo
     currentTime = minTime;
 
+    // Interativamente calcula os pontos interpolados da data selecionada
     $: interpolatedData = interpolatePoints(currentTime, armyWithTemp);
 
+    // Elementos do svg
     let x, y;
-
     let svgElement;
     let svg;
 
+    // Configurações do gráfico
     onMount(() => {
         const width = 600;
         const height = 400;
@@ -54,6 +64,7 @@
             .call(d3.axisLeft(y));
     });
 
+    // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
         const circles = svg.selectAll("circle")
             .data(interpolatedData, d => d.division);
@@ -73,9 +84,11 @@
 
 <h1>Interactive Minard</h1>
 
+<!-- Time scroller -->
 <input type="range" min={minTime} max={maxTime} step={86400000} bind:value={currentTime} />
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
+<!-- Gráfico -->
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
 
 <!-- <h2>Dados do join</h2>
