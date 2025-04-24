@@ -1,9 +1,9 @@
 <script>
     import {onMount} from "svelte";
     import * as d3 from "d3";
-    import {join} from "$lib/join";
-    import {interpolatePoints} from "$lib/join";
-    import {parseDate} from "$lib/join";
+    import {join} from "$lib/utils";
+    import {interpolatePoints} from "$lib/utils";
+    import {parseDate} from "$lib/utils";
 
     export let data;
 
@@ -78,3 +78,31 @@
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
+
+<h2>Dados interpolados para a data atual</h2>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Divisão</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Tamanho</th>
+      <th>Direção</th>
+      <th>Data</th>
+      <th>Temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each interpolatedData as d}
+      <tr>
+        <td>{d.division}</td>
+        <td>{d.lat}</td>
+        <td>{d.lon}</td>
+        <td>{d.size}</td>
+        <td>{d.direction}</td>
+        <td>{d.date}</td>
+        <td>{d.temp}</td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
