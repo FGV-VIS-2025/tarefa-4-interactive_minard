@@ -1,0 +1,170 @@
+{
+    "niemen": {
+      "lat": 54.888087,
+      "lon": 23.564201,
+      "date": "1812-06-24",
+      "direction": "A",
+      "division": 1
+    },
+    "vilnius": {
+      "lat": 54.68,
+      "lon": 25.28,
+      "date": "1812-06-28",
+      "direction": "A",
+      "division": 1
+    },
+    "vitebsk_1": {
+      "lat": 55.077814,
+      "lon": 30.202374,
+      "date": "1812-07-12",
+      "direction": "A",
+      "division": 1
+    },
+    "vitebsk_2": {
+      "lat": 55.077814,
+      "lon": 30.202374,
+      "date": "1812-08-12",
+      "direction": "A",
+      "division": 1
+    },
+    "polotsk_1": {
+      "lat": 55.279781,
+      "lon": 28.781918,
+      "date": "1812-08-17",
+      "direction": "A",
+      "division": 2
+    },
+    "polotsk_2": {
+      "lat": 55.279781,
+      "lon": 28.781918,
+      "date": "1812-08-18",
+      "direction": "A",
+      "division": 2
+    },
+    "polotsk_3": {
+      "lat": 55.279781,
+      "lon": 28.781918,
+      "date": "1812-10-18",
+      "direction": "R",
+      "division": 2
+    },
+    "polotsk_4": {
+      "lat": 55.279781,
+      "lon": 28.781918,
+      "date": "1812-10-20",
+      "direction": "R",
+      "division": 2
+    },
+    "krasnoi_1": {
+      "lat": 54.728962,
+      "lon": 31.608767,
+      "date": "1812-08-15",
+      "direction": "A",
+      "division": 1
+    },
+    "krasnoi_2": {
+      "lat": 54.728962,
+      "lon": 31.608767,
+      "date": "1812-11-15",
+      "direction": "R",
+      "division": 1
+    },
+    "krasnoi_3": {
+      "lat": 54.728962,
+      "lon": 31.608767,
+      "date": "1812-11-18",
+      "direction": "R",
+      "division": 1
+    },
+    "smolensk_1": {
+      "lat": 54.918689,
+      "lon": 32.129132,
+      "date": "1812-08-16",
+      "direction": "A",
+      "division": 1
+    },
+    "smolensk_2": {
+      "lat": 54.918689,
+      "lon": 32.129132,
+      "date": "1812-08-18",
+      "direction": "A",
+      "division": 1
+    },
+    "shevardino": {
+      "lat": 55.591913,
+      "lon": 35.602922,
+      "date": "1812-09-05",
+      "direction": "A",
+      "division": 1
+    },
+    "borodino_1": {
+      "lat": 55.542951,
+      "lon": 35.940457,
+      "date": "1812-09-07",
+      "direction": "A",
+      "division": 1
+    },
+    "borodino_2": {
+      "lat": 55.542951,
+      "lon": 35.940457,
+      "date": "1812-09-08",
+      "direction": "A",
+      "division": 1
+    },
+    "moscow_1": {
+      "lat": 55.8,
+      "lon": 37.6,
+      "date": "1812-09-14",
+      "direction": "A",
+      "division": 1
+    },
+    "moscow_2": {
+      "lat": 55.8,
+      "lon": 37.6,
+      "date": "1812-10-18",
+      "direction": "R",
+      "division": 1
+    },
+    "maloyaroslavets": {
+      "lat": 55.24306,
+      "lon": 37.318721,
+      "date": "1812-10-24",
+      "direction": "R",
+      "division": 1
+    },
+    "vyazma": {
+      "lat": 55.181858,
+      "lon": 34.674703,
+      "date": "1812-11-03",
+      "direction": "R",
+      "division": 1
+    },
+    "berezina_1": {
+      "lat": 54.306667,
+      "lon": 28.627215,
+      "date": "1812-11-26",
+      "direction": "R",
+      "division": 2
+    },
+    "berezina_2": {
+      "lat": 54.306667,
+      "lon": 28.627215,
+      "date": "1812-11-29",
+      "direction": "R",
+      "division": 2
+    },
+    "dec5": {
+      "lat": 54.245464,
+      "lon": 27.17863,
+      "date": "1812-12-05",
+      "direction": "R",
+      "division": 2
+    },
+    "niemen2": {
+      "lat": 54.533115,
+      "lon": 23.929863,
+      "date": "1812-12-14",
+      "direction": "R",
+      "division": 2
+    }
+}
