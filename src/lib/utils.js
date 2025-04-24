@@ -1,3 +1,4 @@
+import { path } from "d3";
 import {groupBy} from "lodash";
 
 // Função auxiliar para interpolar valores entre dois pontos
@@ -89,10 +90,13 @@ export function interpolatePoints(time, data)
             const t1 = parseDate(next.date);
             const pathPercentage = (time - t0)/(t1 - t0);
 
+            console.log(t0, t1, pathPercentage);
+
             return {
                 lat: interpolate(prev.lat, next.lat, pathPercentage),
                 lon: interpolate(prev.lon, next.lon, pathPercentage),
                 size: interpolate(prev.size, next.size, pathPercentage),
+                temp: interpolate(prev.temp, next.temp, pathPercentage),
                 division: +division,
                 direction: prev.direction,
                 date: new Date(time).toDateString()
@@ -100,7 +104,7 @@ export function interpolatePoints(time, data)
         }
 
         // Caso só exista um ponto, tenta retornar ele
-        return prev || next || null;
+        return null;
 
     }).filter(Boolean); // Remove divisões sem ponto próximo
 }
