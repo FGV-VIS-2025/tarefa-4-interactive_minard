@@ -50,31 +50,58 @@
     let svgElement;
     let svg;
 
+    let chartWidth = 800;
+
     // Configurações do gráfico
     onMount(() => {
-        const width = 600;
+        const width = chartWidth;
         const height = 400;
-        const margin = {top: 20, right: 30, bottom: 30, left: 40};
+        const margin = {top: 20, right: 30, bottom: 60, left: 70};
 
         svg = d3.select(svgElement)
             .attr("width", width)
             .attr("height", height);
 
+        const xExtent = d3.extent(army, d => d.lon);
+        const yExtent = d3.extent(army, d => d.lat);
+
+        const xPadding = (xExtent[1] - xExtent[0]) * 0.1;
+        const yPadding = (yExtent[1] - yExtent[0]) * 0.1;
+        
         x = d3.scaleLinear()
-            .domain(d3.extent(army, d => d.lon))
+            .domain([xExtent[0] - xPadding, xExtent[1] + xPadding])
             .range([margin.left, width - margin.right]);
 
         y = d3.scaleLinear()
-            .domain(d3.extent(army, d => d.lat))
+            .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
             .range([height - margin.bottom, margin.top]);
 
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+            .selectAll(".tick text")
+            .style("font-size", "12px");
 
         svg.append("g")
             .attr("transform", `translate(${margin.left}, 0)`)
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(y))
+            .selectAll(".tick text")
+            .style("font-size", "12px");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height - 15) // um pouco abaixo do eixo X
+            .text("Longitude (°)")
+            .style("font-size", "16px");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", `rotate(-90)`)
+            .attr("x", -height / 2)
+            .attr("y", 20) // um pouco à esquerda do eixo Y
+            .text("Latitude (°)")
+            .style("font-size", "16px");
     });
 
     // Atualiza o gráfico interativamente
@@ -87,7 +114,7 @@
             .merge(circles)
             .attr("cx", d => x(d.lon))
             .attr("cy", d => y(d.lat))
-            .attr("r", d => Math.sqrt(d.size)/10)
+            .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
             .attr("fill", d => d.direction === "R" ? "tomato" : "steelblue");
 
         circles.exit().remove();
@@ -97,12 +124,12 @@
 
 <h1>Interactive Minard</h1>
 
-<!-- Time scroller -->
-<input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} />
-<p>Data: {new Date(currentTime).toLocaleDateString()}</p>
-
 <!-- Gráfico -->
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
+
+<!-- Time scroller -->
+<input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/>
+<p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
 <!-- <h2>Dados do join</h2>
 <table border="1">
@@ -132,7 +159,7 @@
   </tbody>
 </table> -->
 
-<h2>Dados no gráfico</h2>
+<!-- <h2>Dados no gráfico</h2>
 <table border="1">
   <thead>
     <tr>
@@ -158,4 +185,38 @@
       </tr>
     {/each}
   </tbody>
-</table>
+</table> -->
+
+<style>
+  #chart {
+      display: block;
+      margin-bottom: 8px;
+  }
+
+  input[type="range"] {
+      display: block;
+      height: 6px;
+      background: #ddd;
+      border-radius: 5px;
+      appearance: none;
+      outline: none;
+      margin-bottom: 0.5rem;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #444;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #444;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+</style>
