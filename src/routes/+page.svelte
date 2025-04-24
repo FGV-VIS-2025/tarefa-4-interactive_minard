@@ -85,7 +85,7 @@
 <h1>Interactive Minard</h1>
 
 <!-- Time scroller -->
-<input type="range" min={minTime} max={maxTime} step={86400000} bind:value={currentTime} />
+<input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} />
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
 <!-- Gráfico -->

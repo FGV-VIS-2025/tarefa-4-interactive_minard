@@ -90,8 +90,6 @@ export function interpolatePoints(time, data)
             const t1 = parseDate(next.date);
             const pathPercentage = (time - t0)/(t1 - t0);
 
-            console.log(t0, t1, pathPercentage);
-
             return {
                 lat: interpolate(prev.lat, next.lat, pathPercentage),
                 lon: interpolate(prev.lon, next.lon, pathPercentage),
