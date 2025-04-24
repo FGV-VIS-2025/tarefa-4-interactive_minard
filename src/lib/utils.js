@@ -79,6 +79,12 @@ export function interpolatePoints(time, data)
     {
         // Ordena os pontos por data
         const sorted = points.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+
+        // Verificando se existe data exata no dado
+        const exact = sorted.find(p => parseDate(p.date) === time);
+        // Se existir, retorna esses valores
+        if (exact) return {...exact};
+
         // Pega o anterior e o seguinte ao tempo atual
         const prev = [...sorted].reverse().find(p => parseDate(p.date) <= time);
         const next = sorted.find(p => parseDate(p.date) > time);

@@ -21,6 +21,19 @@
     // Convertendo a data de string para data
     armyWithTemp = armyWithTemp.filter(d => parseDate(d.date));
 
+    // Consertando a divisão dos últimos dados
+    armyWithTemp = armyWithTemp.map(d => {
+        const cutoff = new Date("1812-11-28").getTime();
+        const current = new Date(d.date).getTime();
+
+        if (current > cutoff)
+        {
+            return {...d, division: 1};
+        }
+
+        return d;
+    })
+
     // Pegando todas as datas ordenadas
     const times = [...new Set(armyWithTemp.map(d => parseDate(d.date)))].sort((a, b) => a - b);
     // Pegando as datas mínima e máxima (para os limites do time scroller)
