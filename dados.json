@@ -1,0 +1,87 @@
+{
+  "niemen": {
+    "x": 46, "y": 232, "pos": "bottom", "icon": "river",
+    "lat": 54.7663, "lon": 23.383,
+    "info": "<p class=\"date\">June 24</p><p>The Grande Arm&eacute;e crosses the Niemen River..."
+  },
+  "vilnius": {
+    "x": 168, "y": 266, "pos": "auto", "icon": "burned",
+    "lat": 54.5623, "lon": 25.113,
+    "info": "<p class=\"date\">June 28</p><p>Napoleon enters Vilnius..."
+  },
+  "vitebsk": {
+    "x": 518, "y": 201, "pos": "auto", "icon": "depot",
+    "lat": 54.9625, "lon": 29.075,
+    "info": "<p class=\"date\">July 12 &ndash; August 12</p><p>Supply depot at Vitebsk..."
+  },
+  "polotsk": {
+    "x": 417, "y": 168, "pos": "left", "icon": "battle",
+    "lat": 55.1625, "lon": 28.617,
+    "info": "<p class=\"date\">August 17-18</p><p>First Battle of Polotsk..."
+  },
+  "krasnoi": {
+    "x": 618, "y": 258, "pos": "auto", "icon": "battle",
+    "lat": 54.6125, "lon": 31.478,
+    "info": "<p class=\"date\">August 15</p><p>Fightings at Krasnoi..."
+  },
+  "smolensk": {
+    "x": 655, "y": 227, "pos": "auto", "icon": "artillery",
+    "lat": 54.8, "lon": 32,
+    "info": "<p class=\"date\">August 16-18</p><p>Battle of Smolensk..."
+  },
+  "gjatsk": {
+    "x": 856, "y": 125, "pos": "left", "icon": "camp",
+    "lat": 55.4375, "lon": 34.84,
+    "info": "The Grande Arm&eacute;e rests at Gjatsk..."
+  },
+  "shevardino": {
+    "x": 902, "y": 117, "pos": "left", "icon": "battle",
+    "lat": 55.4875, "lon": 35.494,
+    "info": "<p class=\"date\">September 5</p><p>Battle of Shevardino Redoubt</p>"
+  },
+  "borodino": {
+    "x": 926, "y": 125, "pos": "auto", "icon": "battle",
+    "lat": 55.4375, "lon": 35.832,
+    "info": "<p class=\"date\">September 7-8</p><p>Battle of Borodino..."
+  },
+  "moscow": {
+    "x": 1044, "y": 83, "pos": "left", "icon": "camp",
+    "lat": 55.7, "lon": 37.5,
+    "info": "<p class=\"date\">September 14</p><p>Napoleon enters the city of Moscow..."
+  },
+  "maloyaroslavets": {
+    "x": 1024, "y": 174, "pos": "left", "icon": "battle",
+    "lat": 55.125, "lon": 37.218,
+    "info": "<p class=\"date\">October 24</p><p>Battle of Maloyaroslavets</p>"
+  },
+  "vyazma": {
+    "x": 836, "y": 184, "pos": "auto", "icon": "battle",
+    "lat": 55.0625, "lon": 34.55,
+    "info": "<p class=\"date\">November 3</p><p>Battle of Vyazma</p>"
+  },
+  "orsha": {
+    "x": 558, "y": 290, "pos": "auto", "icon": "depot",
+    "lat": 54.4063, "lon": 30.621,
+    "info": "<p>Supply depot at Orsha.</p>"
+  },
+  "berezina": {
+    "x": 406, "y": 327, "pos": "bottom", "icon": "battle",
+    "lat": 54.1719, "lon": 28.476,
+    "info": "<p class=\"date\">November 26-29</p><p>Battle of Berezina..."
+  },
+  "dec5": {
+    "x": 303, "y": 337, "pos": "bottomleft", "icon": "napoleon",
+    "lat": 54.1094, "lon": 26.017,
+    "info": "<p class=\"date\">December 5</p><p>Napoleon leaves for Paris..."
+  },
+  "niemen2": {
+    "x": 72, "y": 290, "pos": "auto", "icon": "river",
+    "lat": 54.4063, "lon": 23.753,
+    "info": "<p class=\"date\">December 14</p><p>The Grande Arm&eacute;e leaves Russian territory..."
+  },
+  "cossacks": {
+    "x": 762, "y": 220, "pos": "auto", "icon": "cossacks",
+    "lat": 54.825, "lon": 33.5,
+    "info": "<p>Asymmetrical combat by Cossacks.</p>"
+  }
+}
