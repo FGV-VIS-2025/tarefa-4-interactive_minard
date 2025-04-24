@@ -5,6 +5,44 @@
     import {interpolatePoints} from "$lib/utils";
     import {parseDate} from "$lib/utils";
 
+    let eventInfo = {};
+
+    // Load JSON on mount
+    onMount(async () => {
+      const response = await fetch('/dados.json');
+      eventInfo = await response.json();
+    });
+    console.log(eventInfo)
+
+    // let 
+    $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+    const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
+      id,
+      ...info
+    }));
+
+    const markers = svg.selectAll(".event-marker")
+      .data(eventPoints, d => d.id);
+
+    // Criar marcadores se ainda não existem
+    const enter = markers.enter()
+      .append("circle")
+      .attr("class", "event-marker")
+      .attr("r", 5)
+      .attr("fill", "gold")
+      .attr("stroke", "black");
+
+    enter.append("title").text(d => d.id);
+
+    // Atualizar posição sempre que x/y mudarem
+    markers.merge(enter)
+      .attr("cx", d => x(d.lon))
+      .attr("cy", d => y(d.lat));
+
+    // Remover os que não estão mais presentes
+    markers.exit().remove();
+  }
+
     // Pegando o dado
     export let data;
 
@@ -79,11 +117,13 @@
 
     // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
-        const circles = svg.selectAll("circle")
+        const circles = svg.selectAll(".army-circle")
+
             .data(interpolatedData, d => d.division);
 
         circles.enter()
             .append("circle")
+            .attr("class", "army-circle")
             .merge(circles)
             .attr("cx", d => x(d.lon))
             .attr("cy", d => y(d.lat))
