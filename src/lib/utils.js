@@ -1,3 +1,4 @@
+import { path } from "d3";
 import {groupBy} from "lodash";
 
 // Função auxiliar para interpolar valores entre dois pontos
@@ -78,6 +79,12 @@ export function interpolatePoints(time, data)
     {
         // Ordena os pontos por data
         const sorted = points.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+
+        // Verificando se existe data exata no dado
+        const exact = sorted.find(p => parseDate(p.date) === time);
+        // Se existir, retorna esses valores
+        if (exact) return {...exact};
+
         // Pega o anterior e o seguinte ao tempo atual
         const prev = [...sorted].reverse().find(p => parseDate(p.date) <= time);
         const next = sorted.find(p => parseDate(p.date) > time);
@@ -93,6 +100,7 @@ export function interpolatePoints(time, data)
                 lat: interpolate(prev.lat, next.lat, pathPercentage),
                 lon: interpolate(prev.lon, next.lon, pathPercentage),
                 size: interpolate(prev.size, next.size, pathPercentage),
+                temp: interpolate(prev.temp, next.temp, pathPercentage),
                 division: +division,
                 direction: prev.direction,
                 date: new Date(time).toDateString()
@@ -100,7 +108,7 @@ export function interpolatePoints(time, data)
         }
 
         // Caso só exista um ponto, tenta retornar ele
-        return prev || next || null;
+        return null;
 
     }).filter(Boolean); // Remove divisões sem ponto próximo
 }
