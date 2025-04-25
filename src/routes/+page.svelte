@@ -7,7 +7,7 @@
     import eventInfo from '$lib/data/dados.json';
     import Timebar from "$lib/timebar.svelte";
     import eventsDate from "$lib/data/eventsDate.json";
-    import army from "$lib/data/original/army.json";
+    import army from "$lib/data/adjusted_army.json";
     import temperature from "$lib/data/original/temperature.json";
     
     var joinedData = join(army, temperature, eventsDate);
@@ -46,7 +46,7 @@
         const xExtent = d3.extent(army, d => d.lon);
         const yExtent = d3.extent(army, d => d.lat);
 
-        const xPadding = (xExtent[1] - xExtent[0]) * 0.1;
+        const xPadding = (xExtent[1] - xExtent[0]) * 0.15;
         const yPadding = (yExtent[1] - yExtent[0]) * 0.1;
         
         x = d3.scaleLinear()

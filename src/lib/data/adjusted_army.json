@@ -170,21 +170,21 @@
   {
     "lon": 29.2,
     "lat": 54.4,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },
   {
     "lon": 28.5,
     "lat": 54.3,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },
   {
     "lon": 28.3,
     "lat": 54.4,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },
@@ -242,63 +242,63 @@
     "lat": 54.2,
     "size": 30000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 28.3,
     "lat": 54.3,
     "size": 28000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 27.5,
     "lat": 54.5,
     "size": 20000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 26.8,
     "lat": 54.3,
     "size": 12000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 26.4,
     "lat": 54.4,
     "size": 14000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 24.6,
     "lat": 54.5,
     "size": 8000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 24.4,
     "lat": 54.4,
     "size": 4000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 24.2,
     "lat": 54.4,
     "size": 4000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 24.1,
     "lat": 54.3,
     "size": 4000,
     "direction": "R",
-    "division": 2
+    "division": 1
   },
   {
     "lon": 24,
@@ -334,5 +334,39 @@
     "size": 6000,
     "direction": "R",
     "division": 3
+  },
+
+
+  {
+    "lon": 28.7,
+    "lat": 55.5,
+    "size": 33000,
+    "direction": "A",
+    "division": 2,
+    "date": "1812-08-17"
+  },
+  {
+    "lon": 28.7,
+    "lat": 55.5,
+    "size": 33000,
+    "direction": "A",
+    "division": 2,
+    "date": "1812-10-20"
+  },
+  {
+    "lon": 37.6,
+    "lat": 55.8,
+    "size": 100000,
+    "direction": "A",
+    "division": 1,
+    "date": "1812-10-18"
+  },
+  {
+    "lon": 37.6,
+    "lat": 55.8,
+    "size": 100000,
+    "direction": "A",
+    "division": 1,
+    "date": "1812-09-14"
   }
 ]

@@ -25,46 +25,83 @@ export function parseDate(dateStr)
 // Função para obter pontos interpolados
 export function interpolatePoints(time, data)
 {
-    // Separando por divisão
-    const groups = groupBy(data, d => d.division);
+    let points = [];
 
-    // Para cada divisão...
-    return Object.entries(groups).map(([division, points]) =>
+    function interpolateDateWithDivisions(dataDivision, division)
     {
-        // Ordena os pontos por data
-        const sorted = points.sort((a, b) => parseDate(a.date) - parseDate(b.date));
-
         // Verificando se existe data exata no dado
-        const exact = sorted.find(p => parseDate(p.date) === time);
+        const exact = dataDivision.find(d => parseDate(d.date) === time);
         // Se existir, retorna esses valores
-        if (exact) return {...exact};
+        if (exact) 
+        {
+            points.push(exact);
+            return;
+        };
 
         // Pega o anterior e o seguinte ao tempo atual
-        const prev = [...sorted].reverse().find(p => parseDate(p.date) <= time);
-        const next = sorted.find(p => parseDate(p.date) > time);
+        const prev = [...dataDivision].reverse().find(d => parseDate(d.date) <= time);
+        const next = dataDivision.find(d => parseDate(d.date) > time);
+
+        if (division === 1)
+        {
+            console.log(dataDivision);
+        }
 
         if (prev && next)
         {
+            console.log(prev.date, next.date);
             // Aplica a interpolação
             const t0 = parseDate(prev.date);
             const t1 = parseDate(next.date);
             const pathPercentage = (time - t0)/(t1 - t0);
 
-            return {
+            let size;
+
+            if (time > parseDate("1812-11-18") && time < parseDate("1812-11-24") && division === 1)
+            {
+                size = 20000;
+            }
+            else
+            {
+                size = interpolate(prev.size, next.size, pathPercentage);
+            }
+
+            points.push({
                 lat: interpolate(prev.lat, next.lat, pathPercentage),
                 lon: interpolate(prev.lon, next.lon, pathPercentage),
-                size: interpolate(prev.size, next.size, pathPercentage),
+                size: size,
                 temp: interpolate(prev.temp, next.temp, pathPercentage),
                 division: +division,
                 direction: prev.direction,
                 date: new Date(time).toDateString()
-            };
+            });
         }
+    }
 
-        // Caso só exista um ponto, tenta retornar ele
-        return null;
+    if (time < parseDate("1812-10-18"))
+    {
+        const filteredData = data.filter(d => d.direction === "A");
 
-    }).filter(Boolean); // Remove divisões sem ponto próximo
+        for (let division = 1; division < 3; division++)
+        {
+            var filteredDataDivision = filteredData.filter(d => d.division === division);
+            filteredDataDivision = filteredDataDivision.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            interpolateDateWithDivisions(filteredDataDivision, division);
+        }
+    }
+    else
+    {
+        const filteredData = data.filter(d => d.direction === "R");
+
+        for (let division = 1; division < 3; division++)
+        {
+            var filteredDataDivision = filteredData.filter(d => d.division === division);
+            filteredDataDivision = filteredDataDivision.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            interpolateDateWithDivisions(filteredDataDivision, division);
+        }
+    }
+
+    return points;
 }
 
 function interpolateTempAndDate(baseData, point)
@@ -98,9 +135,31 @@ function interpolateTempAndDate(baseData, point)
             }
             interpolatedDate = interpolateDate(prev.date, next.date, pathPercentage);
         }
+        else if (next && !prev)
+        {
+            if ("temp" in next)
+            {
+                interpolatedTemp = next.temp;
+            }
+            interpolatedDate = next.date;
+        }
+        else if (prev && !next)
+        {
+            if ("temp" in prev)
+            {
+                interpolatedTemp = prev.temp;
+            }
+            interpolatedDate = prev.date;
+        }
     }
 
-    return {...point, temp: interpolatedTemp, date: interpolatedDate}
+    if (point)
+    {
+        point.temp = interpolatedTemp;
+        point.date = interpolatedDate;
+    }
+
+    return point;
 }
 
 // Função que faz o join com eventos e dados de temperatura
@@ -109,6 +168,11 @@ export function join(army, temperature, events) {
     const eventsArray = Object.values(events);
 
     return army.map(d => {
+        if (d.date != undefined)
+        {
+            return d;
+        }
+
         if (d.division === 1)
         {
             if (d.direction === "A")
@@ -120,34 +184,27 @@ export function join(army, temperature, events) {
             }
             else if (d.direction === "R")
             {
-                return interpolateTempAndDate(sortedTemp, d);
-            }
-        }
-        else if (d.division === 2)
-        {
-            if (d.direction === "A")
-            {
-                const currentEvents = eventsArray.filter(e => e.direction === "A" && e.division === 2);
-                const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
-
-                return interpolateTempAndDate(sortedEvents, d);
-            }
-            else if (d.direction === "R")
-            {
-                if (d.lon > 26)
+                if (d.lon >= 26.4)
                 {
                     return interpolateTempAndDate(sortedTemp, d);
                 }
                 else
                 {
-                    const currentEvents = eventsArray.filter(e => e.direction === "R" && e.division === 2);
+                    const currentEvents = eventsArray.filter(e => e.direction === "R" && e.division === 1);
                     const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
 
                     return interpolateTempAndDate(sortedEvents, d);
                 }
             }
         }
+        else if (d.division === 2)
+        {
+            const currentEvents = eventsArray.filter(e => e.direction === d.direction && e.division === 2);
+            const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
 
-        return {...d, temp: undefined, date: undefined}
+            return interpolateTempAndDate(sortedEvents, d);
+        }
+
+        return d;
     });
 }
