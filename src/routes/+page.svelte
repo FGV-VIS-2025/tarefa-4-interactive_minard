@@ -7,11 +7,11 @@
     import eventInfo from '$lib/data/dados.json';
     import Timebar from "$lib/timebar.svelte";
     import eventsDate from "$lib/data/eventsDate.json";
-    import army from "$lib/data/original/army.json";
+    import army from "$lib/data/adjusted_army.json";
     import temperature from "$lib/data/original/temperature.json";
     
     var joinedData = join(army, temperature, eventsDate);
-    joinedData = joinedData.filter(d => parseDate(d.date));
+    // joinedData = joinedData.filter(d => parseDate(d.date));
 
     // Pegando todas as datas ordenadas
     const times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
