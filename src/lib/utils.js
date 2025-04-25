@@ -7,6 +7,15 @@ function interpolate(previousValue, nextValue, pathPercentage)
     return previousValue + (nextValue - previousValue) * pathPercentage;
 }
 
+// Função auxiliar para interpolar datas
+function interpolateDate(date1, date2, pathPercentage)
+{
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    const interpolatedTime = interpolate(d1.getTime(), d2.getTime(), pathPercentage);
+    return new Date(interpolatedTime).toDateString();
+}
+
 // Função que faz o join das tabelas de exército e temperatura
 // fazendo interpolação linear para os dados exatos inexistentes
 export function join(army, temperature)
@@ -15,15 +24,6 @@ export function join(army, temperature)
     const filteredArmy = army.filter(d => d.direction === "R");
     // Ordenando as temperaturas
     const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
-
-    // Função auxiliar para interpolar datas
-    function interpolateDate(date1, date2, pathPercentage)
-    {
-        const d1 = new Date(date1);
-        const d2 = new Date(date2);
-        const interpolatedTime = interpolate(d1.getTime(), d2.getTime(), pathPercentage);
-        return new Date(interpolatedTime).toDateString();
-    }
 
     // Fazendo o join
     const result = filteredArmy.map(d => 
@@ -111,4 +111,89 @@ export function interpolatePoints(time, data)
         return null;
 
     }).filter(Boolean); // Remove divisões sem ponto próximo
+}
+
+function interpolateTempAndDate(baseData, point)
+{
+    var interpolatedTemp = undefined;
+    var interpolatedDate = undefined;
+
+    // Verificando se existe data exata no dado
+    const exact = baseData.find(d => d.lon === point.lon);
+    // Se existir, retorna esses valores
+    if (exact)
+    {
+        if ("temp" in exact)
+        {
+            interpolatedTemp = exact.temp;
+        }
+        interpolatedDate = exact.date;
+    }
+    else
+    {
+        // Pega o anterior e o seguinte ao tempo atual
+        const prev = [...baseData].reverse().find(d => d.lon < point.lon);
+        const next = baseData.find(d => d.lon > point.lon);
+
+        if (prev && next)
+        {
+            const pathPercentage = (point.lon - prev.lon)/(next.lon - prev.lon);
+            if ("temp" in prev)
+            {
+                interpolatedTemp = interpolate(prev.temp, next.temp, pathPercentage);
+            }
+            interpolatedDate = interpolateDate(prev.date, next.date, pathPercentage);
+        }
+    }
+
+    return {...point, temp: interpolatedTemp, date: interpolatedDate}
+}
+
+// Função que faz o join com eventos e dados de temperatura
+export function join2(army, temperature, events) {
+    const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
+    const eventsArray = Object.values(events);
+
+    return army.map(d => {
+        if (d.division === 1)
+        {
+            if (d.direction === "A")
+            {
+                const currentEvents = eventsArray.filter(e => e.direction === "A" && e.division === 1);
+                const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
+
+                return interpolateTempAndDate(sortedEvents, d);
+            }
+            else if (d.direction === "R")
+            {
+                return interpolateTempAndDate(sortedTemp, d);
+            }
+        }
+        else if (d.division === 2)
+        {
+            if (d.direction === "A")
+            {
+                const currentEvents = eventsArray.filter(e => e.direction === "A" && e.division === 2);
+                const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
+
+                return interpolateTempAndDate(sortedEvents, d);
+            }
+            else if (d.direction === "R")
+            {
+                if (d.lon > 26)
+                {
+                    return interpolateTempAndDate(sortedTemp, d);
+                }
+                else
+                {
+                    const currentEvents = eventsArray.filter(e => e.direction === "R" && e.division === 2);
+                    const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
+
+                    return interpolateTempAndDate(sortedEvents, d);
+                }
+            }
+        }
+
+        return {...d, temp: undefined, date: undefined}
+    });
 }
