@@ -24,8 +24,7 @@
     // Começa o tempo no time scroller como o mínimo
     currentTime = minTime;
     
-    // Interativamente calcula os pontos interpolados da data selecionada
-    $: interpolatedData = interpolatePoints(currentTime, joinedData);
+    
 
     // Elementos do svg
     let x, y;
@@ -86,20 +85,57 @@
             .style("font-size", "16px");
     });
 
+    // Adicione esta variável para armazenar o evento selecionado
+  let selectedEvent = null;
+  
+  // Função para lidar com o clique na timebar
+  function handleEventClick(event) {
+    selectedEvent = event.detail.eventId;
+    if (selectedEvent && eventInfo[selectedEvent]) {
+      console.log("selectedEvent", selectedEvent);
+      console.log("eventInfo[selectedEvent]", eventInfo[selectedEvent]);
+      console.log("eventInfo[selectedEvent].date", eventInfo[selectedEvent]?.date);
+
+      const newTime = parseDate(eventInfo[selectedEvent].date);
+      if (currentTime !== newTime) {
+        currentTime = newTime;
+      } else {
+        // Force reactivity in case same value
+        currentTime = newTime + 1;
+        setTimeout(() => currentTime = newTime, 0);
+      }
+    }
+  }
+  
+  function handleTimeChange() {
+        // Quando o tempo muda manualmente, deseleciona o evento
+        selectedEvent = null;
+    }
+
+  // Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
+  $: interpolatedData = interpolatePoints(currentTime, 
+        selectedEvent && eventInfo[selectedEvent] 
+            ? joinedData.filter(d => parseDate(d.date) === parseDate(eventInfo[selectedEvent].date))
+            : joinedData
+    );
+
     // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
         const circles = svg.selectAll(".army-circle")
 
             .data(interpolatedData, d => d.division);
 
-        circles.enter()
-            .append("circle")
-            .attr("class", "army-circle")
-            .merge(circles)
-            .attr("cx", d => x(d.lon))
-            .attr("cy", d => y(d.lat))
-            .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
-            .attr("fill", d => d.direction === "R" ? "tomato" : "steelblue");
+            circles.enter()
+                  .append("circle")
+                  .attr("class", "army-circle")
+                  .merge(circles)
+                  .attr("cx", d => x(d.lon))
+                  .attr("cy", d => y(d.lat))
+                  .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
+                  .attr("fill", d => d.direction === "R" ? "tomato" : "steelblue");
+
+circles.exit().remove();
+
 
         circles.exit().remove();
     }
@@ -116,23 +152,27 @@
 
     // Criar marcadores se ainda não existem
     const enter = markers.enter()
-      .append("circle")
-      .attr("class", "event-marker")
-      .attr("r", 5)
-      .attr("fill", "gold")
-      .attr("stroke", "black");
+    .append("circle")
+    .attr("class", "event-marker")
+    .attr("r", 5)
+    .attr("fill", d => d.id === selectedEvent ? "red" : "gold") // Destaque o selecionado
+    .attr("stroke", "black")
+    .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
 
     enter.append("title").text(d => d.id);
 
     // Atualizar posição sempre que x/y mudarem
     markers.merge(enter)
-      .attr("cx", d => x(d.lon))
-      .attr("cy", d => y(d.lat));
+    .attr("cx", d => x(d.lon))
+    .attr("cy", d => y(d.lat))
+    .attr("fill", d => d.id === selectedEvent ? "red" : "gold")
+    .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
 
     // Remover os que não estão mais presentes
     markers.exit().remove();
-  }
 
+    
+  }
 </script>
 
 <h1>Interactive Minard</h1>
@@ -140,7 +180,7 @@
 <!-- Gráfico -->
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
 
-<Timebar events = {eventInfo}></Timebar>
+<Timebar events = {eventInfo} on:eventclick={handleEventClick}></Timebar>
 <!-- Time scroller -->
 <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/>
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
