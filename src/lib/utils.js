@@ -16,52 +16,6 @@ function interpolateDate(date1, date2, pathPercentage)
     return new Date(interpolatedTime).toDateString();
 }
 
-// Função que faz o join das tabelas de exército e temperatura
-// fazendo interpolação linear para os dados exatos inexistentes
-export function join(army, temperature)
-{
-    // Filtrando a direção de retorno
-    const filteredArmy = army.filter(d => d.direction === "R");
-    // Ordenando as temperaturas
-    const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
-
-    // Fazendo o join
-    const result = filteredArmy.map(d => 
-    {
-        const lon = d.lon;
-
-        // Verificando se existe longitude exata em temperature
-        const exact = sortedTemp.find(t => t.lon === lon);
-        // Se existir, retorna esses valores
-        if (exact)
-        {
-            return {...d, temp: exact.temp, date: exact.date};
-        }
-
-        // Encontrando as longitudes anterior e posterior para interpolar
-        const before = [...sortedTemp].reverse().find(t => t.lon < lon);
-        const after = sortedTemp.find(t => t.lon > lon);
-
-        if (before && after)
-        {
-            // Interpolando a temperatura e a data
-            const pathPercentage = (lon - before.lon)/(after.lon - before.lon);
-            const interpolatedTemp = interpolate(before.temp, after.temp, pathPercentage);
-            const interpolatedDate = interpolateDate(before.date, after.date, pathPercentage);
-
-            return {...d, temp: interpolatedTemp, date: interpolatedDate};
-        }
-        else
-        {
-            // A longitude está fora do range dos dados
-            return {...d, temp: null, temp: null};
-        }
-    }
-    );
-
-    return result;
-}
-
 // Função para converter string para timestamp
 export function parseDate(dateStr)
 {
@@ -150,7 +104,7 @@ function interpolateTempAndDate(baseData, point)
 }
 
 // Função que faz o join com eventos e dados de temperatura
-export function join2(army, temperature, events) {
+export function join(army, temperature, events) {
     const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
     const eventsArray = Object.values(events);
 
