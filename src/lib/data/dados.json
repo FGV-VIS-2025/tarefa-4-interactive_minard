@@ -7,7 +7,8 @@
     "lat": 54.888087,
     "lon": 23.564201,
     "info": "<p class=\"date\">June 24</p><p>The Grande Arm&eacute;e crosses the Niemen River...</p>",
-    "date": "24-06-1812"
+    "date": "1812-06-24",
+    "label": "Invasão"
   },
   "vilnius": {
     "x": 168,
@@ -17,7 +18,8 @@
     "lat": 54.68,
     "lon": 25.28,
     "info": "<p class=\"date\">June 28</p><p>Napoleon enters Vilnius...</p>",
-    "date": "28-06-1812"
+    "date": "1812-06-28",
+    "label": "Vilnius"
   },
   "vitebsk": {
     "x": 518,
@@ -27,7 +29,8 @@
     "lat": 55.077814,
     "lon": 30.202374,
     "info": "<p class=\"date\">July 12 &ndash; August 12</p><p>Supply depot at Vitebsk...</p>",
-    "date": "12-07-1812"
+    "date": "1812-07-12",
+    "label": "Recompose"
   },
   "polotsk": {
     "x": 417,
@@ -37,7 +40,8 @@
     "lat": 55.279781,
     "lon": 28.781918,
     "info": "<p class=\"date\">August 17-18</p><p>First Battle of Polotsk...</p>",
-    "date": "17-08-1812"
+    "date": "1812-08-17",
+    "label": "Batalha"
   },
   "krasnoi": {
     "x": 618,
@@ -47,7 +51,8 @@
     "lat": 54.728962,
     "lon": 31.608767,
     "info": "<p class=\"date\">August 15</p><p>Fightings at Krasnoi...</p>",
-    "date": "15-08-1812"
+    "date": "1812-08-15",
+    "label": "Batalha"
   },
   "smolensk": {
     "x": 655,
@@ -57,7 +62,8 @@
     "lat": 54.918689,
     "lon": 32.129132,
     "info": "<p class=\"date\">August 16-18</p><p>Battle of Smolensk...</p>",
-    "date": "16-08-1812"
+    "date": "1812-08-16",
+    "label": "Batalha"
   },
   "gjatsk": {
     "x": 856,
@@ -67,7 +73,8 @@
     "lat": 55.542951,
     "lon": 34.955982,
     "info": "The Grande Arm&eacute;e rests at Gjatsk...",
-    "date": "20-08-1812"
+    "date": "1812-08-20",
+    "label": "Recompose"
   },
   "shevardino": {
     "x": 902,
@@ -77,7 +84,8 @@
     "lat": 55.591913,
     "lon": 35.602922,
     "info": "<p class=\"date\">September 5</p><p>Battle of Shevardino Redoubt</p>",
-    "date": "05-09-1812"
+    "date": "1812-09-05",
+    "label": "Batalha"
   },
   "borodino": {
     "x": 926,
@@ -87,7 +95,8 @@
     "lat": 55.542951,
     "lon": 35.940457,
     "info": "<p class=\"date\">September 7-8</p><p>Battle of Borodino...</p>",
-    "date": "07-09-1812"
+    "date": "1812-09-07",
+    "label": "Batalha"
   },
   "moscow": {
     "x": 1044,
@@ -97,7 +106,8 @@
     "lat": 55.8,
     "lon": 37.6,
     "info": "<p class=\"date\">September 14</p><p>Napoleon enters the city of Moscow...</p>",
-    "date": "14-09-1812"
+    "date": "1812-09-14",
+    "label": "Conquista"
   },
   "maloyaroslavets": {
     "x": 1024,
@@ -107,7 +117,8 @@
     "lat": 55.24306,
     "lon": 37.318721,
     "info": "<p class=\"date\">October 24</p><p>Battle of Maloyaroslavets</p>",
-    "date": "24-10-1812"
+    "date": "1812-10-24",
+    "label": "Batalha"
   },
   "vyazma": {
     "x": 836,
@@ -117,7 +128,8 @@
     "lat": 55.181858,
     "lon": 34.674703,
     "info": "<p class=\"date\">November 3</p><p>Battle of Vyazma</p>",
-    "date": "03-11-1812"
+    "date": "1812-11-03",
+    "label": "Batalha"
   },
   "orsha": {
     "x": 558,
@@ -127,7 +139,8 @@
     "lat": 54.533115,
     "lon": 30.764932,
     "info": "<p>Supply depot at Orsha.</p>",
-    "date": "None"
+    "date": "None",
+    "label": "None"
   },
   "berezina": {
     "x": 406,
@@ -137,7 +150,8 @@
     "lat": 54.306667,
     "lon": 28.627215,
     "info": "<p class=\"date\">November 26-29</p><p>Battle of Berezina...</p>",
-    "date": "26-11-1812"
+    "date": "1812-11-26",
+    "label": "Batalha"
   },
   "dec5": {
     "x": 303,
@@ -147,7 +161,8 @@
     "lat": 54.245464,
     "lon": 27.17863,
     "info": "<p class=\"date\">December 5</p><p>Napoleon leaves for Paris...</p>",
-    "date": "05-12-1812"
+    "date": "1812-12-05",
+    "label": "Fuga"
   },
   "niemen2": {
     "x": 72,
@@ -157,7 +172,8 @@
     "lat": 54.533115,
     "lon": 23.929863,
     "info": "<p class=\"date\">December 14</p><p>The Grande Arm&eacute;e leaves Russian territory...</p>",
-    "date": "14-12-1812"
+    "date": "1812-12-14",
+    "label": "Retirada"
   },
   "cossacks": {
     "x": 762,
@@ -167,6 +183,7 @@
     "lat": 54.96153,
     "lon": 33.633973,
     "info": "<p>Asymmetrical combat by Cossacks.</p>",
-    "date": "None"
+    "date": "None",
+    "label": "None"
   }
 }
