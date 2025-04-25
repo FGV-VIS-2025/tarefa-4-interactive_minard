@@ -1,8 +1,13 @@
 <script>
+    export let events;  // Default empty object
+    export let minTime;      // Required prop
+    export let maxTime;      // Required prop
+    export let currentTime;  // Required prop
+    export let chartWidth = 800; // Optional prop with default
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
+    
   
-    export let events;
   
     let selectedId = null;
   
@@ -22,6 +27,10 @@
         handleClick(eventId);
       }
     }
+    function handleTimeChange(e) {
+        const time = Number(e.target.value);
+        dispatch('timeupdate', { time });
+    }
   </script>
   
   <svelte:window on:click={() => handleClick(null)} />
@@ -39,16 +48,39 @@
           >
             <div class="event-date">{event.label}</div>
           </button>
-  
-          {#if selectedId === event.id}
-            <div class="event-details" style="margin-top: 0.5rem; font-size: 0.9rem; background: #f9f9f9; border: 1px solid #ccc; padding: 0.5rem;">
-              {event.info}
-            </div>
-          {/if}
         </div>
       {/if}
     {/each}
+  
+    {#if selectedId}
+      {#each eventList as event (event.id)}
+        {#if selectedId === event.id}
+          <div class="event-details">
+            {@html event.info}
+          </div>
+        {/if}
+      {/each}
+    {/if}
+
+    <input 
+    type="range" 
+    min={minTime} 
+    max={maxTime} 
+    step={1} 
+    bind:value={currentTime}
+    on:input={handleTimeChange}
+    class="time-slider"
+    style="width: {chartWidth}px;"
+/>
+
+<!-- Time labels -->
+<div class="time-labels">
+    <span>{new Date(minTime).toLocaleDateString()}</span>
+    <span>{new Date(maxTime).toLocaleDateString()}</span>
+</div>
   </div>
+  
+
   
   <style>
     .timeline-container {
@@ -68,5 +100,32 @@
     .event-button:focus {
       outline: 2px solid blue;
     }
+
+    input[type="range"] {
+      display: block;
+      height: 6px;
+      background: #ddd;
+      border-radius: 5px;
+      appearance: none;
+      outline: none;
+      margin-bottom: 0.5rem;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #444;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #444;
+      border-radius: 50%;
+      cursor: pointer;
+  }
   </style>
   

@@ -92,9 +92,6 @@
   function handleEventClick(event) {
     selectedEvent = event.detail.eventId;
     if (selectedEvent && eventInfo[selectedEvent]) {
-      console.log("selectedEvent", selectedEvent);
-      console.log("eventInfo[selectedEvent]", eventInfo[selectedEvent]);
-      console.log("eventInfo[selectedEvent].date", eventInfo[selectedEvent]?.date);
 
       const newTime = parseDate(eventInfo[selectedEvent].date);
       if (currentTime !== newTime) {
@@ -107,9 +104,9 @@
     }
   }
   
-  function handleTimeChange() {
-        // Quando o tempo muda manualmente, deseleciona o evento
-        selectedEvent = null;
+  function handleTimeUpdate(event) {
+        currentTime = event.detail.time;
+        selectedEvent = null; // Deselect any selected event when time changes
     }
 
   // Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
@@ -180,9 +177,17 @@ circles.exit().remove();
 <!-- Gráfico -->
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
 
-<Timebar events = {eventInfo} on:eventclick={handleEventClick}></Timebar>
+<Timebar 
+    events={eventInfo} 
+    minTime={minTime}
+    maxTime={maxTime}
+    currentTime={currentTime}
+    chartWidth={chartWidth}
+    on:eventclick={handleEventClick}
+    on:timeupdate={handleTimeUpdate}
+/>
 <!-- Time scroller -->
-<input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/>
+<!-- <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/> -->
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
 <h2>Dados do gráfico</h2>
@@ -278,30 +283,4 @@ circles.exit().remove();
       margin-bottom: 8px;
   }
 
-  input[type="range"] {
-      display: block;
-      height: 6px;
-      background: #ddd;
-      border-radius: 5px;
-      appearance: none;
-      outline: none;
-      margin-bottom: 0.5rem;
-  }
-
-  input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #444;
-      border-radius: 50%;
-      cursor: pointer;
-  }
-
-  input[type="range"]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      background: #444;
-      border-radius: 50%;
-      cursor: pointer;
-  }
 </style>
