@@ -1,4 +1,5 @@
 import minard from '@stdlib/datasets-minard-napoleons-march';
+import fs from 'fs';
 
 export function load() {
     var opts = {};
@@ -17,6 +18,12 @@ export function load() {
 
     opts.data = "temperature";
     var temperature = minard( opts );
+
+    // fs.writeFileSync('./army.json', JSON.stringify(army, null, 2));
+    // fs.writeFileSync('./temperature.json', JSON.stringify(temperature, null, 2));
+    // fs.writeFileSync('./cities.json', JSON.stringify(cities, null, 2));
+    // fs.writeFileSync('./labels.json', JSON.stringify(labels, null, 2));
+    // fs.writeFileSync('./rivers.json', JSON.stringify(rivers, null, 2));
 
     return {
         army: army,

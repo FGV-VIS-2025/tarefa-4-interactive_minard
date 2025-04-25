@@ -7,14 +7,8 @@
     import eventInfo from '$lib/data/dados.json';
     import Timebar from "$lib/timebar.svelte";
     import eventsDate from "$lib/data/eventsDate.json";
-
-    // Pegando o dado
-    export let data;
-
-    // Dados do exército e da temperatura
-    var army = data.army;
-    var temperature = data.temperature;
-
+    import army from "$lib/data/original/army.json";
+    import temperature from "$lib/data/original/temperature.json";
     
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter(d => parseDate(d.date));
