@@ -165,26 +165,33 @@
       "lon": 28.627215,
       "date": "1812-11-26",
       "direction": "R",
-      "division": 2
+      "division": 1
     },
     "berezina_2": {
       "lat": 54.306667,
       "lon": 28.627215,
       "date": "1812-11-29",
       "direction": "R",
-      "division": 2
+      "division": 1
     },
     "dec5": {
       "lat": 54.245464,
       "lon": 27.17863,
       "date": "1812-12-05",
       "direction": "R",
-      "division": 2
+      "division": 1
     },
-    "niemen2": {
+    "niemen_3": {
       "lat": 54.533115,
       "lon": 23.929863,
       "date": "1812-12-14",
+      "direction": "R",
+      "division": 1
+    },
+    "troops_enconter": {
+      "lat": 54.4,
+      "lon": 29.2,
+      "date": "1812-11-24",
       "direction": "R",
       "division": 2
     }

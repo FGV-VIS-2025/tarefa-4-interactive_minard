@@ -164,6 +164,22 @@ function interpolateTempAndDate(baseData, point)
             }
             interpolatedDate = interpolateDate(prev.date, next.date, pathPercentage);
         }
+        else if (next && !prev)
+        {
+            if ("temp" in next)
+            {
+                interpolatedTemp = next.temp;
+            }
+            interpolatedDate = next.date;
+        }
+        else if (prev && !next)
+        {
+            if ("temp" in prev)
+            {
+                interpolatedTemp = prev.temp;
+            }
+            interpolatedDate = prev.date;
+        }
     }
 
     return {...point, temp: interpolatedTemp, date: interpolatedDate}

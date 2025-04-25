@@ -11,13 +11,15 @@
     import temperature from "$lib/data/original/temperature.json";
     
     var joinedData = join(army, temperature, eventsDate);
-    // joinedData = joinedData.filter(d => parseDate(d.date));
+    joinedData = joinedData.filter(d => parseDate(d.date));
 
     // Pegando todas as datas ordenadas
     const times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
     // Pegando as datas mínima e máxima (para os limites do time scroller)
     const minTime = times[0];
     const maxTime = times.at(-1);
+
+    console.log(times);
 
     // Tempo selecionado no time scroller
     let currentTime;
