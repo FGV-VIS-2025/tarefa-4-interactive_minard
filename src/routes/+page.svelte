@@ -2,8 +2,16 @@
     import {onMount} from "svelte";
     import * as d3 from "d3";
     import {join} from "$lib/utils";
+    import {join2} from "$lib/utils";
     import {interpolatePoints} from "$lib/utils";
     import {parseDate} from "$lib/utils";
+
+    // Pegando o dado
+    export let data;
+
+    // Dados do exército e da temperatura
+    var army = data.army;
+    var temperature = data.temperature;
 
     let eventInfo = {};
 
@@ -12,7 +20,6 @@
       const response = await fetch('/dados.json');
       eventInfo = await response.json();
     });
-    console.log(eventInfo)
 
     // let 
     $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
@@ -43,45 +50,38 @@
     markers.exit().remove();
   }
 
-    // Pegando o dado
-    export let data;
+    let eventsDate = {};
+    let joinedData = [];
+    let times;
+    let minTime;
+    let maxTime;
+    let interpolatedData = [];
 
-    // Dados do exército e da temperatura
-    var army = data.army;
-    var temperature = data.temperature;
+    onMount(async () => {
+        const response2 = await fetch('/eventsDate.json');
+        eventsDate = await response2.json();
+    });
 
-    // Dados unidos do exército e da temperatura
-    var armyWithTemp = join(army, temperature);
+    $: if (Object.keys(eventsDate).length > 0) {
+        joinedData = join2(army, temperature, eventsDate);
+        joinedData = joinedData.filter(d => parseDate(d.date));
+        // Pegando todas as datas ordenadas
+        times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
+        // Pegando as datas mínima e máxima (para os limites do time scroller)
+        minTime = times[0];
+        maxTime = times.at(-1);
+        // Interativamente calcula os pontos interpolados da data selecionada
+        interpolatedData = interpolatePoints(currentTime, joinedData);
+        if (currentTime === undefined)
+        {
+            currentTime = minTime;
+        }
+    }
 
     // Tempo selecionado no time scroller
     let currentTime;
-
-    // Convertendo a data de string para data
-    armyWithTemp = armyWithTemp.filter(d => parseDate(d.date));
-
-    // Consertando a divisão dos últimos dados
-    armyWithTemp = armyWithTemp.map(d => {
-        const cutoff = new Date("1812-11-28").getTime();
-        const current = new Date(d.date).getTime();
-
-        if (current > cutoff)
-        {
-            return {...d, division: 1};
-        }
-
-        return d;
-    })
-
-    // Pegando todas as datas ordenadas
-    const times = [...new Set(armyWithTemp.map(d => parseDate(d.date)))].sort((a, b) => a - b);
-    // Pegando as datas mínima e máxima (para os limites do time scroller)
-    const minTime = times[0];
-    const maxTime = times.at(-1);
     // Começa o tempo no time scroller como o mínimo
     currentTime = minTime;
-
-    // Interativamente calcula os pontos interpolados da data selecionada
-    $: interpolatedData = interpolatePoints(currentTime, armyWithTemp);
 
     // Elementos do svg
     let x, y;
@@ -171,6 +171,37 @@
 <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/>
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
+{#if joinedData.length > 0}
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Divisão</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Tamanho</th>
+        <th>Direção</th>
+        <th>Data</th>
+        <th>Temperatura</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each joinedData as d}
+        <tr>
+          <td>{d.division}</td>
+          <td>{d.lat}</td>
+          <td>{d.lon}</td>
+          <td>{d.size}</td>
+          <td>{d.direction}</td>
+          <td>{d.date}</td>
+          <td>{d.temp}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{:else}
+  <p>Carregando dados da tabela...</p>
+{/if}
+
 <!-- <h2>Dados do join</h2>
 <table border="1">
   <thead>
@@ -185,7 +216,7 @@
     </tr>
   </thead>
   <tbody>
-    {#each armyWithTemp as d}
+    {#each joinedData as d}
       <tr>
         <td>{d.division}</td>
         <td>{d.lat}</td>

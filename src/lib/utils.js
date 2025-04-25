@@ -113,12 +113,46 @@ export function interpolatePoints(time, data)
     }).filter(Boolean); // Remove divisões sem ponto próximo
 }
 
+function interpolateTempAndDate(baseData, point)
+{
+    var interpolatedTemp = undefined;
+    var interpolatedDate = undefined;
+
+    // Verificando se existe data exata no dado
+    const exact = baseData.find(d => d.lon === point.lon);
+    // Se existir, retorna esses valores
+    if (exact)
+    {
+        if ("temp" in exact)
+        {
+            interpolatedTemp = exact.temp;
+        }
+        interpolatedDate = exact.date;
+    }
+    else
+    {
+        // Pega o anterior e o seguinte ao tempo atual
+        const prev = [...baseData].reverse().find(d => d.lon < point.lon);
+        const next = baseData.find(d => d.lon > point.lon);
+
+        if (prev && next)
+        {
+            const pathPercentage = (point.lon - prev.lon)/(next.lon - prev.lon);
+            if ("temp" in prev)
+            {
+                interpolatedTemp = interpolate(prev.temp, next.temp, pathPercentage);
+            }
+            interpolatedDate = interpolateDate(prev.date, next.date, pathPercentage);
+        }
+    }
+
+    return {...point, temp: interpolatedTemp, date: interpolatedDate}
+}
+
 // Função que faz o join com eventos e dados de temperatura
 export function join2(army, temperature, events) {
     const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
     const eventsArray = Object.values(events);
-
-    console.log(army);
 
     return army.map(d => {
         if (d.division === 1)
@@ -128,18 +162,38 @@ export function join2(army, temperature, events) {
                 const currentEvents = eventsArray.filter(e => e.direction === "A" && e.division === 1);
                 const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
 
-                // Verificando se existe data exata no dado
-                const exact = sortedEvents.find(e => e.lon === d.lon);
-                // Se existir, retorna esses valores
-                if (exact) return {...d, temp: undefined, date: e.date};
-
-                // Pega o anterior e o seguinte ao tempo atual
-                const prev = [...sortedEvents].reverse().find(e => e.lon < d.lon);
-                const next = sortedEvents.find(e => e.lon > d.lon);
-                const pathPercentage = (d.lon - prev.lon)/(next.lon - prev.lon);
-
-                return {...d, temp: undefined, date: interpolateDate(prev.date, next.date, pathPercentage)}
+                return interpolateTempAndDate(sortedEvents, d);
+            }
+            else if (d.direction === "R")
+            {
+                return interpolateTempAndDate(sortedTemp, d);
             }
         }
-    })
+        else if (d.division === 2)
+        {
+            if (d.direction === "A")
+            {
+                const currentEvents = eventsArray.filter(e => e.direction === "A" && e.division === 2);
+                const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
+
+                return interpolateTempAndDate(sortedEvents, d);
+            }
+            else if (d.direction === "R")
+            {
+                if (d.lon > 26)
+                {
+                    return interpolateTempAndDate(sortedTemp, d);
+                }
+                else
+                {
+                    const currentEvents = eventsArray.filter(e => e.direction === "R" && e.division === 2);
+                    const sortedEvents = currentEvents.sort((a, b) => a.lon - b.lon);
+
+                    return interpolateTempAndDate(sortedEvents, d);
+                }
+            }
+        }
+
+        return {...d, temp: undefined, date: undefined}
+    });
 }
