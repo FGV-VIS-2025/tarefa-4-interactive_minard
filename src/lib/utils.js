@@ -49,20 +49,27 @@ export function interpolatePoints(time, data)
 
         if (prev && next)
         {
+            console.log(prev.date, next.date);
             // Aplica a interpolação
             const t0 = parseDate(prev.date);
             const t1 = parseDate(next.date);
             const pathPercentage = (time - t0)/(t1 - t0);
 
-            if (division === 2 && time > parseDate("1812-10-18"))
+            let size;
+
+            if (time > parseDate("1812-11-18") && time < parseDate("1812-11-24") && division === 1)
             {
-                console.log(prev, next, prev.date, next.date);
+                size = 20000;
+            }
+            else
+            {
+                size = interpolate(prev.size, next.size, pathPercentage);
             }
 
             points.push({
                 lat: interpolate(prev.lat, next.lat, pathPercentage),
                 lon: interpolate(prev.lon, next.lon, pathPercentage),
-                size: interpolate(prev.size, next.size, pathPercentage),
+                size: size,
                 temp: interpolate(prev.temp, next.temp, pathPercentage),
                 division: +division,
                 direction: prev.direction,

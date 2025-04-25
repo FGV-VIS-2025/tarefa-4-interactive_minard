@@ -170,21 +170,21 @@
   {
     "lon": 29.2,
     "lat": 54.4,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },
   {
     "lon": 28.5,
     "lat": 54.3,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },
   {
     "lon": 28.3,
     "lat": 54.4,
-    "size": 20000,
+    "size": 50000,
     "direction": "R",
     "division": 1
   },

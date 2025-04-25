@@ -46,7 +46,7 @@
         const xExtent = d3.extent(army, d => d.lon);
         const yExtent = d3.extent(army, d => d.lat);
 
-        const xPadding = (xExtent[1] - xExtent[0]) * 0.1;
+        const xPadding = (xExtent[1] - xExtent[0]) * 0.15;
         const yPadding = (yExtent[1] - yExtent[0]) * 0.1;
         
         x = d3.scaleLinear()
