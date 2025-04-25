@@ -5,6 +5,8 @@
     import {join2} from "$lib/utils";
     import {interpolatePoints} from "$lib/utils";
     import {parseDate} from "$lib/utils";
+    import eventInfo from '$lib/data/dados.json';
+    import Timebar from "$lib/timebar.svelte";
 
     // Pegando o dado
     export let data;
@@ -13,43 +15,7 @@
     var army = data.army;
     var temperature = data.temperature;
 
-    let eventInfo = {};
-
-    // Load JSON on mount
-    onMount(async () => {
-      const response = await fetch('/dados.json');
-      eventInfo = await response.json();
-    });
-
-    // let 
-    $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
-    const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
-      id,
-      ...info
-    }));
-
-    const markers = svg.selectAll(".event-marker")
-      .data(eventPoints, d => d.id);
-
-    // Criar marcadores se ainda não existem
-    const enter = markers.enter()
-      .append("circle")
-      .attr("class", "event-marker")
-      .attr("r", 5)
-      .attr("fill", "gold")
-      .attr("stroke", "black");
-
-    enter.append("title").text(d => d.id);
-
-    // Atualizar posição sempre que x/y mudarem
-    markers.merge(enter)
-      .attr("cx", d => x(d.lon))
-      .attr("cy", d => y(d.lat));
-
-    // Remover os que não estão mais presentes
-    markers.exit().remove();
-  }
-
+    
     let eventsDate = {};
     let joinedData = [];
     let times;
@@ -160,6 +126,35 @@
         circles.exit().remove();
     }
 
+    // let 
+    $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+    const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
+      id,
+      ...info
+    }));
+
+    const markers = svg.selectAll(".event-marker")
+      .data(eventPoints, d => d.id);
+
+    // Criar marcadores se ainda não existem
+    const enter = markers.enter()
+      .append("circle")
+      .attr("class", "event-marker")
+      .attr("r", 5)
+      .attr("fill", "gold")
+      .attr("stroke", "black");
+
+    enter.append("title").text(d => d.id);
+
+    // Atualizar posição sempre que x/y mudarem
+    markers.merge(enter)
+      .attr("cx", d => x(d.lon))
+      .attr("cy", d => y(d.lat));
+
+    // Remover os que não estão mais presentes
+    markers.exit().remove();
+  }
+
 </script>
 
 <h1>Interactive Minard</h1>
@@ -167,6 +162,7 @@
 <!-- Gráfico -->
 <svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
 
+<Timebar events = {eventInfo}></Timebar>
 <!-- Time scroller -->
 <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/>
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
