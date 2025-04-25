@@ -334,5 +334,39 @@
     "size": 6000,
     "direction": "R",
     "division": 3
+  },
+
+
+  {
+    "lon": 28.7,
+    "lat": 55.5,
+    "size": 33000,
+    "direction": "A",
+    "division": 2,
+    "date": "1812-08-17"
+  },
+  {
+    "lon": 28.7,
+    "lat": 55.5,
+    "size": 33000,
+    "direction": "A",
+    "division": 2,
+    "date": "1812-10-20"
+  },
+  {
+    "lon": 37.6,
+    "lat": 55.8,
+    "size": 100000,
+    "direction": "A",
+    "division": 1,
+    "date": "1812-10-18"
+  },
+  {
+    "lon": 37.6,
+    "lat": 55.8,
+    "size": 100000,
+    "direction": "A",
+    "division": 1,
+    "date": "1812-09-14"
   }
 ]

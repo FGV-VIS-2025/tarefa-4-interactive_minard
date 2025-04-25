@@ -27,7 +27,7 @@ export function interpolatePoints(time, data)
 {
     let points = [];
 
-    function interpolateDateWithDivisions(dataDivision, division, invert = false)
+    function interpolateDateWithDivisions(dataDivision, division)
     {
         // Verificando se existe data exata no dado
         const exact = dataDivision.find(d => parseDate(d.date) === time);
@@ -41,6 +41,11 @@ export function interpolatePoints(time, data)
         // Pega o anterior e o seguinte ao tempo atual
         const prev = [...dataDivision].reverse().find(d => parseDate(d.date) <= time);
         const next = dataDivision.find(d => parseDate(d.date) > time);
+
+        if (division === 1)
+        {
+            console.log(dataDivision);
+        }
 
         if (prev && next)
         {
@@ -73,7 +78,7 @@ export function interpolatePoints(time, data)
         for (let division = 1; division < 3; division++)
         {
             var filteredDataDivision = filteredData.filter(d => d.division === division);
-            filteredDataDivision = filteredDataDivision.sort((a, b) => a.date - b.date);
+            filteredDataDivision = filteredDataDivision.sort((a, b) => parseDate(a.date) - parseDate(b.date));
             interpolateDateWithDivisions(filteredDataDivision, division);
         }
     }
@@ -84,53 +89,12 @@ export function interpolatePoints(time, data)
         for (let division = 1; division < 3; division++)
         {
             var filteredDataDivision = filteredData.filter(d => d.division === division);
-            filteredDataDivision = filteredDataDivision.sort((a, b) => a.date - b.date);
+            filteredDataDivision = filteredDataDivision.sort((a, b) => parseDate(a.date) - parseDate(b.date));
             interpolateDateWithDivisions(filteredDataDivision, division);
         }
     }
 
     return points;
-
-    // Separando por divisão
-    const groups = groupBy(data, d => d.division);
-
-    // Para cada divisão...
-    return Object.entries(groups).map(([division, points]) =>
-    {
-        // Ordena os pontos por data
-        const sorted = points.sort((a, b) => parseDate(a.date) - parseDate(b.date));
-
-        // Verificando se existe data exata no dado
-        const exact = sorted.find(p => parseDate(p.date) === time);
-        // Se existir, retorna esses valores
-        if (exact) return {...exact};
-
-        // Pega o anterior e o seguinte ao tempo atual
-        const prev = [...sorted].reverse().find(p => parseDate(p.date) <= time);
-        const next = sorted.find(p => parseDate(p.date) > time);
-
-        if (prev && next)
-        {
-            // Aplica a interpolação
-            const t0 = parseDate(prev.date);
-            const t1 = parseDate(next.date);
-            const pathPercentage = (time - t0)/(t1 - t0);
-
-            return {
-                lat: interpolate(prev.lat, next.lat, pathPercentage),
-                lon: interpolate(prev.lon, next.lon, pathPercentage),
-                size: interpolate(prev.size, next.size, pathPercentage),
-                temp: interpolate(prev.temp, next.temp, pathPercentage),
-                division: +division,
-                direction: prev.direction,
-                date: new Date(time).toDateString()
-            };
-        }
-
-        // Caso só exista um ponto, retorna nulo
-        return null;
-
-    }).filter(Boolean); // Remove divisões sem ponto próximo
 }
 
 function interpolateTempAndDate(baseData, point)
@@ -182,7 +146,13 @@ function interpolateTempAndDate(baseData, point)
         }
     }
 
-    return {...point, temp: interpolatedTemp, date: interpolatedDate}
+    if (point)
+    {
+        point.temp = interpolatedTemp;
+        point.date = interpolatedDate;
+    }
+
+    return point;
 }
 
 // Função que faz o join com eventos e dados de temperatura
@@ -191,6 +161,11 @@ export function join(army, temperature, events) {
     const eventsArray = Object.values(events);
 
     return army.map(d => {
+        if (d.date != undefined)
+        {
+            return d;
+        }
+
         if (d.division === 1)
         {
             if (d.direction === "A")
@@ -223,6 +198,6 @@ export function join(army, temperature, events) {
             return interpolateTempAndDate(sortedEvents, d);
         }
 
-        return {...d, temp: undefined, date: undefined}
+        return d;
     });
 }

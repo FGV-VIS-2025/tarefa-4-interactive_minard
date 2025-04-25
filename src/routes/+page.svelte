@@ -19,8 +19,6 @@
     const minTime = times[0];
     const maxTime = times.at(-1);
 
-    console.log(times);
-
     // Tempo selecionado no time scroller
     let currentTime;
     // Começa o tempo no time scroller como o mínimo
