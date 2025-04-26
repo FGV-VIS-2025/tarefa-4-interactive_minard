@@ -6,9 +6,10 @@
     "icon": "river",
     "lat": 54.888087,
     "lon": 23.564201,
-    "info": "<p class=\"date\">June 24</p><p>The Grande Arm&eacute;e crosses the Niemen River...</p>",
+    "info": "Napoleon crosses the Niemen River with 685,000 troops, starting the invasion.",
     "date": "1812-06-24",
-    "label": "Invasão"
+    "label": "Invasion",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/28/On_the_border_of_Nieman_1812.PNG"
   },
   "vilnius": {
     "x": 168,
@@ -17,9 +18,10 @@
     "icon": "burned",
     "lat": 54.68,
     "lon": 25.28,
-    "info": "<p class=\"date\">June 28</p><p>Napoleon enters Vilnius...</p>",
+    "info": "Napoleon captures Vilnius unopposed.",
     "date": "1812-06-28",
-    "label": "Vilnius"
+    "label": "Vilnius",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d0/1812_June_27._Mykoli%C5%A1kiai._Quartier_G%C3%A9n%C3%A9ral.jpg"
   },
   "vitebsk": {
     "x": 518,
@@ -28,9 +30,10 @@
     "icon": "depot",
     "lat": 55.077814,
     "lon": 30.202374,
-    "info": "<p class=\"date\">July 12 &ndash; August 12</p><p>Supply depot at Vitebsk...</p>",
+    "info": "French capture Vitebsk, establishing key supply depot.",
     "date": "1812-07-12",
-    "label": "Recompose"
+    "label": "Recompose",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/75/Les_conscrits_parisiens_%C3%A0_Witepsk.png"
   },
   "krasnoi1": {
     "x": 618,
@@ -39,7 +42,7 @@
     "icon": "None",
     "lat": 54.728962,
     "lon": 31.608767,
-    "info": "<p class=\"date\">August 15</p><p>Fightings at Krasnoi...</p>",
+    "info": "Skirmishes at Krasnoi.",
     "date": "1812-08-15",
     "label": "None"
   },
@@ -50,9 +53,10 @@
     "icon": "battle",
     "lat": 54.918689,
     "lon": 32.129132,
-    "info": "<p class=\"date\">August 16-18</p><p>Battle of Smolensk...</p>",
+    "info": "Bloody battle for Smolensk; Russians retreat after burning city.",
     "date": "1812-08-16",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Bataille-de-smolensk.jpg"
   },
   "polotsk1": {
     "x": 417,
@@ -61,9 +65,10 @@
     "icon": "battle",
     "lat": 55.45,
     "lon": 28.781918,
-    "info": "<p class=\"date\">August 17-18</p><p>First Battle of Polotsk...</p>",
+    "info": "First Battle of Polotsk: French repel Russian attack.",
     "date": "1812-08-17",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Po%C5%82acak%2C_Pa%C5%82ata-Spas._%D0%9F%D0%BE%D0%BB%D0%B0%D1%86%D0%B0%D0%BA%2C_%D0%9F%D0%B0%D0%BB%D0%B0%D1%82%D0%B0-%D0%A1%D0%BF%D0%B0%D1%81_%281812%29.jpg"
   },
   "gjatsk": {
     "x": 856,
@@ -72,9 +77,10 @@
     "icon": "artillery",
     "lat": 55.542951,
     "lon": 34.955982,
-    "info": "The Grande Arm&eacute;e rests at Gjatsk...",
+    "info": "Grande Armée rests and prepares for major battle.",
     "date": "1812-08-26",
-    "label": "Recompose"
+    "label": "Recompose",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Vereshchagin_Napoleon_near_Borodino.jpg"
   },
   "shevardino": {
     "x": 902,
@@ -83,9 +89,10 @@
     "icon": "battle",
     "lat": 55.591913,
     "lon": 35.602922,
-    "info": "<p class=\"date\">September 5</p><p>Battle of Shevardino Redoubt</p>",
+    "info": "Preliminary battle for Shevardino redoubt.",
     "date": "1812-09-05",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/SamokishBorodinoLitograf.jpg"
   },
   "borodino": {
     "x": 926,
@@ -94,9 +101,10 @@
     "icon": "battle",
     "lat": 55.542951,
     "lon": 35.940457,
-    "info": "<p class=\"date\">September 7-8</p><p>Battle of Borodino...</p>",
+    "info": "Bloodiest battle of invasion; Pyrrhic French victory.",
     "date": "1812-09-07",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Peter_von_Hess_002.jpg"
   },
   "moscow1": {
     "x": 1044,
@@ -105,9 +113,10 @@
     "icon": "burned",
     "lat": 55.85,
     "lon": 37.4,
-    "info": "<p class=\"date\">September 14</p><p>Napoleon enters the city of Moscow...</p>",
+    "info": "Napoleon enters abandoned Moscow; city burns.",
     "date": "1812-09-14",
-    "label": "Conquista"
+    "label": "Conquista",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/53/Napoleon_in_burning_Moscow_-_Adam_Albrecht_%281841%29.jpg"
   },
   "polotsk2": {
     "x": 417,
@@ -116,9 +125,10 @@
     "icon": "battle",
     "lat": 55.5,
     "lon": 28.781918,
-    "info": "<p class=\"date\">October 18</p><p>Second Battle of Polotsk...</p>",
+    "info": "Second Battle of Polotsk: Russian victory.",
     "date": "1812-10-18",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Battle_polotsk.jpg"
   },
   "moscow2": {
     "x": 1044,
@@ -127,9 +137,10 @@
     "icon": "out",
     "lat": 55.8,
     "lon": 37.6,
-    "info": "<p class=\"date\">October 18</p><p>Grand Armee leaves Moscow.</p>",
+    "info": "Grande Armée begins disastrous retreat.",
     "date": "1812-10-18",
-    "label": "leaving"
+    "label": "leaving",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Fording_the_Berezina_River_by_January_Suchodolski%2C_ca._1859.png"
   },
   "maloyaroslavets": {
     "x": 1024,
@@ -138,9 +149,10 @@
     "icon": "battle",
     "lat": 55.24306,
     "lon": 37.318721,
-    "info": "<p class=\"date\">October 24</p><p>Battle of Maloyaroslavets</p>",
+    "info": "French win but forced to retreat via devastated route.",
     "date": "1812-10-24",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Hess_maloyaroslavets.jpg"
   },
   "vyazma": {
     "x": 836,
@@ -149,9 +161,10 @@
     "icon": "battle",
     "lat": 55.181858,
     "lon": 34.674703,
-    "info": "<p class=\"date\">November 3</p><p>Battle of Vyazma</p>",
+    "info": "Russian attacks inflict heavy French losses.",
     "date": "1812-11-03",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Battle_vyazma.jpg"
   },
   "orsha": {
     "x": 558,
@@ -160,7 +173,7 @@
     "icon": "depot",
     "lat": 54.533115,
     "lon": 30.764932,
-    "info": "<p>Supply depot at Orsha.</p>",
+    "info": "Critical supply point during retreat.",
     "date": "None",
     "label": "None"
   },
@@ -171,9 +184,10 @@
     "icon": "battle",
     "lat": 54.728962,
     "lon": 31.608767,
-    "info": "<p class=\"date\">November 15</p><p>Battle of Krasnoi</p>",
+    "info": "Devastating defeat; French lose 13,000 men.",
     "date": "1812-11-15",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Krasnoi.jpg"
   },
   "berezina": {
     "x": 406,
@@ -182,9 +196,10 @@
     "icon": "battle",
     "lat": 54.306667,
     "lon": 28.627215,
-    "info": "<p class=\"date\">November 26-29</p><p>Battle of Berezina...</p>",
+    "info": "Costly river crossing under Russian attacks.",
     "date": "1812-11-26",
-    "label": "Batalha"
+    "label": "Batalha",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a8/National_Museum_in_Poznan_-_Przej%C5%9Bcie_przez_Berezyn%C4%99.JPG"
   },
   "dec5": {
     "x": 303,
@@ -193,9 +208,10 @@
     "icon": "napoleon",
     "lat": 54.3,
     "lon": 26.7863,
-    "info": "<p class=\"date\">December 5</p><p>Napoleon leaves for Paris...</p>",
+    "info": "Napoleon abandons army, returns to Paris.",
     "date": "1812-12-05",
-    "label": "Fuga"
+    "label": "Fuga",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Napoleon_Wagram.jpg"
   },
   "niemen2": {
     "x": 72,
@@ -204,7 +220,7 @@
     "icon": "river",
     "lat": 54.4,
     "lon": 24.29863,
-    "info": "<p class=\"date\">December 14</p><p>The Grande Arm&eacute;e leaves Russian territory...</p>",
+    "info": "Last French troops leave Russia.",
     "date": "1812-12-14",
     "label": "Retirada"
   },
@@ -215,7 +231,7 @@
     "icon": "cossacks",
     "lat": 54.96153,
     "lon": 33.633973,
-    "info": "<p>Asymmetrical combat by Cossacks.</p>",
+    "info": "Cossacks harass retreating French.",
     "date": "None",
     "label": "None"
   }

@@ -1,5 +1,7 @@
 <script>
     export let name;
+    export let width_icon = 24;
+    export let height_icon = 24;
   </script>
   
   <!-- Hidden sprite with all icons -->
@@ -58,7 +60,7 @@
   </svg>
   
   <!-- Render the selected icon -->
-  <svg width="24" height="24" aria-hidden="true">
+  <svg width= {width_icon} height= {height_icon} aria-hidden="true">
     <use xlink:href={"#icon-" + name}></use>
   </svg>
   
