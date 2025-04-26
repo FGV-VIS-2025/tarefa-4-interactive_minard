@@ -7,7 +7,7 @@
 
     import { createEventDispatcher } from 'svelte';
     import { parseDate} from "$lib/utils";
-    import Icon from '$lib/Icon.svelte';
+    import Icon from '$lib/icon.svelte';
 
     const dispatch = createEventDispatcher();
     let selectedId = null;
@@ -42,7 +42,7 @@
         return { ...event, x };
       });
     }
-    
+
     function getIcon(name) {
         switch (name) {
         case 'river': return /* river SVG */;
@@ -91,11 +91,11 @@
     {/each}
   {/if}
 
-  <input 
-    type="range" 
-    min={minTime} 
-    max={maxTime} 
-    step={1} 
+  <input
+    type="range"
+    min={minTime}
+    max={maxTime}
+    step={1}
     bind:value={currentTime}
     on:input={handleTimeChange}
     class="time-slider"
@@ -108,14 +108,14 @@
   </div>
 </div>
 
-  
+
   <style>
     .timeline-container {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
     }
-  
+
     .event-button {
       cursor: pointer;
       padding: 0.5rem;
@@ -123,7 +123,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-  
+
     .event-button:focus {
       outline: 2px solid blue;
     }
@@ -155,4 +155,3 @@
       cursor: pointer;
   }
   </style>
-  
