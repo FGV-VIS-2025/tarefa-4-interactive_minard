@@ -9,7 +9,8 @@
     import eventsDate from "$lib/data/eventsDate.json";
     import army from "$lib/data/adjusted_army.json";
     import temperature from "$lib/data/original/temperature.json";
-    
+    import TemperatureBar from "$lib/TemperatureBar.svelte";
+
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter(d => parseDate(d.date));
 
@@ -37,7 +38,7 @@
     onMount(() => {
         const width = chartWidth;
         const height = 400;
-        const margin = {top: 20, right: 30, bottom: 60, left: 70};
+        const margin = {top: 20, right: 30, bottom: 60, left: 170};
 
         svg = d3.select(svgElement)
             .attr("width", width)
@@ -71,7 +72,7 @@
 
         svg.append("text")
             .attr("text-anchor", "middle")
-            .attr("x", width / 2)
+            .attr("x", width / 2 + 75)
             .attr("y", height - 15) // um pouco abaixo do eixo X
             .text("Longitude (°)")
             .style("font-size", "16px");
@@ -79,13 +80,12 @@
         svg.append("text")
             .attr("text-anchor", "middle")
             .attr("transform", `rotate(-90)`)
-            .attr("x", -height / 2)
-            .attr("y", 20) // um pouco à esquerda do eixo Y
+            .attr("x", -height / 2 + 20)
+            .attr("y", 120) // um pouco à esquerda do eixo Y
             .text("Latitude (°)")
             .style("font-size", "16px");
     });
 
-    // Adicione esta variável para armazenar o evento selecionado
   let selectedEvent = null;
   
   // Função para lidar com o clique na timebar
@@ -178,7 +178,9 @@ circles.exit().remove();
 <h1>Interactive Minard</h1>
 
 <!-- Gráfico -->
-<svg bind:this={svgElement} id="chart" width="800" height="500"></svg>
+<svg bind:this={svgElement} id="chart" width="800" height="500">
+    <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
+</svg>
 
 <Timebar events = {eventInfo} on:eventclick={handleEventClick}></Timebar>
 <!-- Time scroller -->
