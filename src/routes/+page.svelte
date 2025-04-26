@@ -1,419 +1,423 @@
 <script>
-    import {onMount} from "svelte";
-    import * as d3 from "d3";
-    import {join} from "$lib/utils";
-    import {interpolatePoints} from "$lib/utils";
-    import {parseDate} from "$lib/utils";
-    import eventInfo from '$lib/data/dados.json';
-    import Timebar from "$lib/timebar.svelte";
-    import eventsDate from "$lib/data/eventsDate.json";
-    import army from "$lib/data/adjusted_army.json";
-    import temperature from "$lib/data/original/temperature.json";
-    import TemperatureBar from "$lib/TemperatureBar.svelte";
-    import Description from '$lib/Description.svelte';
+  import {onMount} from "svelte";
+  import * as d3 from "d3";
+  import {join} from "$lib/utils";
+  import {interpolatePoints} from "$lib/utils";
+  import {parseDate} from "$lib/utils";
+  import eventInfo from '$lib/data/dados.json';
+  import Timebar from "$lib/timebar.svelte";
+  import eventsDate from "$lib/data/eventsDate.json";
+  import army from "$lib/data/adjusted_army.json";
+  import temperature from "$lib/data/original/temperature.json";
+  import TemperatureBar from "$lib/temperaturebar.svelte";
+  import Description from '$lib/description.svelte';
+  import Doughnut from "$lib/doughnut.svelte";
 
-    var joinedData = join(army, temperature, eventsDate);
-    joinedData = joinedData.filter(d => parseDate(d.date));
+  var joinedData = join(army, temperature, eventsDate);
+  joinedData = joinedData.filter(d => parseDate(d.date));
 
-    // Pegando todas as datas ordenadas
-    const times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
-    // Pegando as datas mínima e máxima (para os limites do time scroller)
-    const minTime = times[0];
-    const maxTime = times.at(-1);
+  // Pegando todas as datas ordenadas
+  const times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
+  // Pegando as datas mínima e máxima (para os limites do time scroller)
+  const minTime = times[0];
+  const maxTime = times.at(-1);
 
-    // Tempo selecionado no time scroller
-    let currentTime;
-    // Começa o tempo no time scroller como o mínimo
-    currentTime = minTime;
-    
-    
+  // Tempo selecionado no time scroller
+  let currentTime;
+  // Começa o tempo no time scroller como o mínimo
+  currentTime = minTime;
 
-    // Elementos do svg
-    let x, y;
-    let svgElement;
-    let svg;
-    let tooltip;
-    let colorScale;
-    let sizeScale;
-    let height;
 
-    let chartWidth = 800;
 
-    // Configurações do gráfico
-    onMount(() => {
-        const width = chartWidth;
-        height = 300;
-        const margin = {top: 20, right: 30, bottom: 60, left: 170};
+  // Elementos do svg
+  let x, y;
+  let svgElement;
+  let svg;
+  let tooltip;
+  let colorScale;
+  let sizeScale;
+  let height;
 
-        colorScale = d3.scaleOrdinal()
-            .domain(["A", "R"])
-            .range(["#cf9e96", "#030303"]);
+  let chartWidth = 800;
 
-        sizeScale = d3.scaleLinear()
-            .domain([0, d3.max(joinedData, d => d.size)])
-            .range([5, 12000]);
+  // Configurações do gráfico
+  onMount(() => {
+      const width = chartWidth;
+      height = 300;
+      const margin = {top: 20, right: 30, bottom: 60, left: 170};
 
-        svg = d3.select(svgElement)
-            .attr("width", width)
-            .attr("height", 1.3*height);
+      colorScale = d3.scaleOrdinal()
+          .domain(["A", "R"])
+          .range(["#cf9e96", "#030303"]);
 
-        const colorLegend = svg.append("g")
-            .attr("transform", "translate(20, 20)");
+      sizeScale = d3.scaleLinear()
+          .domain([0, d3.max(joinedData, d => d.size)])
+          .range([5, 12000]);
 
-        colorLegend.selectAll("rect")
-            .data(colorScale.domain())
-            .enter()
-            .append("rect")
-            .attr("x", 160)
-            .attr("y", (d, i) => i * 20)
-            .attr("width", 20)
-            .attr("height", 20)
-            .attr("fill", colorScale);
+      svg = d3.select(svgElement)
+          .attr("width", width)
+          .attr("height", 1.3*height);
 
-        colorLegend.selectAll("text")
-            .data(colorScale.domain())
-            .enter()
-            .append("text")
-            .attr("x", 185)
-            .attr("y", (d, i) => i * 20 + 15)
-            .text(d => d === "A" ? "Advance" : "Retreat")
-            .style("font-size", "14px");
+      const colorLegend = svg.append("g")
+          .attr("transform", "translate(20, 20)");
 
-        // Legenda de tamanhos
-        const sizeLegend = svg.append("g")
-            .attr("transform", "translate(20, 150)");
+      colorLegend.selectAll("rect")
+          .data(colorScale.domain())
+          .enter()
+          .append("rect")
+          .attr("x", 160)
+          .attr("y", (d, i) => i * 20)
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("fill", colorScale);
 
-        const sizeLegendScale = d3.scaleLinear()
-            .domain([0, d3.max(joinedData, d => d.size)])
-            .range([5, 12000]);
+      colorLegend.selectAll("text")
+          .data(colorScale.domain())
+          .enter()
+          .append("text")
+          .attr("x", 185)
+          .attr("y", (d, i) => i * 20 + 15)
+          .text(d => d === "A" ? "Advance" : "Retreat")
+          .style("font-size", "14px");
 
-        const sizeLegendRect = sizeLegend.append("g")
-            .attr("transform", "translate(550, 180)");
+      // Legenda de tamanhos
+      const sizeLegend = svg.append("g")
+          .attr("transform", "translate(20, 150)");
 
-        sizeLegendRect.append("rect")
-            .attr("x", -60)    // ajusta para cobrir a legenda
-            .attr("y", -30)
-            .attr("width", 250)
-            .attr("height", 80)
-            .attr("fill", "white")    // cor de fundo
-            .attr("stroke", "black")  // borda
-            .attr("stroke-width", 0.7)
-            .attr("rx", 5)            // bordas arredondadas (opcional)
-            .attr("ry", 5);
+      const sizeLegendScale = d3.scaleLinear()
+          .domain([0, d3.max(joinedData, d => d.size)])
+          .range([5, 12000]);
 
-        sizeLegend.selectAll("circle")
-            .data([1000, 50000, 100000])
-            .enter()
-            .append("circle")
-            .attr("cx", (d, i) => i * (10*i + 30) + 600)
-            .attr("cy", 190)
-            .attr("r", d => Math.sqrt(sizeLegendScale(d) / Math.PI))
-            .attr("fill", "lightgray")
-            .attr("stroke", "#030303")
-            .attr("stroke-width", 0.2);
+      const sizeLegendRect = sizeLegend.append("g")
+          .attr("transform", "translate(550, 180)");
 
-        sizeLegend.selectAll("text")
-            .data([1000, 50000, 100000])
-            .enter()
-            .append("text")
-            .attr("x", (d, i) => i * (10*i + 30) + 600)
-            .attr("y", 195)
-            .attr("text-anchor", "middle")
-            .text(d => d/1000)
-            .style("font-size", "13px");
+      sizeLegendRect.append("rect")
+          .attr("x", -60)    // ajusta para cobrir a legenda
+          .attr("y", -30)
+          .attr("width", 250)
+          .attr("height", 80)
+          .attr("fill", "white")    // cor de fundo
+          .attr("stroke", "black")  // borda
+          .attr("stroke-width", 0.7)
+          .attr("rx", 5)            // bordas arredondadas (opcional)
+          .attr("ry", 5);
 
-        sizeLegend.append("text")
-            .attr("x", 540)
-            .attr("y", 187)
-            .attr("text-anchor", "middle")
-            .text("Platton size")
-            .style("font-size", "14px");
-        sizeLegend.append("text")
-            .attr("x", 540)
-            .attr("y", 203)
-            .attr("text-anchor", "middle")
-            .text("(in thousands)")
-            .style("font-size", "14px");
+      sizeLegend.selectAll("circle")
+          .data([1000, 50000, 100000])
+          .enter()
+          .append("circle")
+          .attr("cx", (d, i) => i * (10*i + 30) + 600)
+          .attr("cy", 190)
+          .attr("r", d => Math.sqrt(sizeLegendScale(d) / Math.PI))
+          .attr("fill", "lightgray")
+          .attr("stroke", "#030303")
+          .attr("stroke-width", 0.2);
 
-        tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0)
-            .style("position", "absolute")
-            .style("background-color", "white")
-            .style("border", "solid 1px #ccc")
-            .style("padding", "5px")
-            .style("border-radius", "5px")
-            .style("pointer-events", "none");
+      sizeLegend.selectAll("text")
+          .data([1000, 50000, 100000])
+          .enter()
+          .append("text")
+          .attr("x", (d, i) => i * (10*i + 30) + 600)
+          .attr("y", 195)
+          .attr("text-anchor", "middle")
+          .text(d => d/1000)
+          .style("font-size", "13px");
 
-        const xExtent = d3.extent(army, d => d.lon);
-        const yExtent = d3.extent(army, d => d.lat);
+      sizeLegend.append("text")
+          .attr("x", 540)
+          .attr("y", 187)
+          .attr("text-anchor", "middle")
+          .text("Platton size")
+          .style("font-size", "14px");
+      sizeLegend.append("text")
+          .attr("x", 540)
+          .attr("y", 203)
+          .attr("text-anchor", "middle")
+          .text("(in thousands)")
+          .style("font-size", "14px");
 
-        const xPadding = (xExtent[1] - xExtent[0]) * 0.15;
-        const yPadding = (yExtent[1] - yExtent[0]) * 0.1;
-        
-        x = d3.scaleLinear()
-            .domain([xExtent[0] - xPadding, xExtent[1] + xPadding])
-            .range([margin.left, width - margin.right]);
+      tooltip = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0)
+          .style("position", "absolute")
+          .style("background-color", "white")
+          .style("border", "solid 1px #ccc")
+          .style("padding", "5px")
+          .style("border-radius", "5px")
+          .style("pointer-events", "none");
 
-        y = d3.scaleLinear()
-            .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
-            .range([height - margin.bottom, margin.top]);
+      const xExtent = d3.extent(army, d => d.lon);
+      const yExtent = d3.extent(army, d => d.lat);
 
-        svg.append("g")
-            .attr("transform", `translate(0, ${height - margin.bottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
+      const xPadding = (xExtent[1] - xExtent[0]) * 0.15;
+      const yPadding = (yExtent[1] - yExtent[0]) * 0.1;
 
-        svg.append("g")
-            .attr("transform", `translate(${margin.left}, 0)`)
-            .call(d3.axisLeft(y).ticks((y.domain()[1] - y.domain()[0]) * 2))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
+      x = d3.scaleLinear()
+          .domain([xExtent[0] - xPadding, xExtent[1] + xPadding])
+          .range([margin.left, width - margin.right]);
 
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("x", width / 2 + 75)
-            .attr("y", height - 15) // um pouco abaixo do eixo X
-            .text("Longitude (°)")
-            .style("font-size", "16px");
+      y = d3.scaleLinear()
+          .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
+          .range([height - margin.bottom, margin.top]);
 
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("transform", `rotate(-90)`)
-            .attr("x", -height / 2 + 20)
-            .attr("y", 120) // um pouco à esquerda do eixo Y
-            .text("Latitude (°)")
-            .style("font-size", "16px");
-    });
+      svg.append("g")
+          .attr("transform", `translate(0, ${height - margin.bottom})`)
+          .call(d3.axisBottom(x))
+          .selectAll(".tick text")
+          .style("font-size", "12px");
 
-  let selectedEvent = null;
-  
-  // Função para lidar com o clique na timebar
-  function handleEventClick(event) {
-    selectedEvent = event.detail.eventId;
-    if (selectedEvent && eventInfo[selectedEvent]) {
+      svg.append("g")
+          .attr("transform", `translate(${margin.left}, 0)`)
+          .call(d3.axisLeft(y).ticks((y.domain()[1] - y.domain()[0]) * 2))
+          .selectAll(".tick text")
+          .style("font-size", "12px");
 
-      const newTime = parseDate(eventInfo[selectedEvent].date);
-      if (currentTime !== newTime) {
-        currentTime = newTime;
-      } else {
-        // Force reactivity in case same value
-        currentTime = newTime + 1;
-        setTimeout(() => currentTime = newTime, 0);
-      }
+      svg.append("text")
+          .attr("text-anchor", "middle")
+          .attr("x", width / 2 + 75)
+          .attr("y", height - 15) // um pouco abaixo do eixo X
+          .text("Longitude (°)")
+          .style("font-size", "16px");
+
+      svg.append("text")
+          .attr("text-anchor", "middle")
+          .attr("transform", `rotate(-90)`)
+          .attr("x", -height / 2 + 20)
+          .attr("y", 120) // um pouco à esquerda do eixo Y
+          .text("Latitude (°)")
+          .style("font-size", "16px");
+  });
+
+let selectedEvent = null;
+
+// Função para lidar com o clique na timebar
+function handleEventClick(event) {
+  selectedEvent = event.detail.eventId;
+  if (selectedEvent && eventInfo[selectedEvent]) {
+
+    const newTime = parseDate(eventInfo[selectedEvent].date);
+    if (currentTime !== newTime) {
+      currentTime = newTime;
+    } else {
+      // Force reactivity in case same value
+      currentTime = newTime + 1;
+      setTimeout(() => currentTime = newTime, 0);
     }
   }
-  
-  function handleTimeUpdate(event) {
-        currentTime = event.detail.time;
-        selectedEvent = null; // Deselect any selected event when time changes
-    }
+}
 
-  // Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
-  $: interpolatedData = interpolatePoints(currentTime, 
-        selectedEvent && eventInfo[selectedEvent] 
-            ? joinedData.filter(d => parseDate(d.date) === (parseDate(eventInfo[selectedEvent].date +1)))
-            : joinedData
-    );
-
-    const formatDate = d3.timeFormat("%m/%d/%Y");
-
-    // Atualiza o gráfico interativamente
-    $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
-        const circles = svg.selectAll(".army-circle")
-            .data(interpolatedData, d => d.size);
-
-        const circlesUpdate = circles.enter()
-                .append("circle")
-                .attr("class", "army-circle")
-                .on("mouseover", (event, d) => {
-                    tooltip.transition()
-                          .duration(200)
-                          .style("opacity", 0.9);
-                    tooltip.html(`
-                        ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
-                        <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
-                        <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
-                        <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                        ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
-                    `);
-                })
-                .on("mousemove", (event) => {
-                    tooltip.style("left", (event.pageX + 10) + "px")
-                            .style("top", (event.pageY - 28) + "px");
-                })
-                .on("mouseleave", () => {
-                    tooltip.transition()
-                            .duration(500)
-                            .style("opacity", 0)
-                })
-                .merge(circles);
-
-        circlesUpdate.attr("cx", d => x(d.lon))
-                .attr("cy", d => y(d.lat))
-                .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
-                .attr("fill", d => colorScale(d.direction))
-                .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
-                .attr("stroke-width", 0.5);
-
-        circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
-
-        circles.exit().remove();
-    }
-        // Cria os pontos no mapa de evento
-        $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
-    const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
-      id,
-      ...info
-    }));
-
-    const markers = svg.selectAll(".event-marker")
-      .data(eventPoints, d => d.id);
-
-      console.log(selectedEvent);
-
-    // Criar marcadores se ainda não existem
-    const enter = markers.enter()
-    .append("circle")
-    .attr("class", "event-marker")
-    .attr("r", 5)
-    .attr("fill", d => d.id === selectedEvent ? "red" : "gold") // Destaque o selecionado
-    .attr("stroke", "black")
-    .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
-
-    enter.append("title").text(d => d.id);
-
-    // Atualizar posição sempre que x/y mudarem
-    markers.merge(enter)
-    .attr("cx", d => x(d.lon))
-    .attr("cy", d => y(d.lat))
-    .attr("fill", d => d.id === selectedEvent ? "red" : "gold")
-    // .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
-
-    // Remover os que não estão mais presentes
-    markers.exit().remove();
-
+function handleTimeUpdate(event) {
+      currentTime = event.detail.time;
+      selectedEvent = null; // Deselect any selected event when time changes
   }
+
+// Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
+$: interpolatedData = interpolatePoints(currentTime,
+      selectedEvent && eventInfo[selectedEvent]
+          ? joinedData.filter(d => parseDate(d.date) === (parseDate(eventInfo[selectedEvent].date +1)))
+          : joinedData
+  );
+
+  const formatDate = d3.timeFormat("%m/%d/%Y");
+
+  // Atualiza o gráfico interativamente
+  $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
+      const circles = svg.selectAll(".army-circle")
+          .data(interpolatedData, d => d.size);
+
+      const circlesUpdate = circles.enter()
+              .append("circle")
+              .attr("class", "army-circle")
+              .on("mouseover", (event, d) => {
+                  tooltip.transition()
+                        .duration(200)
+                        .style("opacity", 0.9);
+                  tooltip.html(`
+                      ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
+                      <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
+                      <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
+                      <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                      ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
+                  `);
+              })
+              .on("mousemove", (event) => {
+                  tooltip.style("left", (event.pageX + 10) + "px")
+                          .style("top", (event.pageY - 28) + "px");
+              })
+              .on("mouseleave", () => {
+                  tooltip.transition()
+                          .duration(500)
+                          .style("opacity", 0)
+              })
+              .merge(circles);
+
+      circlesUpdate.attr("cx", d => x(d.lon))
+              .attr("cy", d => y(d.lat))
+              .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
+              .attr("fill", d => colorScale(d.direction))
+              .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
+              .attr("stroke-width", 0.5);
+
+      circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
+
+      circles.exit().remove();
+  }
+      // Cria os pontos no mapa de evento
+      $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+  const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
+    id,
+    ...info
+  }));
+
+  const markers = svg.selectAll(".event-marker")
+    .data(eventPoints, d => d.id);
+
+    console.log(selectedEvent);
+
+  // Criar marcadores se ainda não existem
+  const enter = markers.enter()
+  .append("circle")
+  .attr("class", "event-marker")
+  .attr("r", 5)
+  .attr("fill", d => d.id === selectedEvent ? "red" : "gold") // Destaque o selecionado
+  .attr("stroke", "black")
+  .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
+
+  enter.append("title").text(d => d.id);
+
+  // Atualizar posição sempre que x/y mudarem
+  markers.merge(enter)
+  .attr("cx", d => x(d.lon))
+  .attr("cy", d => y(d.lat))
+  .attr("fill", d => d.id === selectedEvent ? "red" : "gold")
+  // .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
+
+  // Remover os que não estão mais presentes
+  markers.exit().remove();
+
+}
 
 </script>
 
 <div class="page-container">
-    <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
+  <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
 
-    <div class="main-container">
-        <div class="chart-container">
+  <div class="main-container">
+      <div class="chart-container">
 
-            <div class="top-bar">
-                <p class="date-text">
-                    {formatDate(parseDate(currentTime))}
-                </p>
+          <div class="top-bar">
+              <p class="date-text">
+                  {formatDate(parseDate(currentTime))}
+              </p>
 
-                <div class="timebar-wrapper">
-                    <Timebar 
-                        class="time-slider"
-                        events={eventInfo} 
-                        minTime={minTime}
-                        maxTime={maxTime}
-                        currentTime={currentTime}
-                        chartWidth={chartWidth - 100}
-                        on:eventclick={handleEventClick}
-                        on:timeupdate={handleTimeUpdate}
-                    />
-                </div>
-            </div>
+              <div class="timebar-wrapper">
+                  <Timebar
+                      class="time-slider"
+                      events={eventInfo}
+                      minTime={minTime}
+                      maxTime={maxTime}
+                      currentTime={currentTime}
+                      chartWidth={chartWidth - 100}
+                      on:eventclick={handleEventClick}
+                      on:timeupdate={handleTimeUpdate}
+                  />
+              </div>
+          </div>
 
-            <svg bind:this={svgElement} id="chart" width="800" height="500">
-                <TemperatureBar {svgElement} data={interpolatedData} {x} {y} chartHeight={300} />
-                <!-- Aqui dentro fica o scatter também -->
-            </svg>
-        </div>
+          <svg bind:this={svgElement} id="chart" width="800" height="500">
+              <TemperatureBar {svgElement} data={interpolatedData} {x} {y} chartHeight={300} />
+              <!-- Aqui dentro fica o scatter também -->
+          </svg>
 
-        <div class="text-container">
-            <Description {selectedEvent} {eventInfo} />
-        </div>
-    </div>
+      </div>
+
+      <div class="doughnut-container">
+        <Doughnut data={interpolatedData} />
+      </div>
+
+      <div class="text-container">
+          <Description {selectedEvent} {eventInfo} />
+      </div>
+  </div>
 </div>
 
 
 <style>
-    .page-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;  /* centraliza tudo horizontalmente */
-        gap: 20px;  /* espaço fixo entre o título e o resto */
-        height: 100vh;
-        justify-content: center; /* opcional: centraliza o conjunto verticalmente */
-        text-align: center;
-        margin-top: 0px;
-        justify-content: center;
-        margin-left: -20px;
-    }
+  .page-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;  /* centraliza tudo horizontalmente */
+      gap: 20px;  /* espaço fixo entre o título e o resto */
+      height: 100vh;
+      justify-content: center; /* opcional: centraliza o conjunto verticalmente */
+      text-align: center;
+      margin-top: 0px;
+      justify-content: center;
+      margin-left: -20px;
+  }
 
-    .main-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
+  .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+  }
 
-    .chart-container {
-        position: relative;
-        width: 800px;
-        max-width: 100%;  /* Garante que o gráfico seja responsivo */
-        margin-left: -100px;  /* Reduz a margem à esquerda, ajustando esse valor */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .chart-container {
+      position: relative;
+      width: 800px;
+      max-width: 100%;  /* Garante que o gráfico seja responsivo */
+      margin-left: -100px;  /* Reduz a margem à esquerda, ajustando esse valor */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
 
-    .top-bar {
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        gap: 20px;
-        width: 800px;
-        margin-bottom: 10px;
-        /* justify-content: space-between; */
-    }
+  .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 20px;
+      width: 800px;
+      margin-bottom: 10px;
+      /* justify-content: space-between; */
+  }
 
-    svg#chart {
-        align-self: flex-start;
-    }
+  svg#chart {
+      align-self: flex-start;
+  }
 
-    .date-text {
-        font-size: 16px;
-        font-weight: bold;
-        width: 90px;
-        text-align: center;
-    }
+  .date-text {
+      font-size: 16px;
+      font-weight: bold;
+      width: 90px;
+      text-align: center;
+  }
 
-    #chart {
-        display: block;
-    }
+  #chart {
+      display: block;
+  }
 
-    .timebar-wrapper {
-        position: relative;
-        top: 0;  /* Define a posição relativa em relação ao contêiner */
-        margin-bottom: 10px;  /* Espaço entre o Timebar e o gráfico */
-        width: 100%;  /* Faz o timebar ocupar toda a largura disponível */
-        flex-grow: 1;
-        min-width: 600px;
-        max-height: 600px;
-    }
+  .timebar-wrapper {
+      position: relative;
+      top: 0;  /* Define a posição relativa em relação ao contêiner */
+      margin-bottom: 10px;  /* Espaço entre o Timebar e o gráfico */
+      width: 100%;  /* Faz o timebar ocupar toda a largura disponível */
+      flex-grow: 1;
+      min-width: 600px;
+      max-height: 600px;
+  }
 
-    .text-container {
-        width: 250px;  /* Largura fixa para a caixa de texto */
-        padding-left: 10px;
-        max-width: 100%;  /* Garante que a largura não ultrapasse 100% */
-        box-sizing: border-box;  /* Inclui o padding na largura total */
-    }
+  .text-container {
+      width: 250px;  /* Largura fixa para a caixa de texto */
+      padding-left: 10px;
+      max-width: 100%;  /* Garante que a largura não ultrapasse 100% */
+      box-sizing: border-box;  /* Inclui o padding na largura total */
+  }
 
-    h1 {
-        margin: 0;  /* tira margens automáticas que podem bagunçar */
-        font-size: 30px;
-    }
+  h1 {
+      margin: 0;  /* tira margens automáticas que podem bagunçar */
+      font-size: 30px;
+  }
 </style>
-
- 
