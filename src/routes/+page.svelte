@@ -31,6 +31,7 @@
     let x, y;
     let svgElement;
     let svg;
+    let tooltip;
 
     let chartWidth = 800;
 
@@ -43,6 +44,16 @@
         svg = d3.select(svgElement)
             .attr("width", width)
             .attr("height", height);
+
+        tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("position", "absolute")
+            .style("background-color", "white")
+            .style("border", "solid 1px #ccc")
+            .style("padding", "5px")
+            .style("border-radius", "5px")
+            .style("pointer-events", "none");
 
         const xExtent = d3.extent(army, d => d.lon);
         const yExtent = d3.extent(army, d => d.lat);
@@ -123,13 +134,36 @@
             .data(interpolatedData, d => d.division);
 
             circles.enter()
-                  .append("circle")
-                  .attr("class", "army-circle")
-                  .merge(circles)
-                  .attr("cx", d => x(d.lon))
-                  .attr("cy", d => y(d.lat))
-                  .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
-                  .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303");
+                   .append("circle")
+                   .attr("class", "army-circle")
+                   .on("mouseover", (event, d) => {
+                        tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0.9);
+                        tooltip.html(`
+                            <strong>Divisão:</strong> ${d.division}<br/>
+                            <strong>Latitude:</strong> ${d.lat}<br/>
+                            <strong>Longitude:</strong> ${d.lon}<br/>
+                            <strong>Tamanho:</strong> ${d.size}<br/>
+                            <strong>Direção:</strong> ${d.direction}<br/>
+                            <strong>Data:</strong> ${d.date}<br/>
+                            <strong>Temp:</strong> ${d.temp}
+                        `);
+                   })
+                   .on("mousemove", (event) => {
+                        tooltip.style("left", (event.pageX + 10) + "px")
+                               .style("top", (event.pageY - 28) + "px");
+                   })
+                   .on("mouseleave", () => {
+                        tooltip.transition()
+                               .duration(500)
+                               .style("opacity", 0)
+                   })
+                   .merge(circles)
+                   .attr("cx", d => x(d.lon))
+                   .attr("cy", d => y(d.lat))
+                   .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
+                   .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303");
 
 circles.exit().remove();
 
@@ -280,9 +314,19 @@ circles.exit().remove();
 </table> -->
 
 <style>
-  #chart {
-      display: block;
-      margin-bottom: 8px;
-  }
-
+    #chart {
+        display: block;
+        margin-bottom: 8px;
+    }
+    .tooltip {
+        font-size: 12px;
+        font-family: sans-serif;
+        position: absolute;
+        text-align: left;
+        padding: 6px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        pointer-events: none;
+    }
 </style>
