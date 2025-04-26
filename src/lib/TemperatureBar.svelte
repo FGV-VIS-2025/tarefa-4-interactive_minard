@@ -11,6 +11,7 @@
     let yScale;
     let barGroup;
     let tempBar;
+    let tempAxisGroup;
 
     const TEMP_MIN = -35;
     const TEMP_MAX = 0;
@@ -45,19 +46,21 @@
             .ticks(5)
             .tickFormat(d => `${d} °C`);
 
-        svg.append("g")
+        tempAxisGroup = svg.append("g")
             .attr("class", "temp-axis")
             .attr("transform", `translate(${margin.left + 10}, 0)`)
-            .call(tempAxis)
-            .append("text")
+            .call(tempAxis);
+
+        tempAxisGroup.append("text")
             .attr("fill", "black")
             .attr("text-anchor", "middle")
             .attr("transform", `rotate(-90)`)
             .attr("x", -(chartHeight/2)+20)
             .attr("y", -50)
             .text("Temperature")
-            .style("font-size", "12px")
-            .selectAll(".tick text")
+            .style("font-size", "12px");
+            
+        tempAxisGroup.selectAll(".tick text")
             .style("font-size", "10px");
 
         tempBar = barGroup.append("rect")
@@ -77,7 +80,7 @@
         setupBar();
     }
 
-    $: if (tempBar && yScale)
+    $: if (tempBar && yScale && tempAxisGroup)
     {
         const pointWithTemp = data.find(d => typeof d.temp === "number" && !Number.isNaN(d.temp));
 
@@ -91,10 +94,13 @@
             tempBar.attr("y", yTop)
                    .attr("height", yBottom - yTop)
                    .style("display", "block");
+
+            tempAxisGroup.style("display", "block");
         }
         else
         {
             tempBar.style("display", "none");
+            tempAxisGroup.style("display", "none");
         }
     }
 </script>
