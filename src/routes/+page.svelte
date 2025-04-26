@@ -10,6 +10,7 @@
     import army from "$lib/data/adjusted_army.json";
     import temperature from "$lib/data/original/temperature.json";
     import TemperatureBar from "$lib/TemperatureBar.svelte";
+    import Description from '$lib/Description.svelte';
 
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter(d => parseDate(d.date));
@@ -207,12 +208,6 @@ circles.exit().remove();
 </script>
 
 <h1>Interactive Minard</h1>
-
-<!-- Gráfico -->
-<svg bind:this={svgElement} id="chart" width="800" height="500">
-    <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
-</svg>
-
 <Timebar 
     events={eventInfo} 
     minTime={minTime}
@@ -222,6 +217,18 @@ circles.exit().remove();
     on:eventclick={handleEventClick}
     on:timeupdate={handleTimeUpdate}
 />
+<!-- Gráfico -->
+<div class="chart-container">
+    <!-- Gráfico -->
+    <svg bind:this={svgElement} id="chart" width="800" height="500">
+        <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
+    </svg>
+    
+    <!-- Add the Description component -->
+    <Description {selectedEvent} {eventInfo} />
+</div>
+
+
 <!-- Time scroller -->
 <!-- <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/> -->
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
@@ -328,5 +335,10 @@ circles.exit().remove();
         border: 1px solid #ccc;
         border-radius: 5px;
         pointer-events: none;
+    }
+    .chart-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
     }
 </style>
