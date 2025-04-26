@@ -128,6 +128,8 @@
             : joinedData
     );
 
+    const formatDate = d3.timeFormat("%m/%d/%Y");
+
     // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
       console.log(interpolatedData)
@@ -142,13 +144,11 @@
                               .duration(200)
                               .style("opacity", 0.9);
                         tooltip.html(`
-                            <strong>Divisão:</strong> ${d.division}<br/>
-                            <strong>Latitude:</strong> ${d.lat}<br/>
-                            <strong>Longitude:</strong> ${d.lon}<br/>
-                            <strong>Tamanho:</strong> ${d.size}<br/>
-                            <strong>Direção:</strong> ${d.direction}<br/>
-                            <strong>Data:</strong> ${d.date}<br/>
-                            <strong>Temp:</strong> ${d.temp}
+                            ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
+                            <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
+                            <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
+                            <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                            ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
                         `);
                    })
                    .on("mousemove", (event) => {
@@ -230,93 +230,6 @@
 <!-- Time scroller -->
 <!-- <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/> -->
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
-
-<h2>Dados do gráfico</h2>
-<table border="1">
-  <thead>
-    <tr>
-      <th>Divisão</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th>Tamanho</th>
-      <th>Direção</th>
-      <th>Data</th>
-      <th>Temperatura</th>
-    </tr>
-  </thead>
-  <tbody>
-    {#each interpolatedData as d}
-      <tr>
-        <td>{d.division}</td>
-        <td>{d.lat}</td>
-        <td>{d.lon}</td>
-        <td>{d.size}</td>
-        <td>{d.direction}</td>
-        <td>{d.date}</td>
-        <td>{d.temp}</td>
-      </tr>
-    {/each}
-  </tbody>
-</table>
-
-{#if joinedData.length > 0}
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Divisão</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Tamanho</th>
-        <th>Direção</th>
-        <th>Data</th>
-        <th>Temperatura</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each joinedData as d}
-        <tr>
-          <td>{d.division}</td>
-          <td>{d.lat}</td>
-          <td>{d.lon}</td>
-          <td>{d.size}</td>
-          <td>{d.direction}</td>
-          <td>{d.date}</td>
-          <td>{d.temp}</td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
-{:else}
-  <p>Carregando dados da tabela...</p>
-{/if}
-
-<!-- <h2>Dados no gráfico</h2>
-<table border="1">
-  <thead>
-    <tr>
-      <th>Divisão</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th>Tamanho</th>
-      <th>Direção</th>
-      <th>Data</th>
-      <th>Temperatura</th>
-    </tr>
-  </thead>
-  <tbody>
-    {#each interpolatedData as d}
-      <tr>
-        <td>{d.division}</td>
-        <td>{d.lat}</td>
-        <td>{d.lon}</td>
-        <td>{d.size}</td>
-        <td>{d.direction}</td>
-        <td>{d.date}</td>
-        <td>{d.temp}</td>
-      </tr>
-    {/each}
-  </tbody>
-</table> -->
 
 <style>
     #chart {
