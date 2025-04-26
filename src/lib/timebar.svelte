@@ -10,6 +10,7 @@
     import Icon from '$lib/Icon.svelte';
 
     const dispatch = createEventDispatcher();
+    const buttonWidth = 40;
     let selectedId = null;
 
     let eventList = Object.entries(events).map(([id, info]) => ({
@@ -34,79 +35,105 @@
       dispatch('timeupdate', { time });
     }
 
+    function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
     function calculateProportions() {
-      return eventList.map(event => {
-        let date = parseDate(event.date);
-        let proportion = (date - minTime) / (maxTime - minTime);
-        let x = chartWidth * proportion;
-        return { ...event, x };
-      });
+  return eventList.map((event, index) => {
+    if (event.date !== "None") {
+      let date = parseDate(event.date);
+      let proportion = (date - minTime) / (maxTime - minTime);
+      proportion = clamp(proportion, 0, 1); // <-- aqui: garante que fica entre 0 e 1
+      let x = chartWidth * proportion;
+      let top = (index % 2 === 0);
+      return { ...event, x, top };
     }
-    
-    function getIcon(name) {
-        switch (name) {
-        case 'river': return /* river SVG */;
-        case 'burned': return /* burned SVG */;
-        case 'depot': return /* depot SVG */;
-        case 'battle': return /* battle SVG */;
-        case 'artillery': return /* artillery SVG */;
-        case 'camp': return /* camp SVG */;
-        case 'napoleon': return /* napoleon SVG */;
-        case 'cossacks': return /* cossacks SVG */;
-        default: return '';
-        }
-    }
+    return null;
+  }).filter(event => event !== null);
+}
 
     $: eventsWithPositions = calculateProportions();
-    console.log(eventsWithPositions)
+    
 </script>
 
 <svelte:window on:click={() => handleClick(null)} />
 
-<div class="timeline-container">
-  <div class="events-bar" style="position: relative; width: {chartWidth}px; height: 50px; background: #eee;">
-    {#each eventsWithPositions as event (event.id)}
-      {#if event.label !== "None"}
-        <button
-          class="event-button"
-          on:click|stopPropagation={() => handleClick(event.id)}
-          on:keydown={(e) => handleKeyDown(e, event.id)}
-          style="position: absolute; left: {event.x}px; top: 10px;"
-          tabindex="0"
-          title={event.info}
-        >
-        <Icon name={event.icon} />
-        </button>
-      {/if}
-    {/each}
+<div class="timeline-container" style="position: relative; width: {chartWidth}px;">
+
+    <!-- Camada dos ícones de CIMA -->
+    <div class="icons-top" style="position: relative; width: 100%; height: 50px;">
+        {#each eventsWithPositions as event (event.id)}
+          {#if event.label !== "None" && event.top}
+            <!-- Linha de conexão -->
+            <div 
+              class="connection-line"
+              style="position: absolute;
+                     left: {event.x}px;
+                     top: 50px;
+                     height: 20px;
+                     width: 1px;
+                     background-color: #000;
+                     transform: translateX(-0.5px);">
+            </div>
+            
+            <button
+              class="event-button"
+              on:click|stopPropagation={() => handleClick(event.id)}
+              on:keydown={(e) => handleKeyDown(e, event.id)}
+              style= "position: absolute; left: calc({event.x}px - {buttonWidth/2}px);"
+              tabindex="0"
+              title={event.info}
+            >
+              <Icon name={event.icon} />
+            </button>
+          {/if}
+        {/each}
+      </div>
+    
+    
+    <input 
+      type="range" 
+      min={minTime} 
+      max={maxTime} 
+      step={1} 
+      bind:value={currentTime}
+      on:input={handleTimeChange}
+      class="time-slider transparent-slider"
+      style="width: 100%; margin: 0;"
+    />
+  
+    <!-- Camada dos ícones de BAIXO -->
+    <div class="icons-bottom" style="position: relative; width: 100%; height: 50px;">
+        {#each eventsWithPositions as event (event.id)}
+          {#if event.label !== "None" && !event.top}
+            <!-- Linha de conexão -->
+            <div 
+              class="connection-line"
+              style="position: absolute;
+                     left: {event.x}px;
+                     bottom: 50px;
+                     height: 20px;
+                     width: 1px;
+                     background-color: #000;
+                     transform: translateX(-0.5px);">
+            </div>
+            
+            <button
+              class="event-button"
+              on:click|stopPropagation={() => handleClick(event.id)}
+              on:keydown={(e) => handleKeyDown(e, event.id)}
+              style="position: absolute; left: calc({event.x}px - {buttonWidth/2}px); bottom: 0;"
+              tabindex="0"
+              title={event.info}
+            >
+              <Icon name={event.icon} />
+            </button>
+          {/if}
+        {/each}
+      </div>
+  
   </div>
-
-  {#if selectedId}
-    {#each eventList as event (event.id)}
-      {#if selectedId === event.id}
-        <div class="event-details">
-          {@html event.info}
-        </div>
-      {/if}
-    {/each}
-  {/if}
-
-  <input 
-    type="range" 
-    min={minTime} 
-    max={maxTime} 
-    step={1} 
-    bind:value={currentTime}
-    on:input={handleTimeChange}
-    class="time-slider"
-    style="width: {chartWidth}px;"
-  />
-
-  <div class="time-labels">
-    <span>{new Date(minTime).toLocaleDateString()}</span>
-    <span>{new Date(maxTime).toLocaleDateString()}</span>
-  </div>
-</div>
+  
 
   
   <style>
@@ -154,5 +181,11 @@
       border-radius: 50%;
       cursor: pointer;
   }
+  .transparent-slider {
+  background: none;
+  position: relative;
+  z-index: 2;
+}
+
   </style>
   
