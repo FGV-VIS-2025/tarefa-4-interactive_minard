@@ -7,7 +7,7 @@
 
     import { createEventDispatcher } from 'svelte';
     import { parseDate} from "$lib/utils";
-    import Icon from '$lib/Icon.svelte';
+    import Icon from '$lib/icon.svelte';
 
     const dispatch = createEventDispatcher();
     const buttonWidth = 40;
@@ -54,7 +54,7 @@
 }
 
     $: eventsWithPositions = calculateProportions();
-    
+
 </script>
 
 <svelte:window on:click={() => handleClick(null)} />
@@ -66,7 +66,7 @@
         {#each eventsWithPositions as event (event.id)}
           {#if event.label !== "None" && event.top}
             <!-- Linha de conexão -->
-            <div 
+            <div
               class="connection-line"
               style="position: absolute;
                      left: {event.x}px;
@@ -76,7 +76,7 @@
                      background-color: #000;
                      transform: translateX(-0.5px);">
             </div>
-            
+
             <button
               class="event-button"
               on:click|stopPropagation={() => handleClick(event.id)}
@@ -90,25 +90,25 @@
           {/if}
         {/each}
       </div>
-    
-    
-    <input 
-      type="range" 
-      min={minTime} 
-      max={maxTime} 
-      step={1} 
+
+
+    <input
+      type="range"
+      min={minTime}
+      max={maxTime}
+      step={1}
       bind:value={currentTime}
       on:input={handleTimeChange}
       class="time-slider transparent-slider"
       style="width: 100%; margin: 0;"
     />
-  
+
     <!-- Camada dos ícones de BAIXO -->
     <div class="icons-bottom" style="position: relative; width: 100%; height: 50px;">
         {#each eventsWithPositions as event (event.id)}
           {#if event.label !== "None" && !event.top}
             <!-- Linha de conexão -->
-            <div 
+            <div
               class="connection-line"
               style="position: absolute;
                      left: {event.x}px;
@@ -118,7 +118,7 @@
                      background-color: #000;
                      transform: translateX(-0.5px);">
             </div>
-            
+
             <button
               class="event-button"
               on:click|stopPropagation={() => handleClick(event.id)}
@@ -132,11 +132,11 @@
           {/if}
         {/each}
       </div>
-  
-  </div>
-  
 
-  
+  </div>
+
+
+
   <style>
     :root {
       --radius_circle: 16px;
@@ -148,7 +148,7 @@
         width: 100%;
         pointer-events: all;
     }
-  
+
     .event-button {
       cursor: pointer;
       padding: 0.5rem;
@@ -156,7 +156,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-  
+
     .event-button:focus {
       outline: 2px solid blue;
     }
@@ -195,4 +195,3 @@
 
 
   </style>
-  
