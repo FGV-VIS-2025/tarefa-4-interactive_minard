@@ -22,6 +22,7 @@ export function parseDate(dateStr)
     return new Date(dateStr).getTime();
 }
 
+
 // Função para obter pontos interpolados
 export function interpolatePoints(time, data)
 {

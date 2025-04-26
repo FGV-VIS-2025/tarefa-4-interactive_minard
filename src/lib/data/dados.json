@@ -32,27 +32,16 @@
     "date": "1812-07-12",
     "label": "Recompose"
   },
-  "polotsk": {
-    "x": 417,
-    "y": 168,
-    "pos": "left",
-    "icon": "battle",
-    "lat": 55.279781,
-    "lon": 28.781918,
-    "info": "<p class=\"date\">August 17-18</p><p>First Battle of Polotsk...</p>",
-    "date": "1812-08-17",
-    "label": "Batalha"
-  },
-  "krasnoi": {
+  "krasnoi1": {
     "x": 618,
     "y": 258,
     "pos": "auto",
-    "icon": "battle",
+    "icon": "None",
     "lat": 54.728962,
     "lon": 31.608767,
     "info": "<p class=\"date\">August 15</p><p>Fightings at Krasnoi...</p>",
     "date": "1812-08-15",
-    "label": "Batalha"
+    "label": "None"
   },
   "smolensk": {
     "x": 655,
@@ -63,6 +52,17 @@
     "lon": 32.129132,
     "info": "<p class=\"date\">August 16-18</p><p>Battle of Smolensk...</p>",
     "date": "1812-08-16",
+    "label": "Batalha"
+  },
+  "polotsk1": {
+    "x": 417,
+    "y": 168,
+    "pos": "left",
+    "icon": "battle",
+    "lat": 55.279781,
+    "lon": 28.781918,
+    "info": "<p class=\"date\">August 17-18</p><p>First Battle of Polotsk...</p>",
+    "date": "1812-08-17",
     "label": "Batalha"
   },
   "gjatsk": {
@@ -98,7 +98,18 @@
     "date": "1812-09-07",
     "label": "Batalha"
   },
-  "moscow": {
+  "polotsk2": {
+    "x": 417,
+    "y": 168,
+    "pos": "left",
+    "icon": "battle",
+    "lat": 55.279781,
+    "lon": 28.781918,
+    "info": "<p class=\"date\">October 18</p><p>Second Battle of Polotsk...</p>",
+    "date": "1812-10-18",
+    "label": "Batalha"
+  },
+  "moscow1": {
     "x": 1044,
     "y": 83,
     "pos": "left",
@@ -108,6 +119,17 @@
     "info": "<p class=\"date\">September 14</p><p>Napoleon enters the city of Moscow...</p>",
     "date": "1812-09-14",
     "label": "Conquista"
+  },
+  "moscow2": {
+    "x": 1044,
+    "y": 83,
+    "pos": "left",
+    "icon": "camp",
+    "lat": 55.8,
+    "lon": 37.6,
+    "info": "<p class=\"date\">October 18</p><p>Grand Armee leaves Moscow.</p>",
+    "date": "1812-10-18",
+    "label": "leaving"
   },
   "maloyaroslavets": {
     "x": 1024,
@@ -141,6 +163,17 @@
     "info": "<p>Supply depot at Orsha.</p>",
     "date": "None",
     "label": "None"
+  },
+  "krasnoi2": {
+    "x": 618,
+    "y": 258,
+    "pos": "auto",
+    "icon": "battle",
+    "lat": 54.728962,
+    "lon": 31.608767,
+    "info": "<p class=\"date\">November 15</p><p>Battle of Krasnoi</p>",
+    "date": "1812-11-15",
+    "label": "Batalha"
   },
   "berezina": {
     "x": 406,
