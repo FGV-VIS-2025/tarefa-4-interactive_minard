@@ -132,39 +132,43 @@
 
     // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
-      console.log(interpolatedData)
         const circles = svg.selectAll(".army-circle")
-            .data(interpolatedData, d => d.division);
+            .data(interpolatedData, d => d.size);
 
-            circles.enter()
-                   .append("circle")
-                   .attr("class", "army-circle")
-                   .on("mouseover", (event, d) => {
-                        tooltip.transition()
-                              .duration(200)
-                              .style("opacity", 0.9);
-                        tooltip.html(`
-                            ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
-                            <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
-                            <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
-                            <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                            ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
-                        `);
-                   })
-                   .on("mousemove", (event) => {
-                        tooltip.style("left", (event.pageX + 10) + "px")
-                               .style("top", (event.pageY - 28) + "px");
-                   })
-                   .on("mouseleave", () => {
-                        tooltip.transition()
-                               .duration(500)
-                               .style("opacity", 0)
-                   })
-                   .merge(circles)
-                   .attr("cx", d => x(d.lon))
-                   .attr("cy", d => y(d.lat))
-                   .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
-                   .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303");
+        const circlesUpdate = circles.enter()
+                .append("circle")
+                .attr("class", "army-circle")
+                .on("mouseover", (event, d) => {
+                    tooltip.transition()
+                          .duration(200)
+                          .style("opacity", 0.9);
+                    tooltip.html(`
+                        ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
+                        <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
+                        <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
+                        <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                        ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
+                    `);
+                })
+                .on("mousemove", (event) => {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseleave", () => {
+                    tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0)
+                })
+                .merge(circles);
+
+        circlesUpdate.attr("cx", d => x(d.lon))
+                .attr("cy", d => y(d.lat))
+                .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
+                .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303")
+                .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
+                .attr("stroke-width", 0.5);
+
+        circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
 
         circles.exit().remove();
     }
