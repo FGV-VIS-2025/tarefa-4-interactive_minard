@@ -124,14 +124,14 @@
   // Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
   $: interpolatedData = interpolatePoints(currentTime, 
         selectedEvent && eventInfo[selectedEvent] 
-            ? joinedData.filter(d => parseDate(d.date) === parseDate(eventInfo[selectedEvent].date))
+            ? joinedData.filter(d => parseDate(d.date) === (parseDate(eventInfo[selectedEvent].date +1)))
             : joinedData
     );
 
     // Atualiza o gráfico interativamente
     $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
+      console.log(interpolatedData)
         const circles = svg.selectAll(".army-circle")
-
             .data(interpolatedData, d => d.division);
 
             circles.enter()
@@ -166,14 +166,10 @@
                    .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
                    .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303");
 
-circles.exit().remove();
-
-
         circles.exit().remove();
     }
-
-    // let 
-    $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+        // Cria os pontos no mapa de evento
+        $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
     const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
       id,
       ...info
@@ -181,6 +177,8 @@ circles.exit().remove();
 
     const markers = svg.selectAll(".event-marker")
       .data(eventPoints, d => d.id);
+
+      console.log(selectedEvent);
 
     // Criar marcadores se ainda não existem
     const enter = markers.enter()
@@ -198,13 +196,13 @@ circles.exit().remove();
     .attr("cx", d => x(d.lon))
     .attr("cy", d => y(d.lat))
     .attr("fill", d => d.id === selectedEvent ? "red" : "gold")
-    .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
+    // .attr("stroke-width", d => d.id === selectedEvent ? "2" : "1");
 
     // Remover os que não estão mais presentes
     markers.exit().remove();
 
-    
   }
+
 </script>
 
 <h1>Interactive Minard</h1>

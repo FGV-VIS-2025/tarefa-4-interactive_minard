@@ -98,17 +98,6 @@
     "date": "1812-09-07",
     "label": "Batalha"
   },
-  "polotsk2": {
-    "x": 417,
-    "y": 168,
-    "pos": "left",
-    "icon": "battle",
-    "lat": 55.279781,
-    "lon": 28.781918,
-    "info": "<p class=\"date\">October 18</p><p>Second Battle of Polotsk...</p>",
-    "date": "1812-10-18",
-    "label": "Batalha"
-  },
   "moscow1": {
     "x": 1044,
     "y": 83,
@@ -119,6 +108,17 @@
     "info": "<p class=\"date\">September 14</p><p>Napoleon enters the city of Moscow...</p>",
     "date": "1812-09-14",
     "label": "Conquista"
+  },
+  "polotsk2": {
+    "x": 417,
+    "y": 168,
+    "pos": "left",
+    "icon": "battle",
+    "lat": 55.5,
+    "lon": 28.781918,
+    "info": "<p class=\"date\">October 18</p><p>Second Battle of Polotsk...</p>",
+    "date": "1812-10-18",
+    "label": "Batalha"
   },
   "moscow2": {
     "x": 1044,
