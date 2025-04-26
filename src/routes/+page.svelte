@@ -129,7 +129,7 @@
                   .attr("cx", d => x(d.lon))
                   .attr("cy", d => y(d.lat))
                   .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
-                  .attr("fill", d => d.direction === "R" ? "tomato" : "steelblue");
+                  .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303");
 
 circles.exit().remove();
 
