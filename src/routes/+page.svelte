@@ -189,13 +189,18 @@
           .style("font-size", "16px");
   });
 
-let selectedEvent = null;
+  let selectedEvent = null;
+
+// Cria os grupos apenas uma vez
+$: if (svg && !svg.select(".armies-group").node()) {
+    svg.append("g").attr("class", "armies-group");
+    svg.append("g").attr("class", "events-group");
+}
 
 // Função para lidar com o clique na timebar
 function handleEventClick(event) {
   selectedEvent = event.detail.eventId;
   if (selectedEvent && eventInfo[selectedEvent]) {
-
     const newTime = parseDate(eventInfo[selectedEvent].date);
     if (currentTime !== newTime) {
       currentTime = newTime;
@@ -208,117 +213,106 @@ function handleEventClick(event) {
 }
 
 function handleTimeUpdate(event) {
-      currentTime = event.detail.time;
-      selectedEvent = null; // Deselect any selected event when time changes
-  }
+  currentTime = event.detail.time;
+  selectedEvent = null; // Deselect any selected event when time changes
+}
 
 // Se um evento está selecionado, filtre os dados para o current time atual
 $: interpolatedData = interpolatePoints(currentTime, joinedData);
 
-  const formatDate = d3.timeFormat("%m/%d/%Y");
+const formatDate = d3.timeFormat("%m/%d/%Y");
 
-  // Atualiza o gráfico interativamente
-  $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
-      const circles = svg.selectAll(".army-circle")
-          .data(interpolatedData, d => d.size);
+// Atualiza os círculos de exércitos
+$: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
+    const circles = svg.select(".armies-group").selectAll(".army-circle")
+        .data(interpolatedData, d => d.size);
 
-      const circlesUpdate = circles.enter()
-              .append("circle")
-              .attr("class", "army-circle")
-              .on("mouseover", (event, d) => {
-                  tooltip.transition()
-                        .duration(200)
-                        .style("opacity", 0.9);
-                  tooltip.html(`
-                      ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
-                      <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
-                      <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
-                      <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                      ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
-                  `);
-              })
-              .on("mousemove", (event) => {
-                  tooltip.style("left", (event.pageX + 10) + "px")
-                          .style("top", (event.pageY - 28) + "px");
-              })
-              .on("mouseleave", () => {
-                  tooltip.transition()
-                          .duration(500)
-                          .style("opacity", 0)
-              })
-              .merge(circles);
+    const circlesUpdate = circles.enter()
+        .append("circle")
+        .attr("class", "army-circle")
+        .on("mouseover", (event, d) => {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 0.9);
+            tooltip.html(`
+                ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
+                <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
+                <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
+                <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                <strong>lat:</strong> ~${d.lat}<br/>
+                <strong>lon:</strong> ~${d.lon}<br/>
+                ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
+            `);
+        })
+        .on("mousemove", (event) => {
+            tooltip.style("left", (event.pageX + 10) + "px")
+                   .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseleave", () => {
+            tooltip.transition()
+                   .duration(500)
+                   .style("opacity", 0)
+        })
+        .merge(circles);
 
-      circlesUpdate.attr("cx", d => x(d.lon))
-              .attr("cy", d => y(d.lat))
-              .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
-              .attr("fill", d => colorScale(d.direction))
-              .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
-              .attr("stroke-width", 0.5);
+    circlesUpdate
+        .attr("cx", d => x(d.lon))
+        .attr("cy", d => y(d.lat))
+        .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
+        .attr("fill", d => colorScale(d.direction))
+        .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
+        .attr("stroke-width", 0.5);
 
-      circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
+    circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
 
-      circles.exit().remove();
-  }
-      // Cria os pontos no mapa de evento
-    $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
-        const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
+    circles.exit().remove();
+}
+
+// Atualiza os marcadores de eventos
+$: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+    const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
         id,
         ...info
-        }));
+    }));
 
-        const markers = svg.selectAll(".event-marker")
+    const markers = svg.select(".events-group").selectAll(".event-marker")
         .data(eventPoints, d => d.id);
 
-        console.log(selectedEvent);
+    // Create new markers if they don't exist
+    const enter = markers.enter()
+        .append("foreignObject")
+        .attr("class", "event-marker")
+        .attr("width", 20)
+        .attr("height", 20)
+        .html(d => markerHtml(d));
 
-        // Create new markers if they don't exist
-        const enter = markers.enter()
-            .append("foreignObject")
-            .attr("class", "event-marker")
-            .attr("width", 20)     // Size of your icon
-            .attr("height", 20)
-            .html(d => `
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" 
-                        fill="${d.id === selectedEvent ? 'red' : 'lightblue'}"
-                        stroke="#000000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round"></path>
-                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" 
-                        fill="white"
-                        stroke="#000000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round"></path>
-                </svg>
-            `);
+    markers.merge(enter)
+        .attr("x", d => x(d.lon) - 10)
+        .attr("y", d => y(d.lat) - 10)
+        .html(d => markerHtml(d));
 
-        // Update positions
-        markers.merge(enter)
-            .attr("x", d => x(d.lon) - 10)  // center the icon
-            .attr("y", d => y(d.lat) - 10)
-            .html(d => `
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" 
-                        fill="${d.id === selectedEvent ? 'red' : 'lightblue'}"
-                        stroke="#000000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round"></path>
-                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" 
-                        fill="white"
-                        stroke="#000000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round"></path>
-                </svg>
-            `);
+    markers.exit().remove();
+}
 
-
-                    // Remove old markers
-            markers.exit().remove();
-  }
+// Função para gerar o SVG do marcador
+function markerHtml(d) {
+    return `
+        <svg viewBox="0 0 24 24" width="20" height="20">
+            <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" 
+                fill="${d.id === selectedEvent ? 'red' : 'lightblue'}"
+                stroke="#000000" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"></path>
+            <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" 
+                fill="white"
+                stroke="#000000" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"></path>
+        </svg>
+    `;
+}
 
     let playing = false;
     let playInterval = null;
