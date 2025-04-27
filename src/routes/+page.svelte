@@ -20,7 +20,7 @@
   // Pegando todas as datas ordenadas
   const times = [...new Set(joinedData.map(d => parseDate(d.date)))].sort((a, b) => a - b);
   // Pegando as datas mínima e máxima (para os limites do time scroller)
-  const minTime = times[0];
+  const minTime = times[0] - 1;
   const maxTime = times.at(-1);
 
   // Tempo selecionado no time scroller
@@ -220,7 +220,11 @@ function handleTimeUpdate(event) {
 // Se um evento está selecionado, filtre os dados para o current time atual
 $: interpolatedData = interpolatePoints(currentTime, joinedData);
 
-const formatDate = d3.timeFormat("%m/%d/%Y");
+    const formatDate = (date) => {
+        // Adiciona 1 dia à data
+        const newDate = d3.timeDay.offset(date, 1);
+        return d3.timeFormat("%d/%m/%Y")(newDate);
+    };
 
   // Atualiza os círculos de exércitos
   $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
