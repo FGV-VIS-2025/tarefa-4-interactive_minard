@@ -40,7 +40,7 @@
     }
 
     .title-description {
-        margin: 0; /* Remove qualquer margem */
+        margin: 10; /* Remove qualquer margem */
         padding-top: 2px; /* Ajuste o espaçamento superior se necessário */
     }
 
