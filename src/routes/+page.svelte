@@ -211,12 +211,8 @@ function handleTimeUpdate(event) {
       selectedEvent = null; // Deselect any selected event when time changes
   }
 
-// Se um evento está selecionado, filtre os dados para mostrar apenas aquele ponto
-$: interpolatedData = interpolatePoints(currentTime,
-      selectedEvent && eventInfo[selectedEvent]
-          ? joinedData.filter(d => parseDate(d.date) === (parseDate(eventInfo[selectedEvent].date +1)))
-          : joinedData
-  );
+// Se um evento está selecionado, filtre os dados para o current time atual
+$: interpolatedData = interpolatePoints(currentTime, joinedData);
 
   const formatDate = d3.timeFormat("%m/%d/%Y");
 
