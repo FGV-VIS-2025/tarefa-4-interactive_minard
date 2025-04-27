@@ -2,6 +2,7 @@
     export let selectedEvent;
     export let eventInfo = {};
     import Icon from '$lib/icon.svelte';
+    import {formatDate} from "$lib/utils";
 </script>
 
 {#if selectedEvent && eventInfo[selectedEvent]}
@@ -10,7 +11,7 @@
             <Icon name={eventInfo[selectedEvent].icon} width_icon = {38} height_icon = {38}/>
         </div>
         <h3 class="title-description">{eventInfo[selectedEvent].label}</h3>
-        <p><strong>Date:</strong> {eventInfo[selectedEvent].date}</p>
+        <p><strong>Date:</strong> {formatDate(eventInfo[selectedEvent].date)}</p>
         <p><strong>Location:</strong> {eventInfo[selectedEvent].lat}°N, {eventInfo[selectedEvent].lon}°E</p>
         <p class="image_description">
             {#if eventInfo[selectedEvent].image}
