@@ -35,13 +35,14 @@
     let tooltip;
     let colorScale;
     let sizeScale;
+    let height;
 
     let chartWidth = 800;
 
     // Configurações do gráfico
     onMount(() => {
         const width = chartWidth;
-        const height = 300;
+        height = 300;
         const margin = {top: 20, right: 30, bottom: 60, left: 170};
 
         colorScale = d3.scaleOrdinal()
@@ -54,7 +55,7 @@
 
         svg = d3.select(svgElement)
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", 1.3*height);
 
         const colorLegend = svg.append("g")
             .attr("transform", "translate(20, 20)");
@@ -76,6 +77,62 @@
             .attr("x", 185)
             .attr("y", (d, i) => i * 20 + 15)
             .text(d => d === "A" ? "Advance" : "Retreat")
+            .style("font-size", "14px");
+
+        // Legenda de tamanhos
+        const sizeLegend = svg.append("g")
+            .attr("transform", "translate(20, 150)");
+
+        const sizeLegendScale = d3.scaleLinear()
+            .domain([0, d3.max(joinedData, d => d.size)])
+            .range([5, 12000]);
+
+        const sizeLegendRect = sizeLegend.append("g")
+            .attr("transform", "translate(550, 180)");
+
+        sizeLegendRect.append("rect")
+            .attr("x", -60)    // ajusta para cobrir a legenda
+            .attr("y", -30)
+            .attr("width", 250)
+            .attr("height", 80)
+            .attr("fill", "white")    // cor de fundo
+            .attr("stroke", "black")  // borda
+            .attr("stroke-width", 0.7)
+            .attr("rx", 5)            // bordas arredondadas (opcional)
+            .attr("ry", 5);
+
+        sizeLegend.selectAll("circle")
+            .data([1000, 50000, 100000])
+            .enter()
+            .append("circle")
+            .attr("cx", (d, i) => i * (10*i + 30) + 600)
+            .attr("cy", 190)
+            .attr("r", d => Math.sqrt(sizeLegendScale(d) / Math.PI))
+            .attr("fill", "lightgray")
+            .attr("stroke", "#030303")
+            .attr("stroke-width", 0.2);
+
+        sizeLegend.selectAll("text")
+            .data([1000, 50000, 100000])
+            .enter()
+            .append("text")
+            .attr("x", (d, i) => i * (10*i + 30) + 600)
+            .attr("y", 195)
+            .attr("text-anchor", "middle")
+            .text(d => d/1000)
+            .style("font-size", "13px");
+
+        sizeLegend.append("text")
+            .attr("x", 540)
+            .attr("y", 187)
+            .attr("text-anchor", "middle")
+            .text("Platton size")
+            .style("font-size", "14px");
+        sizeLegend.append("text")
+            .attr("x", 540)
+            .attr("y", 203)
+            .attr("text-anchor", "middle")
+            .text("(in thousands)")
             .style("font-size", "14px");
 
         tooltip = d3.select("body").append("div")
@@ -267,7 +324,7 @@
             </div>
 
             <svg bind:this={svgElement} id="chart" width="800" height="500">
-                <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
+                <TemperatureBar {svgElement} data={interpolatedData} {x} {y} chartHeight={300} />
                 <!-- Aqui dentro fica o scatter também -->
             </svg>
         </div>
@@ -288,7 +345,7 @@
         height: 100vh;
         justify-content: center; /* opcional: centraliza o conjunto verticalmente */
         text-align: center;
-        margin-top: -20px;
+        margin-top: 0px;
         justify-content: center;
         margin-left: -20px;
     }
@@ -359,3 +416,4 @@
     }
 </style>
 
+ 
