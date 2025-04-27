@@ -240,7 +240,10 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
                 .append("circle")
                 .attr("class", "army-circle")
                 .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 0.9);
+                    if (!playing)
+                    {
+                        tooltip.style("opacity", 0.9);
+                    }
                     tooltip.html(`
                         ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
                         <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
