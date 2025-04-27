@@ -103,7 +103,7 @@
         }
         else
         {
-            if (parseDate(data[0].date) > parseDate("1812-12-06"))
+            if (data.length > 0 && parseDate(data[0].date) > parseDate("1812-12-06"))
             {
                 const temp = -26;
 
