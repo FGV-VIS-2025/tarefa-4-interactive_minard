@@ -6,6 +6,7 @@
     export let data = [];
 
     export let svgElement;
+    export let chartHeight;
     let yScale;
     let barGroup;
     let tempBar;
@@ -27,8 +28,8 @@
         svg.selectAll(".temp-axis").remove();
 
         const margin = {top: 20, right: 10, bottom: 60, left: 50};
-        const chartHeight = +svg.attr("height");
-        const chartWidth = +svg.attr("width");
+        // const chartHeight = +svg.attr("height");
+        // const chartWidth = +svg.attr("width");
 
         const barAreaWidth = 40;
 
