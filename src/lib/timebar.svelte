@@ -187,6 +187,11 @@
       border-radius: 50%;
       cursor: pointer;
   }
+  .transparent-slider {
+   background: none;
+   position: relative;
+   z-index: 2;
+ }
 
 
   </style>
