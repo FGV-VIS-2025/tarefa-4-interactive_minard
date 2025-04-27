@@ -78,6 +78,20 @@ export function interpolatePoints(time, data)
                 date: new Date(time).toDateString()
             });
         }
+        else if (next && !prev)
+        {
+            console.log("Teste");
+            // Adiciona o ponto seguinte à lista
+            points.push({
+                lat: next.lat,
+                lon: next.lon,
+                size: next.size,
+                temp: next.temp,
+                division: +division,
+                direction: next.direction,
+                date: new Date(time).toDateString()
+            });
+        }
     }
 
     // Se for no período de avanço...
