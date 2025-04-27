@@ -9,25 +9,36 @@
 </script>
 
 <button on:click={handleClick}>
-    {playing ? "Pause" : "Play"}
+    <span class="play-icon">{playing ? "| |" : "▶"}</span>
 </button>
 
 <style>
     button {
+        width: 40px;
+        height: 30px;
         padding: 5px 10px;
-        font-size: 14px;
-        background-color: #4CAF50;
+        font-size: 15px;
+        background-color: #030303;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         position: absolute;
-        top: 40px;
-        left: 15px;
+        top: 70px;
+        left: 20px;
         cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
   
     button:hover {
-        background-color: #45a049;
+        background-color: #464646;
+    }
+
+    span {
+        display: inline-block;
+        line-height: 0; /* Garante que o ícone não tenha espaços adicionais ao redor */
     }
   </style>

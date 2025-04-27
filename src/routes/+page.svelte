@@ -217,48 +217,47 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
 
   const formatDate = d3.timeFormat("%m/%d/%Y");
 
-  // Atualiza o gráfico interativamente
-  $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
-      const circles = svg.selectAll(".army-circle")
-          .data(interpolatedData, d => d.size);
+    // Atualiza o gráfico interativamente
+    $: if (svg && interpolatedData && typeof x === "function" && typeof y === "function") {
+        tooltip.style("opacity", 0);
 
-      const circlesUpdate = circles.enter()
-              .append("circle")
-              .attr("class", "army-circle")
-              .on("mouseover", (event, d) => {
-                  tooltip.transition()
-                        .duration(200)
-                        .style("opacity", 0.9);
-                  tooltip.html(`
-                      ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
-                      <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
-                      <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
-                      <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                      ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
-                  `);
-              })
-              .on("mousemove", (event) => {
-                  tooltip.style("left", (event.pageX + 10) + "px")
-                          .style("top", (event.pageY - 28) + "px");
-              })
-              .on("mouseleave", () => {
-                  tooltip.transition()
-                          .duration(500)
-                          .style("opacity", 0)
-              })
-              .merge(circles);
+        const circles = svg.selectAll(".army-circle")
+            .data(interpolatedData, d => d.size);
 
-      circlesUpdate.attr("cx", d => x(d.lon))
-              .attr("cy", d => y(d.lat))
-              .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
-              .attr("fill", d => colorScale(d.direction))
-              .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
-              .attr("stroke-width", 0.5);
+        const circlesUpdate = circles.enter()
+                .append("circle")
+                .attr("class", "army-circle")
+                .on("mouseover", (event, d) => {
+                    tooltip.style("opacity", 0.9);
+                    tooltip.html(`
+                        ${interpolatedData.length > 1 ? `<strong>Division:</strong> ${d.division}<br/>` : ""}
+                        <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
+                        <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
+                        <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                        ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
+                    `);
+                })
+                .on("mousemove", (event) => {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                           .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseleave", () => {
+                    tooltip.style("opacity", 0)
+                })
+                .merge(circles);
 
-      circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
+        circlesUpdate.attr("cx", d => x(d.lon))
+                .attr("cy", d => y(d.lat))
+                .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
+                .attr("fill", d => colorScale(d.direction))
+                .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
+                .attr("stroke-width", 0.5);
 
-      circles.exit().remove();
-  }
+        circlesUpdate.sort((a, b) => d3.descending(a.size, b.size));
+
+        circles.exit().remove();
+    }
+
       // Cria os pontos no mapa de evento
     $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
         const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
@@ -453,7 +452,7 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
         font-weight: bold;
         width: 90px;
         text-align: center;
-        margin-top: 30px;
+        margin-top: -20px;
     }
 
   #chart {
