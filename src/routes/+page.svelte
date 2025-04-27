@@ -477,8 +477,9 @@ function markerHtml(d) {
   }
 
   h1 {
-      margin: 0;  /* tira margens automáticas que podem bagunçar */
+      margin-top: 90px;  /* tira margens automáticas que podem bagunçar */
       font-size: 30px;
+      margin-bottom: -5px;
   }
 
   .doughnut-container {
