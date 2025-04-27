@@ -11,6 +11,7 @@
 
     const dispatch = createEventDispatcher();
     const buttonWidth = 40;
+    let diameter_circle = 16;
     let selectedId = null;
 
     let eventList = Object.entries(events).map(([id, info]) => ({
@@ -44,7 +45,7 @@
       let date = parseDate(event.date);
       let proportion = (date - minTime) / (maxTime - minTime);
       proportion = clamp(proportion, 0, 1); // <-- aqui: garante que fica entre 0 e 1
-      let x = chartWidth * proportion;
+      let x = (chartWidth-diameter_circle) * proportion + diameter_circle/2;
       let top = (index % 2 === 0);
       return { ...event, x, top };
     }
@@ -137,6 +138,9 @@
 
   
   <style>
+    :root {
+      --radius_circle: 16px;
+    }
     .timeline-container {
         display: flex;
         gap: 1rem;
@@ -169,9 +173,9 @@
 
   input[type="range"]::-webkit-slider-thumb {
       appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #444;
+      width: var(--radius_circle);;
+      height: var(--radius_circle);
+      background: #000;
       border-radius: 50%;
       cursor: pointer;
   }
@@ -183,11 +187,7 @@
       border-radius: 50%;
       cursor: pointer;
   }
-  .transparent-slider {
-  background: none;
-  position: relative;
-  z-index: 2;
-}
+
 
   </style>
   
