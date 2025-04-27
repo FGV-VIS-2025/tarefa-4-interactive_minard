@@ -22,11 +22,11 @@ export function parseDate(dateStr)
     return new Date(dateStr).getTime();
 }
 
-export function formatDate(dateString) {
-    const date = new Date(dateString);  // Parse the date string
-    const day = String(date.getDate()).padStart(2, '0');  // Get day and pad with leading zero if needed
-    const month = String(date.getMonth() + 1).padStart(2, '0');  // Get month and pad
-    const year = date.getFullYear();  // Get year
+export function formattedDate(dateString) {
+    const parts = dateString.split('-');  // Split the date string into parts
+    const year = parts[0];  // The first part is the year
+    const month = parts[1];  // The second part is the month
+    const day = parts[2];  // The third part is the day
 
     return `${day}/${month}/${year}`;  // Return in dd-mm-yyyy format
 }

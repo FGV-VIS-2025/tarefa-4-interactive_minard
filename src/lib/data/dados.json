@@ -30,7 +30,7 @@
     "y": 201,
     "pos": "auto",
     "icon": "depot",
-    "lat": 55.077814,
+    "lat": 55.277814,
     "lon": 30.202374,
     "title": "French Depot",
     "info": "French capture Vitebsk, establishing key supply depot.",
@@ -73,7 +73,7 @@
     "lon": 34.955982,
     "title": "Preparing for War",
     "info": "Grande Armée rests and prepares for major battle.",
-    "date": "1812-08-26",
+    "date": "1812-09-01",
     "label": "Recompose",
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Vereshchagin_Napoleon_near_Borodino.jpg"
   },
