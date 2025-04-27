@@ -131,7 +131,7 @@
           .attr("x", 540)
           .attr("y", 187)
           .attr("text-anchor", "middle")
-          .text("Platton size")
+          .text("Platoon size")
           .style("font-size", "14px");
       sizeLegend.append("text")
           .attr("x", 540)
