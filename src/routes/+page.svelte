@@ -477,14 +477,14 @@ function markerHtml(d) {
   }
 
   h1 {
-      margin-top: 90px;  /* tira margens automáticas que podem bagunçar */
+      margin-top: 80px;  /* tira margens automáticas que podem bagunçar */
       font-size: 30px;
       margin-bottom: -5px;
   }
 
   .doughnut-container {
     position: relative;
-    bottom: 85px;    /* move para baixo */
-    right: 80px;   /* move para a direita */
+    bottom: 90px;    /* move para baixo */
+    right: 90px;   /* move para a direita */
     }
 </style>
