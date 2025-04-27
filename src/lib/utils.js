@@ -89,7 +89,6 @@ export function interpolatePoints(time, data)
         }
         else if (next && !prev)
         {
-            console.log("Teste");
             // Adiciona o ponto seguinte à lista
             points.push({
                 lat: next.lat,
@@ -98,6 +97,19 @@ export function interpolatePoints(time, data)
                 temp: next.temp,
                 division: +division,
                 direction: next.direction,
+                date: new Date(time).toDateString()
+            });
+        }
+        else if (prev && !next && division === 1)
+        {
+            // Adiciona o ponto seguinte à lista
+            points.push({
+                lat: prev.lat,
+                lon: prev.lon,
+                size: prev.size,
+                temp: prev.temp,
+                division: +division,
+                direction: prev.direction,
                 date: new Date(time).toDateString()
             });
         }
