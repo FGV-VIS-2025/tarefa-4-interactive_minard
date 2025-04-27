@@ -56,4 +56,12 @@
   }
 </script>
 
-<svg bind:this={doughnutSvg} weight = {size} height = {size}></svg>
+<!-- Container para alinhar o SVG + o texto -->
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <svg bind:this={doughnutSvg} width={size} height={size}></svg>
+
+  <!-- Texto abaixo do grÃ¡fico -->
+  <div style="font-size: {size * 0.15}px; margin-top: 4px;">
+      <strong>Army Size</strong>
+  </div>
+</div>
