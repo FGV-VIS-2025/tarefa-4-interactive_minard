@@ -39,7 +39,7 @@
     // Configurações do gráfico
     onMount(() => {
         const width = chartWidth;
-        const height = 400;
+        const height = 300;
         const margin = {top: 20, right: 30, bottom: 60, left: 170};
 
         svg = d3.select(svgElement)
@@ -78,7 +78,7 @@
 
         svg.append("g")
             .attr("transform", `translate(${margin.left}, 0)`)
-            .call(d3.axisLeft(y))
+            .call(d3.axisLeft(y).ticks((y.domain()[1] - y.domain()[0]) * 2))
             .selectAll(".tick text")
             .style("font-size", "12px");
 
@@ -209,46 +209,64 @@
 
 </script>
 
-<h1>Interactive Minard: a new perspective on Napoleon's march</h1>
+<div class="page-container">
+    <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
 
-<div class = "main-container">
-    <div class = "chart-container">
-        <div class = "timebar-wrapper">
-            <Timebar 
-                class="time-slider"
-                events={eventInfo} 
-                minTime={minTime}
-                maxTime={maxTime}
-                currentTime={currentTime}
-                chartWidth={chartWidth}
-                on:eventclick={handleEventClick}
-                on:timeupdate={handleTimeUpdate}
-            />
+    <div class="main-container">
+        <div class="chart-container">
+
+            <div class="top-bar">
+                <p class="date-text">
+                    {formatDate(parseDate(currentTime))}
+                </p>
+
+                <div class="timebar-wrapper">
+                    <Timebar 
+                        class="time-slider"
+                        events={eventInfo} 
+                        minTime={minTime}
+                        maxTime={maxTime}
+                        currentTime={currentTime}
+                        chartWidth={chartWidth - 100}
+                        on:eventclick={handleEventClick}
+                        on:timeupdate={handleTimeUpdate}
+                    />
+                </div>
+            </div>
+
+            <svg bind:this={svgElement} id="chart" width="800" height="500">
+                <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
+                <!-- Aqui dentro fica o scatter também -->
+            </svg>
         </div>
 
-        <svg bind:this={svgElement} id="chart" width="800" height="500">
-            <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
-        </svg>
-    </div>
-
-    <div class = "text-container">
-        <Description {selectedEvent} {eventInfo} />
+        <div class="text-container">
+            <Description {selectedEvent} {eventInfo} />
+        </div>
     </div>
 </div>
 
-<p>Data: {new Date(currentTime).toLocaleDateString()}</p>
-
 
 <style>
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* centraliza tudo horizontalmente */
+        gap: 20px;  /* espaço fixo entre o título e o resto */
+        height: 100vh;
+        justify-content: center; /* opcional: centraliza o conjunto verticalmente */
+        text-align: center;
+        margin-top: -20px;
+        justify-content: center;
+        margin-left: -20px;
+    }
+
     .main-container {
         display: flex;
-        justify-content: center;  /* Centraliza os elementos horizontalmente */
-        align-items: center;  /* Alinha verticalmente os elementos */
+        justify-content: center;
+        align-items: center;
         gap: 20px;
-        height: 100vh;  /* Garante que ocupe toda a altura da tela */
-        flex-direction: row;  /* Coloca os elementos lado a lado */
-        flex-wrap: wrap;  /* Permite que os elementos quebrem para a linha seguinte se necessário */
-        text-align: center;  /* Centraliza o texto dentro da div */
+        flex-wrap: wrap;
     }
 
     .chart-container {
@@ -256,6 +274,30 @@
         width: 800px;
         max-width: 100%;  /* Garante que o gráfico seja responsivo */
         margin-left: -100px;  /* Reduz a margem à esquerda, ajustando esse valor */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 20px;
+        width: 800px;
+        margin-bottom: 10px;
+        /* justify-content: space-between; */
+    }
+
+    svg#chart {
+        align-self: flex-start;
+    }
+
+    .date-text {
+        font-size: 16px;
+        font-weight: bold;
+        width: 90px;
+        text-align: center;
     }
 
     #chart {
@@ -267,6 +309,9 @@
         top: 0;  /* Define a posição relativa em relação ao contêiner */
         margin-bottom: 10px;  /* Espaço entre o Timebar e o gráfico */
         width: 100%;  /* Faz o timebar ocupar toda a largura disponível */
+        flex-grow: 1;
+        min-width: 600px;
+        max-height: 600px;
     }
 
     .text-container {
@@ -277,9 +322,8 @@
     }
 
     h1 {
-        margin-bottom: -15px;
-        margin-top: 15px;
-        text-align: center;
+        margin: 0;  /* tira margens automáticas que podem bagunçar */
+        font-size: 30px;
     }
 </style>
 
