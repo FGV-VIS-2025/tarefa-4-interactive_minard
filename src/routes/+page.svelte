@@ -1,4 +1,5 @@
 <script>
+<<<<<<< HEAD
   import {onMount} from "svelte";
   import * as d3 from "d3";
   import {join} from "$lib/utils";
@@ -12,6 +13,21 @@
   import TemperatureBar from "$lib/temperaturebar.svelte";
   import Description from '$lib/description.svelte';
   import Doughnut from "$lib/doughnut.svelte";
+=======
+    import {onMount} from "svelte";
+    import * as d3 from "d3";
+    import {join} from "$lib/utils";
+    import {interpolatePoints} from "$lib/utils";
+    import {parseDate} from "$lib/utils";
+    import eventInfo from '$lib/data/dados.json';
+    import Timebar from "$lib/timebar.svelte";
+    import eventsDate from "$lib/data/eventsDate.json";
+    import army from "$lib/data/adjusted_army.json";
+    import temperature from "$lib/data/original/temperature.json";
+    import TemperatureBar from "$lib/temperaturebar.svelte";
+    import Description from '$lib/description.svelte';
+    import Doughnut from "$lib/doughnut.svelte";
+>>>>>>> 9c26372 (Padronização dos arquivos)
 
   var joinedData = join(army, temperature, eventsDate);
   joinedData = joinedData.filter(d => parseDate(d.date));

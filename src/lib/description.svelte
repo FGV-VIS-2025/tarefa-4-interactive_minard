@@ -1,7 +1,7 @@
 <script>
     export let selectedEvent;
     export let eventInfo = {};
-    import Icon from '$lib/Icon.svelte';
+    import Icon from '$lib/icon.svelte';
 </script>
 
 {#if selectedEvent && eventInfo[selectedEvent]}
@@ -65,4 +65,4 @@
         max-width: 230px;
         height: auto;
     }
-</style>    
+</style>
