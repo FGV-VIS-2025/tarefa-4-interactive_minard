@@ -33,6 +33,8 @@
     let svgElement;
     let svg;
     let tooltip;
+    let colorScale;
+    let sizeScale;
 
     let chartWidth = 800;
 
@@ -42,9 +44,39 @@
         const height = 300;
         const margin = {top: 20, right: 30, bottom: 60, left: 170};
 
+        colorScale = d3.scaleOrdinal()
+            .domain(["A", "R"])
+            .range(["#cf9e96", "#030303"]);
+
+        sizeScale = d3.scaleLinear()
+            .domain([0, d3.max(joinedData, d => d.size)])
+            .range([5, 12000]);
+
         svg = d3.select(svgElement)
             .attr("width", width)
             .attr("height", height);
+
+        const colorLegend = svg.append("g")
+            .attr("transform", "translate(20, 20)");
+
+        colorLegend.selectAll("rect")
+            .data(colorScale.domain())
+            .enter()
+            .append("rect")
+            .attr("x", 160)
+            .attr("y", (d, i) => i * 20)
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", colorScale);
+
+        colorLegend.selectAll("text")
+            .data(colorScale.domain())
+            .enter()
+            .append("text")
+            .attr("x", 185)
+            .attr("y", (d, i) => i * 20 + 15)
+            .text(d => d === "A" ? "Advance" : "Retreat")
+            .style("font-size", "14px");
 
         tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -163,8 +195,8 @@
 
         circlesUpdate.attr("cx", d => x(d.lon))
                 .attr("cy", d => y(d.lat))
-                .attr("r", d => Math.sqrt(d.size / Math.PI) * 0.2)
-                .attr("fill", d => d.direction === "A" ? "#cf9e96" : "#030303")
+                .attr("r", d => Math.sqrt(sizeScale(d.size) / Math.PI))
+                .attr("fill", d => colorScale(d.direction))
                 .attr("stroke", d => d.direction === "A" ? "#030303" : "#cf9e96")
                 .attr("stroke-width", 0.5);
 
