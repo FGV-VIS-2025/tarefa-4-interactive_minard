@@ -210,7 +210,7 @@
 </script>
 
 <h1>Interactive Minard</h1>
-<Timebar 
+<!-- <Timebar 
     events={eventInfo} 
     minTime={minTime}
     maxTime={maxTime}
@@ -218,16 +218,41 @@
     chartWidth={chartWidth}
     on:eventclick={handleEventClick}
     on:timeupdate={handleTimeUpdate}
-/>
+/> -->
 <!-- Gráfico -->
-<div class="chart-container">
+<!-- <div class="chart-container">
     <!-- Gráfico -->
-    <svg bind:this={svgElement} id="chart" width="800" height="500">
+    <!-- <svg bind:this={svgElement} id="chart" width="800" height="500">
         <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
     </svg>
     
     <!-- Add the Description component -->
-    <Description {selectedEvent} {eventInfo} />
+    <!-- <Description {selectedEvent} {eventInfo} />
+</div> -->
+
+<div class = "main-container">
+    <div class = "chart-container">
+        <div class = "timebar-wrapper">
+            <Timebar 
+                class="time-slider"
+                events={eventInfo} 
+                minTime={minTime}
+                maxTime={maxTime}
+                currentTime={currentTime}
+                chartWidth={chartWidth}
+                on:eventclick={handleEventClick}
+                on:timeupdate={handleTimeUpdate}
+            />
+        </div>
+
+        <svg bind:this={svgElement} id="chart" width="800" height="500">
+            <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
+        </svg>
+    </div>
+
+    <div class = "text-container">
+        <Description {selectedEvent} {eventInfo} />
+    </div>
 </div>
 
 
@@ -236,24 +261,40 @@
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
 
 <style>
+    .main-container {
+        display: flex;
+        justify-content: center;  /* Centraliza os elementos horizontalmente */
+        align-items: center;  /* Alinha verticalmente os elementos */
+        gap: 20px;
+        height: 100vh;  /* Garante que ocupe toda a altura da tela */
+        flex-direction: row;  /* Coloca os elementos lado a lado */
+        flex-wrap: wrap;  /* Permite que os elementos quebrem para a linha seguinte se necessário */
+        text-align: center;  /* Centraliza o texto dentro da div */
+    }
+
+    .chart-container {
+        position: relative;
+        width: 800px;
+        max-width: 100%;  /* Garante que o gráfico seja responsivo */
+        margin-left: -100px;  /* Reduz a margem à esquerda, ajustando esse valor */
+    }
+
     #chart {
         display: block;
-        margin-bottom: 8px;
     }
-    .tooltip {
-        font-size: 12px;
-        font-family: sans-serif;
-        position: absolute;
-        text-align: left;
-        padding: 6px;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        pointer-events: none;
+
+    .timebar-wrapper {
+        position: relative;
+        top: 0;  /* Define a posição relativa em relação ao contêiner */
+        margin-bottom: 10px;  /* Espaço entre o Timebar e o gráfico */
+        width: 100%;  /* Faz o timebar ocupar toda a largura disponível */
     }
-    .chart-container {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 20px;
+
+    .text-container {
+        width: 250px;  /* Largura fixa para a caixa de texto */
+        padding-left: 10px;
+        max-width: 100%;  /* Garante que a largura não ultrapasse 100% */
+        box-sizing: border-box;  /* Inclui o padding na largura total */
     }
 </style>
+

@@ -138,9 +138,11 @@
   
   <style>
     .timeline-container {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        width: 100%;
+        pointer-events: all;
     }
   
     .event-button {

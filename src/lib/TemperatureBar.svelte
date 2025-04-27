@@ -6,9 +6,6 @@
     export let data = [];
 
     export let svgElement;
-    export let x;
-    export let y;
-    // let svg;
     let yScale;
     let barGroup;
     let tempBar;
@@ -50,7 +47,8 @@
         tempAxisGroup = svg.append("g")
             .attr("class", "temp-axis")
             .attr("transform", `translate(${margin.left + 10}, 0)`)
-            .call(tempAxis);
+            .call(tempAxis)
+            .attr("style", "transition: opacity 0.1s ease");
 
         tempAxisGroup.append("text")
             .attr("fill", "black")
@@ -70,7 +68,8 @@
             .attr("width", 10)
             .attr("fill", "steelblue")
             .attr("opacity", 0.8)
-            .style("display", "none");
+            .style("display", "none")
+            .attr("style", "transition: opacity 0.1s ease");
     }
 
     onMount(() => {
@@ -96,7 +95,7 @@
             tempBar.attr("y", yTop)
                    .attr("height", yBottom - yTop)
                    .style("display", "block")
-                   .style("opacity", 1);
+                   .style("opacity", 0.8);
 
             tempAxisGroup.style("opacity", 1)
                          .style("pointer-events", "all");
@@ -126,9 +125,3 @@
         }
     }
 </script>
-
-<style>
-    .temperature-bar rect {
-        transition: all 0.3s ease;
-    }
-</style>
