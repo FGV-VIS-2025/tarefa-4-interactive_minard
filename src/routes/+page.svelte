@@ -209,26 +209,7 @@
 
 </script>
 
-<h1>Interactive Minard</h1>
-<!-- <Timebar 
-    events={eventInfo} 
-    minTime={minTime}
-    maxTime={maxTime}
-    currentTime={currentTime}
-    chartWidth={chartWidth}
-    on:eventclick={handleEventClick}
-    on:timeupdate={handleTimeUpdate}
-/> -->
-<!-- Gráfico -->
-<!-- <div class="chart-container">
-    <!-- Gráfico -->
-    <!-- <svg bind:this={svgElement} id="chart" width="800" height="500">
-        <TemperatureBar {svgElement} data={interpolatedData} {x} {y} />
-    </svg>
-    
-    <!-- Add the Description component -->
-    <!-- <Description {selectedEvent} {eventInfo} />
-</div> -->
+<h1>Interactive Minard: a new perspective on Napoleon's march</h1>
 
 <div class = "main-container">
     <div class = "chart-container">
@@ -255,10 +236,8 @@
     </div>
 </div>
 
-
-<!-- Time scroller -->
-<!-- <input type="range" min={minTime} max={maxTime} step={1} bind:value={currentTime} style="width: {chartWidth}px;"/> -->
 <p>Data: {new Date(currentTime).toLocaleDateString()}</p>
+
 
 <style>
     .main-container {
@@ -295,6 +274,12 @@
         padding-left: 10px;
         max-width: 100%;  /* Garante que a largura não ultrapasse 100% */
         box-sizing: border-box;  /* Inclui o padding na largura total */
+    }
+
+    h1 {
+        margin-bottom: -15px;
+        margin-top: 15px;
+        text-align: center;
     }
 </style>
 
