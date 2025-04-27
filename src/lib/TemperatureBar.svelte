@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import * as d3 from "d3";
+    import {parseDate} from "$lib/utils";
 
     export let data = [];
 
@@ -94,14 +95,30 @@
 
             tempBar.attr("y", yTop)
                    .attr("height", yBottom - yTop)
-                   .style("display", "block");
+                   .style("display", "block")
+                   .style("opacity", 1);
 
             tempAxisGroup.style("opacity", 1)
                          .style("pointer-events", "all");
         }
         else
         {
-            tempBar.style("display", "none");
+            if (parseDate(data[0].date) > parseDate("1812-12-06"))
+            {
+                const temp = -26;
+
+                const yTop = yScale(TEMP_MAX);
+                const yBottom = yScale(temp);
+
+                tempBar.attr("y", yTop)
+                    .attr("height", yBottom - yTop)
+                    .style("display", "block")
+                    .style("opacity", 0.3);
+            }
+            else
+            {
+                tempBar.style("display", "none");
+            }
 
             tempAxisGroup
                 .style("opacity", 0.3)
