@@ -11,6 +11,7 @@
     import temperature from "$lib/data/original/temperature.json";
     import TemperatureBar from "$lib/TemperatureBar.svelte";
     import Description from '$lib/Description.svelte';
+    import PlayButton from "$lib/PlayButton.svelte";
 
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter(d => parseDate(d.date));
@@ -296,6 +297,39 @@
 
   }
 
+    let playing = false;
+    let playInterval = null;
+    let step = 4_000_000;
+
+    function togglePlay()
+    {
+        if (!playing)
+        {
+            playing = true;
+            if (currentTime >= maxTime - step)
+            {
+                currentTime = minTime;
+            }
+            playInterval = setInterval(() =>
+            {
+                if (currentTime < maxTime - step)
+                {
+                    currentTime += step;
+                }
+                else
+                {
+                    clearInterval(playInterval);
+                    playing = false;
+                }
+            }, 10)
+        }
+        else
+        {
+            playing = false;
+            clearInterval(playInterval);
+        }
+    }
+
 </script>
 
 <div class="page-container">
@@ -305,6 +339,8 @@
         <div class="chart-container">
 
             <div class="top-bar">
+                <PlayButton id="playButton" class="play-button" {playing} onTogglePlay = {togglePlay} />
+
                 <p class="date-text">
                     {formatDate(parseDate(currentTime))}
                 </p>
@@ -335,7 +371,6 @@
     </div>
 </div>
 
-
 <style>
     .page-container {
         display: flex;
@@ -352,7 +387,7 @@
 
     .main-container {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         gap: 20px;
         flex-wrap: wrap;
@@ -366,15 +401,17 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        flex: 1;
     }
 
     .top-bar {
         display: flex;
         align-items: center;
-        justify-content: start;
+        justify-content: center;
         gap: 20px;
         width: 800px;
         margin-bottom: 10px;
+        position: relative;
         /* justify-content: space-between; */
     }
 
@@ -387,6 +424,7 @@
         font-weight: bold;
         width: 90px;
         text-align: center;
+        margin-top: 30px;
     }
 
     #chart {
@@ -415,5 +453,3 @@
         font-size: 30px;
     }
 </style>
-
- 
