@@ -466,7 +466,7 @@ function markerHtml(d) {
     .date-text {
         font-size: 16px;
         font-weight: bold;
-        width: 90px;
+        width: 100px;
         text-align: center;
         margin-top: -20px;
     }

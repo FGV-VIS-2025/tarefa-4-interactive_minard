@@ -25,7 +25,7 @@
         cursor: pointer;
         position: absolute;
         top: 70px;
-        left: 20px;
+        left: 25px;
         cursor: pointer;
 
         display: flex;
