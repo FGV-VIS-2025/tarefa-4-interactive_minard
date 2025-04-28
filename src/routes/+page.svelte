@@ -313,7 +313,6 @@
             id,
             ...info,
         }));
-        console.log(selectedEvent);
 
         const markers = svg
             .select(".events-group")
@@ -413,8 +412,6 @@
         <div class="chart-container">
             <div class="top-bar">
                 <PlayButton
-                    id="playButton"
-                    class="play-button"
                     {playing}
                     onTogglePlay={togglePlay}
                 />
@@ -425,7 +422,6 @@
 
                 <div class="timebar-wrapper">
                     <Timebar
-                        class="time-slider"
                         events={eventInfo}
                         {minTime}
                         {maxTime}
@@ -441,8 +437,6 @@
                 <TemperatureBar
                     {svgElement}
                     data={interpolatedData}
-                    {x}
-                    {y}
                     chartHeight={300}
                 />
                 <!-- Aqui dentro fica o scatter também -->
