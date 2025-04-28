@@ -474,7 +474,7 @@ function markerHtml(d) {
   }
 
   h1 {
-      margin-top: 80px;  /* tira margens automáticas que podem bagunçar */
+      margin-top: 10px;  /* tira margens automáticas que podem bagunçar */
       font-size: 30px;
       margin-bottom: -5px;
   }
