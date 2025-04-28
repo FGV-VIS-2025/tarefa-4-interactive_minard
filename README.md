@@ -42,6 +42,15 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
   - A parte mais trabalhosa foi a primeira, pois exigiu um entendimento profundo dos dados que estavam disponíveis de modo a aproveitá-los o máximo possível para realizar os cálculos de informações aproximadas e obter estimativas tão precisas quanto fosse permitido.
   - Tempo estimado de desenvolvimento (até o momento): 27 horas.
 
+- **Kauan Mariani Ferreira**
+  - Partes desenvolvidas:
+    - Adição dos Pins no plot
+    - Desenvolvimento da timebar por completa e garantindo a interatividade com o plot
+    - Adição dos ícones na timebar
+    - Adição dos detalhes sobre cada batalha, bem como as imagens 
+    - Reatividade dos pin points na timebar
+  - A parte mais trabalhaso foi integrar o timeCurrente com a descrição. Nossa ideia é que no momento que a pessoa entre, ela tenha uma introdução sobre o trabalho. Mas assim que ela clique num evento ou clique no time scroller, o evento mostrado deve ser o último evento antes do current time. Tive que pensar numa lógica com booleanos e enfrentar alguns bugs. Até conseguir deixar bem trabalhado, levou algum tempo. 
+  - Tempo estimado de desenvolvimento: 17 horas.
 
 ## Uso de IA
 

@@ -461,8 +461,8 @@
     .page-container {
         display: flex;
         flex-direction: column;
-        align-items: center; /* centraliza tudo horizontalmente */
-        gap: 20px; /* espaço fixo entre o título e o resto */
+        align-items: center; 
+        gap: 20px; 
         height: 80vh;
         text-align: center;
         margin-left: -20px;
@@ -481,8 +481,8 @@
     .chart-container {
         position: relative;
         width: 800px;
-        max-width: 100%; /* Garante que o gráfico seja responsivo */
-        margin-left: -100px; /* Reduz a margem à esquerda, ajustando esse valor */
+        max-width: 100%;
+        margin-left: -100px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -497,7 +497,6 @@
         width: 800px;
         margin-bottom: 10px;
         position: relative;
-        /* justify-content: space-between; */
     }
 
     svg#chart {
@@ -518,30 +517,30 @@
 
     .timebar-wrapper {
         position: relative;
-        top: 0; /* Define a posição relativa em relação ao contêiner */
-        margin-bottom: 10px; /* Espaço entre o Timebar e o gráfico */
-        width: 100%; /* Faz o timebar ocupar toda a largura disponível */
+        top: 0; 
+        margin-bottom: 10px; 
+        width: 100%; 
         flex-grow: 1;
         min-width: 600px;
         max-height: 600px;
     }
 
     .text-container {
-        width: 250px; /* Largura fixa para a caixa de texto */
+        width: 250px; 
         padding-left: 10px;
-        max-width: 100%; /* Garante que a largura não ultrapasse 100% */
-        box-sizing: border-box; /* Inclui o padding na largura total */
+        max-width: 100%; 
+        box-sizing: border-box; 
     }
 
     h1 {
-        margin-top: 10px; /* tira margens automáticas que podem bagunçar */
+        margin-top: 10px; 
         font-size: 30px;
         margin-bottom: -5px;
     }
 
     .doughnut-container {
         position: relative;
-        bottom: 90px; /* move para baixo */
-        right: 90px; /* move para a direita */
+        bottom: 90px;
+        right: 90px; 
     }
 </style>
