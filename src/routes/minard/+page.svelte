@@ -1,5 +1,5 @@
 <script>
-    let image = "/images/Minard.png"; // ajuste o caminho da sua imagem aqui
+    let image = "images/Minard.png"; // ajuste o caminho da sua imagem aqui
 </script>
 
 <div class="container">
