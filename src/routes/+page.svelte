@@ -403,12 +403,11 @@ function markerHtml(d) {
       flex-direction: column;
       align-items: center;  /* centraliza tudo horizontalmente */
       gap: 20px;  /* espaço fixo entre o título e o resto */
-      height: 100vh;
-      justify-content: center; /* opcional: centraliza o conjunto verticalmente */
+      height: 80vh;
       text-align: center;
-      margin-top: 0px;
-      justify-content: center;
       margin-left: -20px;
+      position: relative;
+      top: 0;
   }
 
     .main-container {

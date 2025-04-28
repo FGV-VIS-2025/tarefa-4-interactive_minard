@@ -6,6 +6,7 @@
     let pages = [
       { url: "/", title: "Iterative Graph" },
       { url: "/autores", title: "Authors" },
+      { url: "/minard", title: "Original Minard" },
       { url: "https://github.com/FGV-VIS-2025/tarefa-4-interactive_minard", title: "Github" }
     ];
 </script>
@@ -30,48 +31,43 @@
 </div>
 
 <style>
-    nav ul,
-    nav il {
-        display: contents; /* step 2.1 */
+    .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 90vh;
     }
 
     nav {
         --border-color: oklch(50% 10% 200 / 40%);
-
-        display: flex; /*step 2.2 part 1*/
-        margin-bottom: 1em; /*step 2.2 part 2*/
-        border-bottom-width:1px; /*step 2.2 part 3*/
-        border-bottom-style:solid; /*step 2.2 part 3*/
-
-        border-bottom-color: var(--border-color);
+        display: flex;
+        margin-bottom: 1em;
+        border-bottom: 1px solid var(--border-color);
     }
 
     nav a {
-        flex:1; /*step 2.2 part 1*/
-        text-decoration: none;/*step 2.2 part 2*/
-        color: inherit; /*step 2.2 part 2*/
-        text-align: center; /*step 2.2 part 2*/
-        padding: 0.5em; /*step 2.2 part 2*/
+        flex: 1;
+        text-decoration: none;
+        color: inherit;
+        text-align: center;
+        padding: 0.5em;
     }
 
     nav a.current {
-        border-bottom-width:0.4em; /*step 2.2 task*/
-        border-bottom-style:solid; /*step 2.2 task*/
-        border-bottom-color: var(--border-color);
-        padding-bottom:0.1em; /*step 2.2 task*/
-        font-weight: bold; /*step 2.2 task*/
+        border-bottom: 0.4em solid var(--border-color);
+        padding-bottom: 0.1em;
+        font-weight: bold;
     }
 
     nav a:hover {
-        border-bottom-width:0.4em; /*step 2.2 task extra*/
-        border-bottom-style:solid; /*step 2.2 task extra*/
-        border-bottom-color:var(--color-accent); /*step 2.2 task extra*/
-        padding-bottom:0.1em; /*step 2.2 task extra*/
+        border-bottom: 0.4em solid var(--color-accent);
+        padding-bottom: 0.1em;
         background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
     }
 
     main {
-        flex-grow: 1; /* O conteúdo abaixo vai ocupar o restante do espaço */
-        padding: 8px; /* Substituído 1em por 8px */
+        flex-grow: 1; /* faz o conteúdo expandir ocupando o espaço restante */
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
     }
 </style>
