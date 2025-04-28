@@ -289,7 +289,25 @@ $: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(
         .attr("class", "event-marker")
         .attr("width", 20)
         .attr("height", 20)
-        .html(d => markerHtml(d));
+        .html(d => markerHtml(d)).on("mouseover", (event, d) => {
+            if (!playing) {
+                tooltip.style("opacity", 0.9);
+            }
+            tooltip.html(`
+                <div style="max-width: 200px;">
+                    <strong>${d.title}</strong><br/>
+                </div>
+            `);
+        })
+        .on("mousemove", (event) => {
+            tooltip.style("left", (event.pageX + 10) + "px")
+                   .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseleave", () => {
+            tooltip.style("opacity", 0);
+        }).on("click", (event, d) => {
+            currentTime = parseDate(d.date);  // <- Atualiza o currentTime no clique
+        });;
 
     markers.merge(enter)
         .attr("x", d => x(d.lon) - 10)
