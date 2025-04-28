@@ -8,11 +8,12 @@
       { url: "/autores", title: "Authors" },
       { url: "https://github.com/FGV-VIS-2025/tarefa-4-interactive_minard", title: "Github" }
     ];
-    </script>
+</script>
 
+<div class="layout">
     <nav>
-      {#each pages as p}
-      <a
+        {#each pages as p}
+        <a
                 href={p.url.startsWith("http")
                     ? p.url
                     : `${base}${p.url}`}
@@ -20,31 +21,15 @@
                 target={p.url.startsWith("http") ? "_blank" : undefined}
             >
         {p.title}
-      </a>
-      {/each}
+        </a>
+        {/each}
     </nav>
+    <main>
+        <slot />
+    </main>
+</div>
 
-    <slot />
-
-    <!-- <div class="layout">
-        <nav>
-                {#each pages as p}
-                    <a
-                        href={p.url.startsWith("http") ? p.url : `${base}${p.url}`}
-                        class:current={$currentPath === p.url}
-                        target={p.url.startsWith("http") ? "_blank" : undefined}
-                        rel={p.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                    >
-                        {p.title}
-                    </a>
-                {/each}
-            </nav>
-        <main>
-            <slot />
-        </main>
-    </div> -->
-
-    <style>
+<style>
     nav ul,
     nav il {
         display: contents; /* step 2.1 */
@@ -89,4 +74,4 @@
         flex-grow: 1; /* O conteúdo abaixo vai ocupar o restante do espaço */
         padding: 8px; /* Substituído 1em por 8px */
     }
-    </style>
+</style>
