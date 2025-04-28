@@ -54,7 +54,7 @@
 
       sizeScale = d3.scaleLinear()
           .domain([0, d3.max(joinedData, d => d.size)])
-          .range([5, 12000]);
+          .range([5, 9000]);
 
       svg = d3.select(svgElement)
           .attr("width", width)
@@ -88,7 +88,7 @@
 
       const sizeLegendScale = d3.scaleLinear()
           .domain([0, d3.max(joinedData, d => d.size)])
-          .range([5, 12000]);
+          .range([5, 9000]);
 
       const sizeLegendRect = sizeLegend.append("g")
           .attr("transform", "translate(550, 180)");
@@ -247,9 +247,6 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
                         <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
                         <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
                         <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                        <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
-                        <strong>lat:</strong> ~${d.lat}<br/>
-                        <strong>lon:</strong> ~${d.lon}<br/>
                         ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
                     `);
                 })
