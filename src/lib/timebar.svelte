@@ -74,8 +74,8 @@
           class="connection-line"
           style="position: absolute;
                      left: {event.x}px;
-                     top: 50px;
-                     height: 20px;
+                     top: 40px;
+                     height: 30px;
                      width: 1px;
                      background-color: #000;
                      transform: translateX(-0.5px);"
@@ -119,8 +119,8 @@
           class="connection-line"
           style="position: absolute;
                      left: {event.x}px;
-                     bottom: 50px;
-                     height: 20px;
+                     bottom: 40px;
+                     height: 30px;
                      width: 1px;
                      background-color: #000;
                      transform: translateX(-0.5px);"
