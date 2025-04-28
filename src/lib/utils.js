@@ -217,10 +217,32 @@ function interpolateTempAndDate(baseData, point)
 
 // Função que faz o join com eventos e dados de temperatura
 export function join(army, temperature, events) {
-    // Ordenando os dados de temperatura
-    const sortedTemp = temperature.slice().sort((a, b) => a.lon - b.lon);
     const eventsArray = Object.values(events);
 
+    // Montando uma tabela com os dados de temperatura e de eventos
+    let allKeys = new Set([
+        ...temperature.flatMap(obj => Object.keys(obj)),
+        ...eventsArray.flatMap(obj => Object.keys(obj))
+    ]);
+
+    allKeys = Array.from(allKeys);
+
+    function fillKeys(obj)
+    {
+        const filled = {};
+        for (const key of allKeys)
+        {
+            filled[key] = obj.hasOwnProperty(key) ? obj[key] : null;
+        }
+        return filled;
+    }
+
+    const combined = [
+        ...temperature.map(fillKeys),
+        ...eventsArray.map(fillKeys)
+    ].sort((a, b) => a.lon - b.lon);
+
+    
     return army.map(d => {
         // Se o ponto já tiver data definida, retorna ele mesmo
         if (d.date != undefined)
@@ -246,7 +268,7 @@ export function join(army, temperature, events) {
                 // Se tiver dados de temperatura, interpola com a base de temperaturas
                 if (d.lon >= 26.4)
                 {
-                    return interpolateTempAndDate(sortedTemp, d);
+                    return interpolateTempAndDate(combined, d);
                 }
                 // Se não, interpola com os eventos filtrados
                 else
