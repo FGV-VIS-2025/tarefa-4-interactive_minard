@@ -313,6 +313,7 @@
             id,
             ...info,
         }));
+        console.log(selectedEvent);
 
         const markers = svg
             .select(".events-group")
