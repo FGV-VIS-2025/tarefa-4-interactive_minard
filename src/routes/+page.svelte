@@ -29,9 +29,7 @@
   // Tempo selecionado no time scroller
   let currentTime;
   // Começa o tempo no time scroller como o mínimo
-  currentTime = minTime;
-
-
+  $: currentTime = minTime;
 
   // Elementos do svg
   let x, y;
@@ -394,7 +392,7 @@ function markerHtml(d) {
       </div>
 
       <div class="text-container">
-          <Description {selectedEvent} {eventInfo} />
+          <Description {selectedEvent} currentTimeInput = {currentTime} />
       </div>
   </div>
 </div>

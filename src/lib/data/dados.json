@@ -116,19 +116,6 @@
     "label": "Conquista",
     "image": "https://upload.wikimedia.org/wikipedia/commons/5/53/Napoleon_in_burning_Moscow_-_Adam_Albrecht_%281841%29.jpg"
   },
-  "polotsk2": {
-    "x": 417,
-    "y": 168,
-    "pos": "left",
-    "icon": "battle",
-    "lat": 55.5,
-    "lon": 28.781918,
-    "title": "Second Battle of Polotsk",
-    "info": "Russian victory in the second time fighting for the city. It was coordened with the french expellion from moscow",
-    "date": "1812-10-18",
-    "label": "Battle",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Battle_polotsk.jpg"
-  },
   "moscow2": {
     "x": 1044,
     "y": 83,
@@ -141,6 +128,19 @@
     "date": "1812-10-18",
     "label": "leaving",
     "image": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Fording_the_Berezina_River_by_January_Suchodolski%2C_ca._1859.png"
+  },
+  "polotsk2": {
+    "x": 417,
+    "y": 168,
+    "pos": "left",
+    "icon": "battle",
+    "lat": 55.5,
+    "lon": 28.781918,
+    "title": "Second Battle of Polotsk",
+    "info": "Russian victory in the second time fighting for the city. It was coordened with the french expellion from moscow",
+    "date": "1812-10-19",
+    "label": "Battle",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Battle_polotsk.jpg"
   },
   "maloyaroslavets": {
     "x": 1024,
@@ -167,17 +167,6 @@
     "date": "1812-11-03",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Battle_vyazma.jpg"
-  },
-  "orsha": {
-    "x": 558,
-    "y": 290,
-    "pos": "auto",
-    "icon": "depot",
-    "lat": 54.533115,
-    "lon": 30.764932,
-    "info": "Critical supply point during retreat.",
-    "date": "None",
-    "label": "None"
   },
   "krasnoi2": {
     "x": 618,

@@ -1,33 +1,101 @@
 <script>
-    export let selectedEvent;
-    export let eventInfo = {};
+    export let selectedEvent ;
+    export let currentTimeInput;
     import Icon from '$lib/icon.svelte';
-    import {formattedDate} from "$lib/utils";
+    import eventInfo from '$lib/data/dados.json';
+    import { formattedDate, parseDate} from "$lib/utils";
+
+
+    const orderedEvents = Object.values(eventInfo)
+        .map(event => ({
+            ...event,
+            timestamp: parseDate(event.date)  // Adiciona timestamp (em ms) a cada evento
+        }))
+        .sort((a, b) => a.timestamp - b.timestamp);  // Ordena os eventos por timestamp em ordem crescente
+
+    $: showStart = false;
+    $: firstChange = false; 
+
+
+    // Função para encontrar o evento mais próximo antes da data atual, caso não haja evento na data atual
+    function getEventForTodayOrLast(currentTime) {
+        let closestEvent = null;
+        let closestDate = null;
+        const tolerance = 43200000;
+
+        // Check if there's an event on the current date
+        for (let key in orderedEvents) {
+            let eventDate = orderedEvents[key].timestamp;
+
+            if (Math.abs(eventDate - currentTime) <= tolerance) {
+                // Found an event for today
+                closestEvent = key;
+                closestDate = eventDate;
+                break;
+            }
+
+            // Store the closest event before the current time
+            if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
+                closestEvent = key;
+                closestDate = eventDate;
+            }
+        }
+        
+        // Set showStart to true if a valid event is found
+        if (firstChange)
+        {
+            showStart = true;
+        }
+        if (closestEvent !== null) {
+            firstChange = true;
+        }
+
+        
+        return closestEvent;
+    }
+
+    // Verificar o evento para mostrar (data atual ou último evento antes da data atual)
+    $: {
+        const maybeEvent = getEventForTodayOrLast(currentTimeInput);
+        // console.log(maybeEvent)
+        if (maybeEvent !== null) {
+            selectedEvent = maybeEvent;
+        }
+        selectedEvent = selectedEvent;
+    }
+    
+    function resetDescription() {
+        showStart = false;
+    }
+
 </script>
 
-{#if selectedEvent && eventInfo[selectedEvent]}
+{#if showStart && selectedEvent}
     <div class="description-container">
         <div class="icon-wrapper">
-            <Icon name={eventInfo[selectedEvent].icon} width_icon = {38} height_icon = {38}/>
+            <Icon name={orderedEvents[selectedEvent].icon} width_icon={38} height_icon={38} />
         </div>
-        <h3 class="title-description">{eventInfo[selectedEvent].title}</h3>
-        <p><strong>Date:</strong> {formattedDate(eventInfo[selectedEvent].date)}</p>
-        <p><strong>Location:</strong> {eventInfo[selectedEvent].lat}°N, {eventInfo[selectedEvent].lon}°E</p>
+        <h3 class="title-description">{orderedEvents[selectedEvent].title}</h3>
+        <p><strong>Date:</strong> {formattedDate(orderedEvents[selectedEvent].date)}</p>
         <p class="image_description">
-            {#if eventInfo[selectedEvent].image}
-                <img src="{eventInfo[selectedEvent].image}" alt="{eventInfo[selectedEvent].label} image" class="event-image">
+            {#if orderedEvents[selectedEvent].image}
+                <img src="{orderedEvents[selectedEvent].image}" alt="{orderedEvents[selectedEvent].label} image" class="event-image">
             {/if}
         </p>
         <div class="event-description">
-            {@html eventInfo[selectedEvent].info}
+            {@html orderedEvents[selectedEvent].info}
         </div>
+        <button on:click={resetDescription} class="reset-button">
+            Restart Description
+        </button>
     </div>
 {:else}
     <div class="description-container">
-        <p>Napoleon's invasion of Russia began on June 24, 1812, with his army crossing the Neman River. The French forces advanced towards key Russian cities, facing initial successes but encountering strong resistance and harsh conditions. Key battles like Borodino and strategic missteps, including poor leadership and supply issues, led to heavy losses. By the end of the year, the French were forced to retreat, suffering catastrophic casualties due to the Russian winter and ongoing Russian attacks, marking a disastrous end to the campaign.</p>
+        <h3 class="title-description">Minard and French invasion of Russia</h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg" alt="napoleaon invasion" class="event-image">
+        <p>The tragic campaign of Napoleon towards Russia was famously captured by Charles Minard in his renowned 1869 infographic, which visually depicts the dramatic reduction of Napoleon's army during the march to Moscow and the retreat, combining geography, temperature, and troop strength into one powerful visual narrative. We thought about making it interactive in order to better understand what Minard intended to convey with this infographic. We highlight famous battles and important events, allowing the user to scroll through time and experience this great historical journey.</p>
     </div>
 {/if}
-
 
 <style>
     .description-container {
@@ -37,23 +105,23 @@
         border-radius: 5px;
         background-color: #f9f9f9;
         margin-left: 20px;
-        position: relative; /* Permite o posicionamento absoluto do ícone */
+        position: relative;
     }
 
     .title-description {
-        margin: 10; /* Remove qualquer margem */
-        padding-top: 2px; /* Ajuste o espaçamento superior se necessário */
+        margin: 10px;
+        padding-top: 2px;
     }
 
     .icon-wrapper {
         position: absolute;
-        top: -25px; /* Ajuste a altura do ícone */
+        top: -25px;
         left: 50%;
-        transform: translateX(-50%); /* Centraliza o ícone horizontalmente */
-        background-color: #fff; /* Fundo branco atrás do ícone */
-        padding: 5px; /* Adiciona padding ao redor do ícone */
-        border-radius: 50%; /* Torna o fundo arredondado */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Adiciona sombra para destacar o ícone */
+        transform: translateX(-50%);
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .event-description {
@@ -65,5 +133,32 @@
         width: 100%;
         max-width: 230px;
         height: auto;
+    }
+    .reset-button {
+        margin: 1rem auto 0 auto; /* margem em cima e centralizado horizontalmente */
+        padding: 0.4rem 0.8rem; /* menor por dentro */
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem; /* fonte um pouco menor */
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        display: flex; /* flex para centralizar conteúdo interno */
+        align-items: center;
+        justify-content: center; /* conteúdo do botão centralizado */
+        gap: 0.4rem;
+        width: fit-content; /* largura justa ao conteúdo */
+    }
+
+    .reset-button:hover {
+        background-color: #005fa3;
+        transform: translateY(-2px);
+    }
+
+    .reset-button:active {
+        background-color: #004885;
+        transform: translateY(0);
     }
 </style>
