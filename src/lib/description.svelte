@@ -7,6 +7,7 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
+    // Pegamos o evento de eventInfo e ordenamos por timestamp
     const orderedEntries = Object.entries(eventInfo)
         .map(([id, event]) => ({
             id,
@@ -14,22 +15,26 @@
             timestamp: parseDate(event.date),
         }))
         .sort((a, b) => a.timestamp - b.timestamp);
-
-    // Now rebuild the ordered object
+    
+    // Criamos um dicionário com as keys, ordenadas por timestamp
     const orderedEvents = Object.fromEntries(
         orderedEntries.map(({ id, ...eventWithTimestamp }) => [
             id,
             eventWithTimestamp,
         ]),
     );
-    console.log(orderedEvents);
-
+    
+    // booleanos para controle de eventos
+    //controla se mostra a introdução
     $: showStart = false;
+    // Controla se é a primeira mudança
     $: firstChange = false;
+    // Controla se é o evento selecionado
     let tryUpdteSelectedEvent = true;
-
-    // Função para encontrar o evento mais próximo antes da data atual, caso não haja evento na data atual
+    
+    // Função que itera sobre o orderedEntries toda vez e pega o elemento menor mais próximo
     function getEventForTodayOrLast(currentTime) {
+        // Se ele quer pegar o evento mais próximo
         if (tryUpdteSelectedEvent) {
             let closestEvent = null;
             let closestDate = null;
@@ -53,27 +58,30 @@
                 ) {
                     closestEvent = key;
                     closestDate = eventDate;
+                    // Se passamos da data, podemos retornar
                     if (eventDate > currentTime) {
                         break;
                     }
                 }
             }
 
-            // Set showStart to true if a valid event is found
+            // Se já tiver passado uma vez, seta como true
             if (firstChange) {
                 showStart = true;
             }
+            // Se não for nulo setamos como true
             if (closestEvent !== null) {
                 firstChange = true;
             }
-
+            //Retornamos o closest event encontrado
             return closestEvent;
         } else {
+            // Se não não queremos retornar nada
             return null;
         }
     }
 
-    // Verificar o evento para mostrar (data atual ou último evento antes da data atual)
+    // Função para atualizar o selectedevent, se queremos atualizar ele
     $: {
         if (tryUpdteSelectedEvent) {
             const maybeEvent = getEventForTodayOrLast(currentTimeInput);
@@ -89,13 +97,13 @@
         selectedEvent = selectedEvent;
     }
 
+    // Função para resetar a descrição
     function resetDescription() {
         showStart = false;
         selectedEvent = null;
         tryUpdteSelectedEvent = false;
     }
 
-    $: console.log(showStart);
 </script>
 
 {#if showStart && selectedEvent}
@@ -188,23 +196,23 @@
         height: auto;
     }
     .reset-button {
-        margin: 1rem auto 0 auto; /* margem em cima e centralizado horizontalmente */
-        padding: 0.4rem 0.8rem; /* menor por dentro */
+        margin: 1rem auto 0 auto; 
+        padding: 0.4rem 0.8rem; 
         background-color: #030303;
         color: white;
         border: none;
         border-radius: 8px;
-        font-size: 0.9rem; /* fonte um pouco menor */
+        font-size: 0.9rem; 
         font-weight: bold;
         cursor: pointer;
         transition:
             background-color 0.3s,
             transform 0.2s;
-        display: flex; /* flex para centralizar conteúdo interno */
+        display: flex; 
         align-items: center;
-        justify-content: center; /* conteúdo do botão centralizado */
+        justify-content: center; 
         gap: 0.4rem;
-        width: fit-content; /* largura justa ao conteúdo */
+        width: fit-content;
     }
 
     .reset-button:hover {
