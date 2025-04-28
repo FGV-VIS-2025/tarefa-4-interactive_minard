@@ -4,69 +4,101 @@
     import Icon from '$lib/icon.svelte';
     import eventInfo from '$lib/data/dados.json';
     import { formattedDate, parseDate} from "$lib/utils";
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
 
+    const orderedEntries = Object.entries(eventInfo)
+    .map(([id, event]) => ({
+        id,
+        ...event,
+        timestamp: parseDate(event.date)
+    }))
+    .sort((a, b) => a.timestamp - b.timestamp);
 
-    const orderedEvents = Object.values(eventInfo)
-        .map(event => ({
-            ...event,
-            timestamp: parseDate(event.date)  // Adiciona timestamp (em ms) a cada evento
-        }))
-        .sort((a, b) => a.timestamp - b.timestamp);  // Ordena os eventos por timestamp em ordem crescente
+    // Now rebuild the ordered object
+    const orderedEvents = Object.fromEntries(
+        orderedEntries.map(({ id, ...eventWithTimestamp }) => [id, eventWithTimestamp])
+    );
+    console.log(orderedEvents)
+
 
     $: showStart = false;
     $: firstChange = false; 
+    let tryUpdteSelectedEvent = true; 
 
 
     // Função para encontrar o evento mais próximo antes da data atual, caso não haja evento na data atual
     function getEventForTodayOrLast(currentTime) {
-        let closestEvent = null;
-        let closestDate = null;
-        const tolerance = 43200000;
+        if (tryUpdteSelectedEvent){
+            let closestEvent = null;
+            let closestDate = null;
+            const tolerance = 43200000;
 
-        // Check if there's an event on the current date
-        for (let key in orderedEvents) {
-            let eventDate = orderedEvents[key].timestamp;
+            // Check if there's an event on the current date
+            for (let key in orderedEvents) {
+                let eventDate = orderedEvents[key].timestamp;
 
-            if (Math.abs(eventDate - currentTime) <= tolerance) {
-                // Found an event for today
-                closestEvent = key;
-                closestDate = eventDate;
-                break;
+                if (Math.abs(eventDate - currentTime) <= tolerance) {
+                    // Found an event for today
+                    closestEvent = key;
+                    closestDate = eventDate;
+                    break;
+                }
+
+                // Store the closest event before the current time
+                if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
+                    closestEvent = key;
+                    closestDate = eventDate;
+                    if (eventDate > currentTime){
+                        break
+                    }
+                }
+            }
+            
+            // Set showStart to true if a valid event is found
+            if (firstChange)
+            {
+                showStart = true;
+            }
+            if (closestEvent !== null) {
+                firstChange = true;
             }
 
-            // Store the closest event before the current time
-            if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
-                closestEvent = key;
-                closestDate = eventDate;
-            }
-        }
-        
-        // Set showStart to true if a valid event is found
-        if (firstChange)
-        {
-            showStart = true;
-        }
-        if (closestEvent !== null) {
-            firstChange = true;
-        }
+            
+            return closestEvent;
 
+        }
+        else {
+            return null
+        }
         
-        return closestEvent;
     }
 
     // Verificar o evento para mostrar (data atual ou último evento antes da data atual)
     $: {
-        const maybeEvent = getEventForTodayOrLast(currentTimeInput);
-        // console.log(maybeEvent)
-        if (maybeEvent !== null) {
-            selectedEvent = maybeEvent;
+        if (tryUpdteSelectedEvent){
+            const maybeEvent = getEventForTodayOrLast(currentTimeInput);
+            // console.log(maybeEvent)
+            if (maybeEvent !== null) {
+                selectedEvent = maybeEvent;
+            }
         }
+        else {
+            selectedEvent = null
+            tryUpdteSelectedEvent = true
+        }
+       
         selectedEvent = selectedEvent;
+        
     }
     
     function resetDescription() {
         showStart = false;
+        selectedEvent = null
+        tryUpdteSelectedEvent = false
     }
+
+    $: console.log(showStart)
 
 </script>
 

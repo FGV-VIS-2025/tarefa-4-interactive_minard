@@ -273,11 +273,12 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
 }
 
 // Atualiza os marcadores de eventos
-$: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0) {
+$: if (svg && typeof x === 'function' && typeof y === 'function' && Object.keys(eventInfo).length > 0 ) {
     const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
         id,
         ...info
     }));
+    console.log(selectedEvent)
 
     const markers = svg.select(".events-group").selectAll(".event-marker")
         .data(eventPoints, d => d.id);
@@ -392,7 +393,7 @@ function markerHtml(d) {
       </div>
 
       <div class="text-container">
-          <Description {selectedEvent} currentTimeInput = {currentTime} />
+          <Description bind:selectedEvent={selectedEvent} currentTimeInput = {currentTime} />
       </div>
   </div>
 </div>
