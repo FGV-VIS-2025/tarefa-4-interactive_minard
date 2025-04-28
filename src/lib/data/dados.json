@@ -217,6 +217,7 @@
     "title": "End of War",
     "info": "Last French troops leave Russia.",
     "date": "1812-12-14",
-    "label": "Retirada"
+    "label": "Retirada",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Retreat_of_Napoleon_Army_from_Moscow_1812.jpg"
   }
 }

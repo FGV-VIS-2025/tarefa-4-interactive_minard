@@ -15,7 +15,7 @@
             timestamp: parseDate(event.date),
         }))
         .sort((a, b) => a.timestamp - b.timestamp);
-    
+
     // Criamos um dicionário com as keys, ordenadas por timestamp
     const orderedEvents = Object.fromEntries(
         orderedEntries.map(({ id, ...eventWithTimestamp }) => [
@@ -23,7 +23,7 @@
             eventWithTimestamp,
         ]),
     );
-    
+
     // booleanos para controle de eventos
     //controla se mostra a introdução
     $: showStart = false;
@@ -31,7 +31,7 @@
     $: firstChange = false;
     // Controla se é o evento selecionado
     let tryUpdteSelectedEvent = true;
-    
+
     // Função que itera sobre o orderedEntries toda vez e pega o elemento menor mais próximo
     function getEventForTodayOrLast(currentTime) {
         // Se ele quer pegar o evento mais próximo
@@ -103,7 +103,6 @@
         selectedEvent = null;
         tryUpdteSelectedEvent = false;
     }
-
 </script>
 
 {#if showStart && selectedEvent}
@@ -144,16 +143,13 @@
             alt="napoleaon invasion"
             class="event-image"
         />
-        <p>
-            The tragic campaign of Napoleon towards Russia was famously captured
-            by Charles Minard in his renowned 1869 infographic, which visually
-            depicts the dramatic reduction of Napoleon's army during the march
-            to Moscow and the retreat, combining geography, temperature, and
-            troop strength into one powerful visual narrative. We thought about
-            making it interactive in order to better understand what Minard
-            intended to convey with this infographic. We highlight famous
-            battles and important events, allowing the user to scroll through
-            time and experience this great historical journey.
+        <p class= "container-intro">
+            Napoleon's campaign in Russia was famously depicted by Charles
+            Minard in his 1869 infographic, illustrating the army’s decline by
+            combining geography, temperature, and troop strength. We propose
+            making it interactive to better understand Minard’s message,
+            highlighting key battles and events as users scroll through the
+            historical journey.
         </p>
     </div>
 {/if}
@@ -167,6 +163,7 @@
         background-color: #f9f9f9;
         margin-left: 20px;
         position: relative;
+        margin-top: -80px;
     }
 
     .title-description {
@@ -188,29 +185,33 @@
     .event-description {
         margin-top: 15px;
         line-height: 1.5;
+        text-align: justify;
     }
-
+    .container-intro
+    {
+        text-align: justify;
+    }
     .event-image {
         width: 100%;
         max-width: 230px;
         height: auto;
     }
     .reset-button {
-        margin: 1rem auto 0 auto; 
-        padding: 0.4rem 0.8rem; 
+        margin: 1rem auto 0 auto;
+        padding: 0.4rem 0.8rem;
         background-color: #030303;
         color: white;
         border: none;
         border-radius: 8px;
-        font-size: 0.9rem; 
+        font-size: 0.9rem;
         font-weight: bold;
         cursor: pointer;
         transition:
             background-color 0.3s,
             transform 0.2s;
-        display: flex; 
+        display: flex;
         align-items: center;
-        justify-content: center; 
+        justify-content: center;
         gap: 0.4rem;
         width: fit-content;
     }
