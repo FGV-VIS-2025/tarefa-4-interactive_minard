@@ -247,6 +247,9 @@ $: interpolatedData = interpolatePoints(currentTime, joinedData);
                         <strong>Platoon size:</strong> ~${Math.round(d.size/100)*100} soldiers<br/>
                         <strong>Direction:</strong> ${d.direction === "A" ? "Advance" : "Retreat"}<br/>
                         <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                        <strong>Date:</strong> ~${formatDate(parseDate(d.date))}<br/>
+                        <strong>lat:</strong> ~${d.lat}<br/>
+                        <strong>lon:</strong> ~${d.lon}<br/>
                         ${!isNaN(d.temp) ? `<strong>Temp:</strong> ~(${Math.round(d.temp)} °C)` : ""}
                     `);
                 })
