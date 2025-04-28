@@ -58,7 +58,7 @@
         sizeScale = d3
             .scaleLinear()
             .domain([0, d3.max(joinedData, (d) => d.size)])
-            .range([5, 9000]);
+            .range([5, 8000]);
 
         svg = d3
             .select(svgElement)
@@ -98,7 +98,7 @@
         const sizeLegendScale = d3
             .scaleLinear()
             .domain([0, d3.max(joinedData, (d) => d.size)])
-            .range([5, 9000]);
+            .range([5, 8000]);
 
         const sizeLegendRect = sizeLegend
             .append("g")
@@ -107,9 +107,9 @@
         sizeLegendRect
             .append("rect")
             .attr("x", -60) // ajusta para cobrir a legenda
-            .attr("y", -30)
+            .attr("y", -25)
             .attr("width", 250)
-            .attr("height", 80)
+            .attr("height", 70)
             .attr("fill", "white") // cor de fundo
             .attr("stroke", "black") // borda
             .attr("stroke-width", 0.7)
@@ -313,7 +313,7 @@
             id,
             ...info,
         }));
-        console.log(selectedEvent);
+        selectedEvent = selectedEvent;
 
         const markers = svg
             .select(".events-group")
@@ -364,17 +364,19 @@
         return `
         <svg viewBox="0 0 24 24" width="20" height="20">
             <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
-                fill="${d.id === selectedEvent ? "red" : "lightblue"}"
+                fill="#616170"
                 stroke="#000000"
                 stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+                opacity="${d.id === selectedEvent ? 1 : 0.3}"></path>
             <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
                 fill="white"
                 stroke="#000000"
                 stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+                opacity="${d.id === selectedEvent ? 1 : 0.3}"></path>
         </svg>
     `;
     }
@@ -411,8 +413,6 @@
         <div class="chart-container">
             <div class="top-bar">
                 <PlayButton
-                    id="playButton"
-                    class="play-button"
                     {playing}
                     onTogglePlay={togglePlay}
                 />
@@ -423,7 +423,6 @@
 
                 <div class="timebar-wrapper">
                     <Timebar
-                        class="time-slider"
                         events={eventInfo}
                         {minTime}
                         {maxTime}
@@ -439,8 +438,6 @@
                 <TemperatureBar
                     {svgElement}
                     data={interpolatedData}
-                    {x}
-                    {y}
                     chartHeight={300}
                 />
                 <!-- Aqui dentro fica o scatter também -->
