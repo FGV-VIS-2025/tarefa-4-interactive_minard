@@ -6,7 +6,10 @@
     <div class="content">
         <h1>Charles Minard's Map of Napoleon's Russian Campaign</h1>
         <p class="description">
-            This famous flow map, created by Charles Minard in 1869, illustrates the losses suffered by Napoleon's army during the Russian campaign of 1812. It is often cited as one of the best examples of data visualization.
+            This famous flow map, created by Charles Minard in 1869, illustrates
+            the losses suffered by Napoleon's army during the Russian campaign
+            of 1812. It is often cited as one of the best examples of data
+            visualization.
         </p>
         <img src={image} alt="Original Minard" class="responsive-image" />
     </div>
@@ -22,7 +25,8 @@
         top: 0;
     }
 
-    .container img, .container p {
+    .container img,
+    .container p {
         display: inline-block;
         vertical-align: top;
     }

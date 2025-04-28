@@ -1,7 +1,7 @@
 <script>
-    import {onMount} from "svelte";
+    import { onMount } from "svelte";
     import * as d3 from "d3";
-    import {parseDate} from "$lib/utils";
+    import { parseDate } from "$lib/utils";
 
     export let data = [];
 
@@ -15,10 +15,8 @@
     const TEMP_MIN = -35;
     const TEMP_MAX = 0;
 
-    function setupBar()
-    {
-        if (!svgElement)
-        {
+    function setupBar() {
+        if (!svgElement) {
             return;
         }
 
@@ -27,44 +25,48 @@
         svg.selectAll(".temperature-bar").remove();
         svg.selectAll(".temp-axis").remove();
 
-        const margin = {top: 20, right: 10, bottom: 60, left: 50};
+        const margin = { top: 20, right: 10, bottom: 60, left: 50 };
         // const chartHeight = +svg.attr("height");
         // const chartWidth = +svg.attr("width");
 
         const barAreaWidth = 40;
 
-        yScale = d3.scaleLinear()
+        yScale = d3
+            .scaleLinear()
             .domain([TEMP_MAX, TEMP_MIN])
             .range([margin.top, chartHeight - margin.bottom]);
 
-        barGroup = svg.append("g")
+        barGroup = svg
+            .append("g")
             .attr("class", "temperature-bar")
             .attr("transform", `translate(${margin.left + 20}, 0)`);
 
-        const tempAxis = d3.axisLeft(yScale)
+        const tempAxis = d3
+            .axisLeft(yScale)
             .ticks(5)
-            .tickFormat(d => `${d} °C`);
+            .tickFormat((d) => `${d} °C`);
 
-        tempAxisGroup = svg.append("g")
+        tempAxisGroup = svg
+            .append("g")
             .attr("class", "temp-axis")
             .attr("transform", `translate(${margin.left + 10}, 0)`)
             .call(tempAxis)
             .attr("style", "transition: opacity 0.1s ease");
 
-        tempAxisGroup.append("text")
+        tempAxisGroup
+            .append("text")
             .attr("fill", "black")
             .attr("text-anchor", "middle")
             .attr("transform", `rotate(-90)`)
-            .attr("x", -(chartHeight/2)+20)
+            .attr("x", -(chartHeight / 2) + 20)
             .attr("y", -50)
             .text("Temperature")
             .style("font-size", "12px");
 
-        tempAxisGroup
-            .selectAll(".tick text")
-            .style("font-size", "10px");
+        tempAxisGroup.selectAll(".tick text").style("font-size", "10px");
 
-        tempBar = barGroup.append("rect")
+        tempBar = barGroup
+            .append("rect")
             .attr("x", 0)
             .attr("width", 10)
             .attr("fill", "#9c7873")
@@ -77,52 +79,48 @@
         setupBar();
     });
 
-    $: if (svgElement)
-    {
+    $: if (svgElement) {
         setupBar();
     }
 
-    $: if (tempBar && yScale && tempAxisGroup)
-    {
-        const pointWithTemp = data.find(d => typeof d.temp === "number" && !Number.isNaN(d.temp));
+    $: if (tempBar && yScale && tempAxisGroup) {
+        const pointWithTemp = data.find(
+            (d) => typeof d.temp === "number" && !Number.isNaN(d.temp),
+        );
 
-        if (pointWithTemp)
-        {
+        if (pointWithTemp) {
             const temp = pointWithTemp.temp;
 
             const yTop = yScale(TEMP_MAX);
             const yBottom = yScale(temp);
 
-            tempBar.attr("y", yTop)
-                   .attr("height", yBottom - yTop)
-                   .style("display", "block")
-                   .style("opacity", 0.8);
+            tempBar
+                .attr("y", yTop)
+                .attr("height", yBottom - yTop)
+                .style("display", "block")
+                .style("opacity", 0.8);
 
-            tempAxisGroup.style("opacity", 1)
-                         .style("pointer-events", "all");
-        }
-        else
-        {
-            if (data.length > 0 && parseDate(data[0].date) > parseDate("1812-12-06"))
-            {
+            tempAxisGroup.style("opacity", 1).style("pointer-events", "all");
+        } else {
+            if (
+                data.length > 0 &&
+                parseDate(data[0].date) > parseDate("1812-12-06")
+            ) {
                 const temp = -26;
 
                 const yTop = yScale(TEMP_MAX);
                 const yBottom = yScale(temp);
 
-                tempBar.attr("y", yTop)
+                tempBar
+                    .attr("y", yTop)
                     .attr("height", yBottom - yTop)
                     .style("display", "block")
                     .style("opacity", 0.3);
-            }
-            else
-            {
+            } else {
                 tempBar.style("display", "none");
             }
 
-            tempAxisGroup
-                .style("opacity", 0.3)
-                .style("pointer-events", "none");
+            tempAxisGroup.style("opacity", 0.3).style("pointer-events", "none");
         }
     }
 </script>

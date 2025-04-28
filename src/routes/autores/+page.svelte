@@ -1,23 +1,36 @@
 <script>
     const items = [
-      {
-        src: '/images/Kauan.jpeg',
-        name: 'Kauan Mariani Ferreira',
-        description: 'Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV',
-        contact: { linkedin: 'https://www.linkedin.com/in/kauanmferreira/', github: 'https://github.com/kauanmaf' }
-      },
-      {
-        src: '/images/Pedro.png',
-        name: 'Pedro Henrique Coterli',
-        description: 'Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV',
-        contact: { linkedin: 'https://www.linkedin.com/in/pedro-henrique-coterli-8b05562b2/', github: 'https://github.com/PedroPHC25' }
-      },
-      {
-        src: '/images/Gustavo.jpeg',
-        name: 'Gustavo Tironi',
-        description: 'Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV',
-        contact: { linkedin: 'https://www.linkedin.com/in/gustavotironi/', github: 'https://github.com/gtironi' }
-      }
+        {
+            src: "/images/Kauan.jpeg",
+            name: "Kauan Mariani Ferreira",
+            description:
+                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+            contact: {
+                linkedin: "https://www.linkedin.com/in/kauanmferreira/",
+                github: "https://github.com/kauanmaf",
+            },
+        },
+        {
+            src: "/images/Pedro.png",
+            name: "Pedro Henrique Coterli",
+            description:
+                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+            contact: {
+                linkedin:
+                    "https://www.linkedin.com/in/pedro-henrique-coterli-8b05562b2/",
+                github: "https://github.com/PedroPHC25",
+            },
+        },
+        {
+            src: "/images/Gustavo.jpeg",
+            name: "Gustavo Tironi",
+            description:
+                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+            contact: {
+                linkedin: "https://www.linkedin.com/in/gustavotironi/",
+                github: "https://github.com/gtironi",
+            },
+        },
     ];
 </script>
 
@@ -28,8 +41,16 @@
             <p class="name">{item.name}</p>
             <p class="description">{item.description}</p>
             <div class="contacts">
-                <a href={item.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href={item.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a
+                    href={item.contact.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer">LinkedIn</a
+                >
+                <a
+                    href={item.contact.github}
+                    target="_blank"
+                    rel="noopener noreferrer">GitHub</a
+                >
             </div>
         </div>
     {/each}
