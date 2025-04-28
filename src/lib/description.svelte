@@ -169,7 +169,7 @@
     .reset-button {
         margin: 1rem auto 0 auto; /* margem em cima e centralizado horizontalmente */
         padding: 0.4rem 0.8rem; /* menor por dentro */
-        background-color: #0077cc;
+        background-color: #030303;
         color: white;
         border: none;
         border-radius: 8px;
@@ -185,12 +185,12 @@
     }
 
     .reset-button:hover {
-        background-color: #005fa3;
+        background-color: #464646;
         transform: translateY(-2px);
     }
 
     .reset-button:active {
-        background-color: #004885;
+        background-color: #464646;
         transform: translateY(0);
     }
 </style>

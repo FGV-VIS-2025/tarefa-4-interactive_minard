@@ -67,7 +67,7 @@
         tempBar = barGroup.append("rect")
             .attr("x", 0)
             .attr("width", 10)
-            .attr("fill", "steelblue")
+            .attr("fill", "#9c7873")
             .attr("opacity", 0.8)
             .style("display", "none")
             .attr("style", "transition: opacity 0.1s ease");
