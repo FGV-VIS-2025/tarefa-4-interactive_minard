@@ -1,25 +1,28 @@
 <script>
-    import { base } from '$app/paths';
+    import { base } from "$app/paths";
     import { page } from "$app/stores";
 
     let pages = [
-      { url: "/", title: "Iterative Graph" },
-      { url: "/autores", title: "Authors" },
-      { url: "/minard", title: "Original Minard" },
-      { url: "https://github.com/FGV-VIS-2025/tarefa-4-interactive_minard", title: "Github" }
+        { url: "/", title: "Iterative Graph" },
+        { url: "/autores", title: "Authors" },
+        { url: "/minard", title: "Original Minard" },
+        {
+            url: "https://github.com/FGV-VIS-2025/tarefa-4-interactive_minard",
+            title: "Github",
+        },
     ];
 </script>
 
 <div class="layout">
     <nav>
         {#each pages as p}
-        <a
-            href={p.url.startsWith("http") ? p.url : `${base}${p.url}`}
-            class:current={$page.route.id === p.url}
-            target={p.url.startsWith("http") ? "_blank" : undefined}
-        >
-            {p.title}
-        </a>
+            <a
+                href={p.url.startsWith("http") ? p.url : `${base}${p.url}`}
+                class:current={$page.route.id === p.url}
+                target={p.url.startsWith("http") ? "_blank" : undefined}
+            >
+                {p.title}
+            </a>
         {/each}
     </nav>
     <main>
@@ -33,7 +36,7 @@
         flex-direction: column;
         min-height: 100vh;
         background-color: #fdfdfd;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-family: "Helvetica Neue", Arial, sans-serif;
     }
 
     nav {
@@ -46,7 +49,7 @@
     }
 
     nav a {
-        color: #555;
+        color: #222;
         text-decoration: none;
         font-size: 1.05rem;
         padding: 0.3rem 0;
@@ -85,4 +88,3 @@
         margin: 0 auto;
     }
 </style>
-

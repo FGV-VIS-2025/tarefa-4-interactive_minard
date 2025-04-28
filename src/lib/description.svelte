@@ -1,35 +1,36 @@
 <script>
-    export let selectedEvent ;
+    export let selectedEvent;
     export let currentTimeInput;
-    import Icon from '$lib/icon.svelte';
-    import eventInfo from '$lib/data/dados.json';
-    import { formattedDate, parseDate} from "$lib/utils";
-    import { createEventDispatcher } from 'svelte';
+    import Icon from "$lib/icon.svelte";
+    import eventInfo from "$lib/data/dados.json";
+    import { formattedDate, parseDate } from "$lib/utils";
+    import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
     const orderedEntries = Object.entries(eventInfo)
-    .map(([id, event]) => ({
-        id,
-        ...event,
-        timestamp: parseDate(event.date)
-    }))
-    .sort((a, b) => a.timestamp - b.timestamp);
+        .map(([id, event]) => ({
+            id,
+            ...event,
+            timestamp: parseDate(event.date),
+        }))
+        .sort((a, b) => a.timestamp - b.timestamp);
 
     // Now rebuild the ordered object
     const orderedEvents = Object.fromEntries(
-        orderedEntries.map(({ id, ...eventWithTimestamp }) => [id, eventWithTimestamp])
+        orderedEntries.map(({ id, ...eventWithTimestamp }) => [
+            id,
+            eventWithTimestamp,
+        ]),
     );
-    console.log(orderedEvents)
-
+    console.log(orderedEvents);
 
     $: showStart = false;
-    $: firstChange = false; 
-    let tryUpdteSelectedEvent = true; 
-
+    $: firstChange = false;
+    let tryUpdteSelectedEvent = true;
 
     // Função para encontrar o evento mais próximo antes da data atual, caso não haja evento na data atual
     function getEventForTodayOrLast(currentTime) {
-        if (tryUpdteSelectedEvent){
+        if (tryUpdteSelectedEvent) {
             let closestEvent = null;
             let closestDate = null;
             const tolerance = 43200000;
@@ -46,72 +47,78 @@
                 }
 
                 // Store the closest event before the current time
-                if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
+                if (
+                    !closestDate ||
+                    (eventDate < currentTime && eventDate > closestDate)
+                ) {
                     closestEvent = key;
                     closestDate = eventDate;
-                    if (eventDate > currentTime){
-                        break
+                    if (eventDate > currentTime) {
+                        break;
                     }
                 }
             }
-            
+
             // Set showStart to true if a valid event is found
-            if (firstChange)
-            {
+            if (firstChange) {
                 showStart = true;
             }
             if (closestEvent !== null) {
                 firstChange = true;
             }
 
-            
             return closestEvent;
-
+        } else {
+            return null;
         }
-        else {
-            return null
-        }
-        
     }
 
     // Verificar o evento para mostrar (data atual ou último evento antes da data atual)
     $: {
-        if (tryUpdteSelectedEvent){
+        if (tryUpdteSelectedEvent) {
             const maybeEvent = getEventForTodayOrLast(currentTimeInput);
             // console.log(maybeEvent)
             if (maybeEvent !== null) {
                 selectedEvent = maybeEvent;
             }
+        } else {
+            selectedEvent = null;
+            tryUpdteSelectedEvent = true;
         }
-        else {
-            selectedEvent = null
-            tryUpdteSelectedEvent = true
-        }
-       
+
         selectedEvent = selectedEvent;
-        
     }
-    
+
     function resetDescription() {
         showStart = false;
-        selectedEvent = null
-        tryUpdteSelectedEvent = false
+        selectedEvent = null;
+        tryUpdteSelectedEvent = false;
     }
 
-    $: console.log(showStart)
-
+    $: console.log(showStart);
 </script>
 
 {#if showStart && selectedEvent}
     <div class="description-container">
         <div class="icon-wrapper">
-            <Icon name={orderedEvents[selectedEvent].icon} width_icon={38} height_icon={38} />
+            <Icon
+                name={orderedEvents[selectedEvent].icon}
+                width_icon={38}
+                height_icon={38}
+            />
         </div>
         <h3 class="title-description">{orderedEvents[selectedEvent].title}</h3>
-        <p><strong>Date:</strong> {formattedDate(orderedEvents[selectedEvent].date)}</p>
+        <p>
+            <strong>Date:</strong>
+            {formattedDate(orderedEvents[selectedEvent].date)}
+        </p>
         <p class="image_description">
             {#if orderedEvents[selectedEvent].image}
-                <img src="{orderedEvents[selectedEvent].image}" alt="{orderedEvents[selectedEvent].label} image" class="event-image">
+                <img
+                    src={orderedEvents[selectedEvent].image}
+                    alt="{orderedEvents[selectedEvent].label} image"
+                    class="event-image"
+                />
             {/if}
         </p>
         <div class="event-description">
@@ -124,8 +131,22 @@
 {:else}
     <div class="description-container">
         <h3 class="title-description">Minard and French invasion of Russia</h3>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg" alt="napoleaon invasion" class="event-image">
-        <p>The tragic campaign of Napoleon towards Russia was famously captured by Charles Minard in his renowned 1869 infographic, which visually depicts the dramatic reduction of Napoleon's army during the march to Moscow and the retreat, combining geography, temperature, and troop strength into one powerful visual narrative. We thought about making it interactive in order to better understand what Minard intended to convey with this infographic. We highlight famous battles and important events, allowing the user to scroll through time and experience this great historical journey.</p>
+        <img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg"
+            alt="napoleaon invasion"
+            class="event-image"
+        />
+        <p>
+            The tragic campaign of Napoleon towards Russia was famously captured
+            by Charles Minard in his renowned 1869 infographic, which visually
+            depicts the dramatic reduction of Napoleon's army during the march
+            to Moscow and the retreat, combining geography, temperature, and
+            troop strength into one powerful visual narrative. We thought about
+            making it interactive in order to better understand what Minard
+            intended to convey with this infographic. We highlight famous
+            battles and important events, allowing the user to scroll through
+            time and experience this great historical journey.
+        </p>
     </div>
 {/if}
 
@@ -176,7 +197,9 @@
         font-size: 0.9rem; /* fonte um pouco menor */
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
+        transition:
+            background-color 0.3s,
+            transform 0.2s;
         display: flex; /* flex para centralizar conteúdo interno */
         align-items: center;
         justify-content: center; /* conteúdo do botão centralizado */

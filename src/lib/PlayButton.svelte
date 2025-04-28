@@ -2,8 +2,7 @@
     export let playing = false;
     export let onTogglePlay;
 
-    function handleClick()
-    {
+    function handleClick() {
         onTogglePlay();
     }
 </script>
@@ -32,9 +31,11 @@
         justify-content: center;
         align-items: center;
 
-        transition: background-color 0.3s, transform 0.2s;
+        transition:
+            background-color 0.3s,
+            transform 0.2s;
     }
-  
+
     button:hover {
         background-color: #464646;
     }
@@ -47,4 +48,4 @@
         display: inline-block;
         line-height: 0; /* Garante que o ícone não tenha espaços adicionais ao redor */
     }
-  </style>
+</style>
