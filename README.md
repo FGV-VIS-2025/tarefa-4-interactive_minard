@@ -44,7 +44,6 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
 
 - **Kauan Mariani Ferreira**
   -Partes Desenvolvidas:
-    - Partes desenvolvidas:
       - Adição dos Pins no plot
       - Desenvolvimento da timebar por completa e garantindo a interatividade com o plot
       - Adição dos ícones na timebar
@@ -52,6 +51,15 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
       - Reatividade dos pin points na timebar
     - A parte mais trabalhosa foi integrar o timeCurrent com a descrição dos eventos. Nossa ideia era que, ao entrar na página, a pessoa recebesse uma introdução sobre o projeto. No entanto, assim que ela clicasse em um evento ou interagisse com o seletor de tempo, a descrição exibida deveria passar a mostrar o último evento anterior ao currentTime. Para isso, precisei pensar em uma lógica usando variáveis booleanas e lidar com vários bugs. Até conseguir deixar tudo bem integrado e funcionando de forma fluida, levou um bom tempo.
     - Tempo estimado de desenvolvimento: 17 horas.
+
+- **Gustavo Tironi**
+  -Partes Desenvolvidas:
+      - Implementação do doughnut plot com iteratividade
+      - Desenvolvimento do sistema de paginação para organizar o conteúdo exibido
+      - Estruturação da barra de navegação
+      - Início da implementação do background para o gráfico (minard e mapa)
+    - A parte mais trabalhosa foi a implementação da interatividade no doughnut plot. Além disso, tive muitos problemas tentando replicar o gráfico original utilizando a biblioteca D3.js, não conseguindo obter o resultado esperado e abandonando a ideia. Trabalhar com mapas também está apresentando desafios, principalmente para sincronização das projeções do mapa (que usa mercator) com a transformação da latitude e longitude usadas para os dados no scatter plot.
+    - Tempo estimado de desenvolvimento: 11 horas.
 
 ## Uso de IA
 
