@@ -43,7 +43,7 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
   - Tempo estimado de desenvolvimento (até o momento): 21 horas.
 
 - **Kauan Mariani Ferreira**
-  -Partes Desenvolvidas:
+  - Partes Desenvolvidas:
       - Adição dos Pins no plot
       - Desenvolvimento da timebar por completa e garantindo a interatividade com o plot
       - Adição dos ícones na timebar
@@ -53,7 +53,7 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
     - Tempo estimado de desenvolvimento: 17 horas.
 
 - **Gustavo Tironi**
-  -Partes Desenvolvidas:
+  - Partes Desenvolvidas:
       - Implementação do doughnut plot com iteratividade
       - Desenvolvimento do sistema de paginação para organizar o conteúdo exibido
       - Estruturação da barra de navegação
