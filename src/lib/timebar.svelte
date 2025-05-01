@@ -5,6 +5,8 @@
   export let currentTime;
   export let chartWidth = 800;
 
+  import { onMount } from "svelte";
+  import * as d3 from "d3";
   import { createEventDispatcher } from "svelte";
   import { parseDate } from "$lib/utils";
   import Icon from "$lib/icon.svelte";
@@ -13,6 +15,12 @@
   const buttonWidth = 40;
   let diameter_circle = 16;
   let selectedId = null;
+
+  let tooltip;
+
+  onMount(() => {
+    tooltip = d3.select("#tooltip");
+  });
 
   let eventList = Object.entries(events).map(([id, info]) => ({
     id,
@@ -59,6 +67,24 @@
   $: eventsWithPositions = calculateProportions();
 </script>
 
+<div
+  id="tooltip"
+  style="
+    position: absolute;
+    text-align: left;
+    width: auto;
+    max-width: 200px;
+    padding: 8px;
+    font: 14px sans-serif;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 999;
+"
+></div>
+
 <svelte:window on:click={() => handleClick(null)} />
 
 <div
@@ -87,8 +113,20 @@
           on:keydown={(e) => handleKeyDown(e, event.id)}
           style="position: absolute; left: calc({event.x}px - {buttonWidth /
             2}px);"
+          on:mouseenter={() => {
+            tooltip
+              .style("opacity", 0.9)
+              .html(`<div style="max-width: 200px;"><strong>${event.title}</strong></div>`);
+          }}
+          on:mousemove={(e) => {
+            tooltip
+              .style("left", e.pageX - 150 + "px")
+              .style("top", e.pageY - 190 + "px");
+          }}
+          on:mouseleave={() => {
+            tooltip.style("opacity", 0);
+          }}
           tabindex="0"
-          title={event.info}
         >
           <Icon name={event.icon} />
         </button>
@@ -130,10 +168,22 @@
           class="event-button"
           on:click|stopPropagation={() => handleClick(event.id)}
           on:keydown={(e) => handleKeyDown(e, event.id)}
+          on:mouseenter={() => {
+            tooltip
+              .style("opacity", 0.9)
+              .html(`<div style="max-width: 200px;"><strong>${event.title}</strong></div>`);
+          }}
+          on:mousemove={(e) => {
+            tooltip
+              .style("left", e.pageX - 150 + "px")
+              .style("top", e.pageY - 190 + "px");
+          }}
+          on:mouseleave={() => {
+            tooltip.style("opacity", 0);
+          }}
           style="position: absolute; left: calc({event.x}px - {buttonWidth /
             2}px); bottom: 0;"
           tabindex="0"
-          title={event.info}
         >
           <Icon name={event.icon} />
         </button>

@@ -164,7 +164,9 @@
             .style("border", "solid 1px #ccc")
             .style("padding", "5px")
             .style("border-radius", "5px")
-            .style("pointer-events", "none");
+            .style("pointer-events", "none")
+            .style("font-family", "sans-serif")
+            .style("font-size", "14px");
 
         const xExtent = d3.extent(army, (d) => d.lon);
         const yExtent = d3.extent(army, (d) => d.lat);
