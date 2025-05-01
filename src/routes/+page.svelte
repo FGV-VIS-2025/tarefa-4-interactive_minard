@@ -482,10 +482,11 @@
         width: 800px;
         max-width: 100%;
         margin-left: -100px;
-        display: flex;
+        /* display: flex; */
         flex-direction: column;
         align-items: center;
         flex: 1;
+        height: 550px;
     }
 
     .top-bar {
@@ -529,6 +530,7 @@
         padding-left: 10px;
         max-width: 100%; 
         box-sizing: border-box; 
+        margin-top: 70px;
     }
 
     h1 {
@@ -539,7 +541,7 @@
 
     .doughnut-container {
         position: relative;
-        bottom: 90px;
-        right: 90px; 
+        bottom: 95px;
+        right: -240px; 
     }
 </style>
