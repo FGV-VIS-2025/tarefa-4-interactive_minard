@@ -129,11 +129,18 @@
         </p>
         <p class="image_description">
             {#if orderedEvents[selectedEvent].image}
+                <a
+                href={orderedEvents[selectedEvent].image}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="cursor: pointer;"
+            >
                 <img
                     src={orderedEvents[selectedEvent].image}
                     alt="{orderedEvents[selectedEvent].label} image"
-                    class="event-image"
+                    class="event-image hoverable-image"
                 />
+        </a>
             {/if}
         </p>
         <div class="event-description">
@@ -234,4 +241,12 @@
         background-color: #464646;
         transform: translateY(0);
     }
+    .hoverable-image {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.hoverable-image:hover {
+    transform: scale(1.01);
+}
 </style>
