@@ -350,6 +350,7 @@
             })
             .on("click", (event, d) => {
                 currentTime = parseDate(d.date); // <- Atualiza o currentTime no clique
+                togglePlay();
             });
 
         markers

@@ -109,10 +109,7 @@
         if (playing) {
             handleClick();
         }
-        console.log(minTime)
-        console.log(currentTimeInput)
         currentTimeInput = minTime;
-        console.log(currentTimeInput)
     }
 </script>
 
