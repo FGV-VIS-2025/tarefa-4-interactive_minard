@@ -7,7 +7,7 @@
     "lat": 54.888087,
     "lon": 23.564201,
     "title": "French Invasion",
-    "info": "Napoleon crosses the Niemen River with 400,000 troops and more the 1000 cannons, starting the invasion.",
+    "info": "Napoleon launches his grand Russian campaign by crossing the Niemen River with over 400,000 soldiers and around a thousand cannons. This bold move marks the definitive break with the Russian Empire and the beginning of an epic journey that would reshape the political and human landscape of Eastern Europe.",
     "date": "1812-06-24",
     "label": "Invasion",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/28/On_the_border_of_Nieman_1812.PNG"
@@ -20,7 +20,7 @@
     "lat": 54.68,
     "lon": 25.28,
     "title": "Vilnius Captured",
-    "info": "Starting the campaign, Napoleon captures Vilnius unopposed.",
+    "info": "Facing little resistance, the French army captures Vilnius, capital of Lithuania, just four days after crossing the Niemen. The city becomes the first major logistical point of the campaign, though Napoleon soon realizes the difficulty of maintaining supplies and control over such vast territory.",
     "date": "1812-06-28",
     "label": "Vilnius",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d0/1812_June_27._Mykoli%C5%A1kiai._Quartier_G%C3%A9n%C3%A9ral.jpg"
@@ -33,7 +33,7 @@
     "lat": 55.277814,
     "lon": 30.202374,
     "title": "French Depot",
-    "info": "French capture Vitebsk, establishing key supply depot.",
+    "info": "The occupation of Vitebsk offers the Grande Armée a chance to regroup. The city is transformed into a crucial supply depot where Napoleon pauses his advance, hoping to draw the Russians into a decisive battle — one that never comes.",
     "date": "1812-07-12",
     "label": "Recompose",
     "image": "https://upload.wikimedia.org/wikipedia/commons/7/75/Les_conscrits_parisiens_%C3%A0_Witepsk.png"
@@ -46,7 +46,7 @@
     "lat": 54.918689,
     "lon": 32.129132,
     "title": "Smolensk Battle",
-    "info": "Bloody battle for Smolensk; Russians retreat after burning city.",
+    "info": "At Smolensk, the French finally encounter strong resistance. Though they take the city after fierce fighting, the Russians set it ablaze and withdraw, continuing their scorched-earth strategy. Victory feels hollow for Napoleon as his opponent once again escapes destruction.",
     "date": "1812-08-16",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Bataille-de-smolensk.jpg"
@@ -59,7 +59,7 @@
     "lat": 55.57,
     "lon": 28.381918,
     "title": "First Battle of Polotsk",
-    "info": "French repel Russian attack.",
+    "info": "While the main army pushes forward, a parallel clash occurs at Polotsk, where the French repel a Russian assault. The battle temporarily secures the northern flank of the invasion but signals that Russian forces are tightening their grip.",
     "date": "1812-08-17",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Po%C5%82acak%2C_Pa%C5%82ata-Spas._%D0%9F%D0%BE%D0%BB%D0%B0%D1%86%D0%B0%D0%BA%2C_%D0%9F%D0%B0%D0%BB%D0%B0%D1%82%D0%B0-%D0%A1%D0%BF%D0%B0%D1%81_%281812%29.jpg"
@@ -72,7 +72,7 @@
     "lat": 55.542951,
     "lon": 34.955982,
     "title": "Preparing for War",
-    "info": "Grande Armée rests and prepares for major battle.",
+    "info": "At Gjatsk, the French army takes its final pause before the long-awaited confrontation. Exhausted and hungry, the soldiers brace themselves for a battle Napoleon hopes will be decisive — unaware of the horror and despair yet to come.",
     "date": "1812-09-01",
     "label": "Recompose",
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Vereshchagin_Napoleon_near_Borodino.jpg"
@@ -85,7 +85,7 @@
     "lat": 55.591913,
     "lon": 35.602922,
     "title": "Shevardino Battle",
-    "info": "Preliminary battle for Shevardino redoubt.",
+    "info": "The fight at Shevardino serves as a bloody prelude to the Battle of Borodino. The French storm a Russian forward redoubt, sustaining and inflicting heavy losses. The skirmish foreshadows the brutal combat that lies ahead.",
     "date": "1812-09-05",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/SamokishBorodinoLitograf.jpg"
@@ -98,7 +98,7 @@
     "lat": 55.542951,
     "lon": 35.940457,
     "title": "Borodino Battle",
-    "info": "Bloodiest battle of invasion; Pyrrhic French victory.",
+    "info": "Borodino becomes the bloodiest battle of the invasion, with over 70,000 casualties on both sides. Though technically a French victory, the human cost is staggering. Napoleon fails to destroy the Russian army, missing the chance for a decisive triumph.",
     "date": "1812-09-07",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Peter_von_Hess_002.jpg"
@@ -111,7 +111,7 @@
     "lat": 55.85,
     "lon": 37.3,
     "title": "Moscow is Conquered",
-    "info": "Napoleon enters abandoned Moscow; city burns.",
+    "info": "Napoleon enters Moscow only to find the city abandoned and soon engulfed in flames. Without a formal surrender and facing dire conditions, French morale plummets. The emperor slowly realizes that taking the Russian capital does not mean winning the war.",
     "date": "1812-09-14",
     "label": "Conquista",
     "image": "https://upload.wikimedia.org/wikipedia/commons/5/53/Napoleon_in_burning_Moscow_-_Adam_Albrecht_%281841%29.jpg"
@@ -124,7 +124,7 @@
     "lat": 55.8,
     "lon": 37.6,
     "title": "Retreat from Moscow",
-    "info": "Grande Armée begins disastrous retreat.",
+    "info": "With no peace in sight and winter approaching, Napoleon orders a retreat from Moscow. What begins as a strategic withdrawal soon descends into a logistical and human nightmare, as soldiers face hunger, frost and constant attacks.",
     "date": "1812-10-18",
     "label": "leaving",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Fireofmoscow.jpg"
@@ -137,7 +137,7 @@
     "lat": 55.45,
     "lon": 28.781918,
     "title": "Second Battle of Polotsk",
-    "info": "Russian victory in the second time fighting for the city. It was coordened with the french expellion from moscow",
+    "info": "As the French retreat from Moscow, the Russians launch a coordinated assault at Polotsk. This time, the French are defeated and forced to abandon the city, further weakening the Grande Armée’s northern flank.",
     "date": "1812-10-19",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Battle_polotsk.jpg"
@@ -150,7 +150,7 @@
     "lat": 55.24306,
     "lon": 37.318721,
     "title": "Battle of Maloyaroslavets",
-    "info": "French win but forced to retreat via devastated route.",
+    "info": "Attempting to take a southern route home, the French meet fierce resistance at Maloyaroslavets. Despite a tactical victory, they are forced to return along the same devastated road they used to invade, compounding their suffering.",
     "date": "1812-10-24",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Hess_maloyaroslavets.jpg"
@@ -163,7 +163,7 @@
     "lat": 55.181858,
     "lon": 34.674703,
     "title": "Battle of Vyazma",
-    "info": "Russian attacks inflict heavy French losses.",
+    "info": "During the retreat, French forces suffer heavy losses at Vyazma due to coordinated Russian attacks. Chaos and disorganization grow, and many soldiers are captured or killed as the army’s structure unravels.",
     "date": "1812-11-03",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Battle_vyazma.jpg"
@@ -176,7 +176,7 @@
     "lat": 54.728962,
     "lon": 31.608767,
     "title": "Battle of Krasnoi ",
-    "info": "Devastating defeat; French lose 13,000 men.",
+    "info": "Near Krasnoi, the Russians strike a nearly fatal blow to the French rearguard. The battle results in the loss of 13,000 men and deepens the collapse of the Grande Armée, which is now in a desperate fight for survival.",
     "date": "1812-11-15",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Krasnoi.jpg"
@@ -189,7 +189,7 @@
     "lat": 54.306667,
     "lon": 28.627215,
     "title": "Battle of Berezina",
-    "info": "Costly river crossing under Russian attacks.",
+    "info": "Crossing the Berezina River becomes a hellish ordeal. Trapped between two Russian armies and freezing temperatures, thousands perish, but the remaining French forces manage to escape across hastily built bridges.",
     "date": "1812-11-26",
     "label": "Battle",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/a8/National_Museum_in_Poznan_-_Przej%C5%9Bcie_przez_Berezyn%C4%99.JPG"
@@ -202,7 +202,7 @@
     "lat": 54.3,
     "lon": 26.7863,
     "title": "Napoleon retreats",
-    "info": "Napoleon abandons army, returns to Paris.",
+    "info": "Recognizing the looming disaster and fearing political instability in Paris, Napoleon leaves the army and returns to France. Command passes to his subordinates as the shattered remnants of the Grande Armée continue their retreat without their emperor.",
     "date": "1812-12-05",
     "label": "Fuga",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Napoleon_Wagram.jpg"
@@ -215,7 +215,7 @@
     "lat": 54.4,
     "lon": 24.29863,
     "title": "End of War",
-    "info": "Last French troops leave Russia.",
+    "info": "Amid scenes of death and ruin, the last survivors of the Grande Armée recross the Niemen River, formally ending the invasion. Of the over 400,000 men who began the campaign, only a fraction return — and Napoleon’s empire would never fully recover.",
     "date": "1812-12-14",
     "label": "Retirada",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Retreat_of_Napoleon_Army_from_Moscow_1812.jpg"

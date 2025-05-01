@@ -146,7 +146,7 @@
         <p class= "container-intro">
             Napoleon's campaign in Russia was famously depicted by Charles
             Minard in his 1869 infographic, illustrating the army’s decline by
-            combining geography, temperature, and troop strength. We propose
+            combining geography, temperature and troop strength. We propose
             making it interactive to better understand Minard’s message,
             highlighting key battles and events as users scroll through the
             historical journey.
@@ -184,12 +184,13 @@
 
     .event-description {
         margin-top: 15px;
-        line-height: 1.5;
+        line-height: 1.2;
         text-align: justify;
     }
     .container-intro
     {
         text-align: justify;
+        line-height: 1.2;
     }
     .event-image {
         width: 100%;

@@ -49,8 +49,8 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
       - Adição dos ícones na timebar
       - Adição dos detalhes sobre cada batalha, bem como as imagens 
       - Reatividade dos pin points na timebar
-    - A parte mais trabalhosa foi integrar o timeCurrent com a descrição dos eventos. Nossa ideia era que, ao entrar na página, a pessoa recebesse uma introdução sobre o projeto. No entanto, assim que ela clicasse em um evento ou interagisse com o seletor de tempo, a descrição exibida deveria passar a mostrar o último evento anterior ao currentTime. Para isso, precisei pensar em uma lógica usando variáveis booleanas e lidar com vários bugs. Até conseguir deixar tudo bem integrado e funcionando de forma fluida, levou um bom tempo.
-    - Tempo estimado de desenvolvimento: 17 horas.
+  - A parte mais trabalhosa foi integrar o timeCurrent com a descrição dos eventos. Nossa ideia era que, ao entrar na página, a pessoa recebesse uma introdução sobre o projeto. No entanto, assim que ela clicasse em um evento ou interagisse com o seletor de tempo, a descrição exibida deveria passar a mostrar o último evento anterior ao currentTime. Para isso, precisei pensar em uma lógica usando variáveis booleanas e lidar com vários bugs. Até conseguir deixar tudo bem integrado e funcionando de forma fluida, levou um bom tempo.
+  - Tempo estimado de desenvolvimento: 17 horas.
 
 - **Gustavo Tironi**
   - Partes Desenvolvidas:
@@ -58,9 +58,9 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
       - Desenvolvimento do sistema de paginação para organizar o conteúdo exibido
       - Estruturação da barra de navegação
       - Início da implementação do background para o gráfico (minard e mapa)
-    - A parte mais trabalhosa foi a implementação da interatividade no doughnut plot. Além disso, tive muitos problemas tentando replicar o gráfico original utilizando a biblioteca D3.js, não conseguindo obter o resultado esperado e abandonando a ideia. Trabalhar com mapas também está apresentando desafios, principalmente para sincronização das projeções do mapa (que usa mercator) com a transformação da latitude e longitude usadas para os dados no scatter plot.
-    - Tempo estimado de desenvolvimento: 11 horas.
+  - A parte mais trabalhosa foi a implementação da interatividade no doughnut plot. Além disso, tive muitos problemas tentando replicar o gráfico original utilizando a biblioteca D3.js, não conseguindo obter o resultado esperado e abandonando a ideia. Trabalhar com mapas também está apresentando desafios, principalmente para sincronização das projeções do mapa (que usa mercator) com a transformação da latitude e longitude usadas para os dados no scatter plot.
+  - Tempo estimado de desenvolvimento: 11 horas.
 
 ## Uso de IA
 
-Ao longo do desenvolvimento do projeto, foi usada IA generativa como suporte e orientação para a codificação das ideias e processos planejados pela equipe, sendo aplicada principalmente para a compreensão e utilização de uma linguagem de programação (JavaScript) à qual fomos apenas recentemente introduzidos e com a qual não tínhamos tanta experiência.
+Ao longo do desenvolvimento do projeto, foi usada IA generativa como suporte e orientação para a codificação das ideias e processos planejados pela equipe, sendo aplicada principalmente para a compreensão e utilização de uma linguagem de programação (JavaScript) à qual fomos apenas recentemente introduzidos e com a qual não tínhamos tanta experiência. Além disso, ela foi utilizada também para a geração dos textos-resumo dos eventos apresentados na visualização.
