@@ -451,7 +451,7 @@
         </div>
 
         <div class="text-container">
-            <Description bind:selectedEvent currentTimeInput={currentTime} />
+            <Description bind:selectedEvent bind:currentTimeInput={currentTime} onTogglePlay={togglePlay} bind:playing={playing} minTime = {minTime}/>
         </div>
     </div>
 </div>

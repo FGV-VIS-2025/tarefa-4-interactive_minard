@@ -1,6 +1,9 @@
 <script>
     export let selectedEvent;
     export let currentTimeInput;
+    export let onTogglePlay;
+    export let playing;
+    export let minTime;
     import Icon from "$lib/icon.svelte";
     import eventInfo from "$lib/data/dados.json";
     import { formattedDate, parseDate } from "$lib/utils";
@@ -52,10 +55,7 @@
                 }
 
                 // Store the closest event before the current time
-                if (
-                    !closestDate ||
-                    (eventDate < currentTime && eventDate > closestDate)
-                ) {
+                if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
                     closestEvent = key;
                     closestDate = eventDate;
                     // Se passamos da data, podemos retornar
@@ -97,11 +97,22 @@
         selectedEvent = selectedEvent;
     }
 
+    function handleClick() {
+        onTogglePlay();
+    }
+
     // Função para resetar a descrição
     function resetDescription() {
         showStart = false;
         selectedEvent = null;
         tryUpdteSelectedEvent = false;
+        if (playing) {
+            handleClick();
+        }
+        console.log(minTime)
+        console.log(currentTimeInput)
+        currentTimeInput = minTime;
+        console.log(currentTimeInput)
     }
 </script>
 
