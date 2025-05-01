@@ -16,11 +16,7 @@
   let diameter_circle = 16;
   let selectedId = null;
 
-  let tooltip;
-
-  onMount(() => {
-    tooltip = d3.select("#tooltip");
-  });
+  let tooltipElement;
 
   let eventList = Object.entries(events).map(([id, info]) => ({
     id,
@@ -67,24 +63,6 @@
   $: eventsWithPositions = calculateProportions();
 </script>
 
-<div
-  id="tooltip"
-  style="
-    position: absolute;
-    text-align: left;
-    width: auto;
-    max-width: 200px;
-    padding: 8px;
-    font: 14px sans-serif;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 999;
-"
-></div>
-
 <svelte:window on:click={() => handleClick(null)} />
 
 <div
@@ -113,18 +91,23 @@
           on:keydown={(e) => handleKeyDown(e, event.id)}
           style="position: absolute; left: calc({event.x}px - {buttonWidth /
             2}px);"
-          on:mouseenter={() => {
-            tooltip
-              .style("opacity", 0.9)
-              .html(`<div style="max-width: 200px;"><strong>${event.title}</strong></div>`);
-          }}
-          on:mousemove={(e) => {
-            tooltip
-              .style("left", e.pageX - 150 + "px")
-              .style("top", e.pageY - 190 + "px");
+          on:mouseenter={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const containerRect = e.currentTarget.offsetParent.getBoundingClientRect();
+          
+            const tooltipWidth = tooltipElement.offsetWidth;
+            const tooltipHeight = tooltipElement.offsetHeight;
+          
+            const x = rect.left - containerRect.left + rect.width / 2 - tooltipWidth / 2 + 50;
+            const y = rect.top - containerRect.top - tooltipHeight - 20;
+          
+            tooltipElement.innerHTML = `<div><strong>${event.title}</strong></div>`;
+            tooltipElement.style.opacity = 0.9;
+            tooltipElement.style.left = `${x}px`;
+            tooltipElement.style.top = `${y}px`;
           }}
           on:mouseleave={() => {
-            tooltip.style("opacity", 0);
+            tooltipElement.style.opacity = 0;
           }}
           tabindex="0"
         >
@@ -168,18 +151,23 @@
           class="event-button"
           on:click|stopPropagation={() => handleClick(event.id)}
           on:keydown={(e) => handleKeyDown(e, event.id)}
-          on:mouseenter={() => {
-            tooltip
-              .style("opacity", 0.9)
-              .html(`<div style="max-width: 200px;"><strong>${event.title}</strong></div>`);
-          }}
-          on:mousemove={(e) => {
-            tooltip
-              .style("left", e.pageX - 150 + "px")
-              .style("top", e.pageY - 190 + "px");
+          on:mouseenter={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const containerRect = e.currentTarget.offsetParent.getBoundingClientRect();
+          
+            const tooltipWidth = tooltipElement.offsetWidth;
+            const tooltipHeight = tooltipElement.offsetHeight;
+          
+            const x = rect.left - containerRect.left + rect.width / 2 - tooltipWidth / 2 + 50;
+            const y = rect.top - containerRect.top - tooltipHeight + 10;
+          
+            tooltipElement.innerHTML = `<div><strong>${event.title}</strong></div>`;
+            tooltipElement.style.opacity = 0.9;
+            tooltipElement.style.left = `${x}px`;
+            tooltipElement.style.top = `${y}px`;
           }}
           on:mouseleave={() => {
-            tooltip.style("opacity", 0);
+            tooltipElement.style.opacity = 0;
           }}
           style="position: absolute; left: calc({event.x}px - {buttonWidth /
             2}px); bottom: 0;"
@@ -189,6 +177,23 @@
         </button>
       {/if}
     {/each}
+
+    <div
+      id="tooltip"
+      bind:this={tooltipElement}
+      style="
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+        z-index: 999;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px;
+        font: 14px sans-serif;
+        max-width: 200px;
+      "
+    ></div>
   </div>
 </div>
 
