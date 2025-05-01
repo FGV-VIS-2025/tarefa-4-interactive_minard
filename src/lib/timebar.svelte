@@ -61,6 +61,25 @@
   }
 
   $: eventsWithPositions = calculateProportions();
+  function calculateLeftPositions(eventsWithPositions) {
+    const offsets = {
+      gjatsk: -15,
+      borodino: 5,
+      shevardino: -5,
+      moscow1: 10,
+      moscow2: -15,
+      maloyaroslavets: 10,
+    };
+
+    const positions = {};
+    for (let event of eventsWithPositions) {
+      const offset = offsets[event.id] ?? 0; // Se não estiver no dicionário, usa 0
+      positions[event.id] = event.x - buttonWidth / 2 + offset;
+    }
+    return positions;
+  }
+
+  $: dictionary_position = calculateLeftPositions(eventsWithPositions);
 </script>
 
 <svelte:window on:click={() => handleClick(null)} />
@@ -89,18 +108,23 @@
           class="event-button"
           on:click|stopPropagation={() => handleClick(event.id)}
           on:keydown={(e) => handleKeyDown(e, event.id)}
-          style="position: absolute; left: calc({event.x}px - {buttonWidth /
-            2}px);"
+          style="position: absolute; left: {dictionary_position[event.id]}px;"
           on:mouseenter={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
-            const containerRect = e.currentTarget.offsetParent.getBoundingClientRect();
-          
+            const containerRect =
+              e.currentTarget.offsetParent.getBoundingClientRect();
+
             const tooltipWidth = tooltipElement.offsetWidth;
             const tooltipHeight = tooltipElement.offsetHeight;
-          
-            const x = rect.left - containerRect.left + rect.width / 2 - tooltipWidth / 2 + 50;
+
+            const x =
+              rect.left -
+              containerRect.left +
+              rect.width / 2 -
+              tooltipWidth / 2 +
+              50;
             const y = rect.top - containerRect.top - tooltipHeight - 20;
-          
+
             tooltipElement.innerHTML = `<div><strong>${event.title}</strong></div>`;
             tooltipElement.style.opacity = 0.9;
             tooltipElement.style.left = `${x}px`;
@@ -153,14 +177,20 @@
           on:keydown={(e) => handleKeyDown(e, event.id)}
           on:mouseenter={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
-            const containerRect = e.currentTarget.offsetParent.getBoundingClientRect();
-          
+            const containerRect =
+              e.currentTarget.offsetParent.getBoundingClientRect();
+
             const tooltipWidth = tooltipElement.offsetWidth;
             const tooltipHeight = tooltipElement.offsetHeight;
-          
-            const x = rect.left - containerRect.left + rect.width / 2 - tooltipWidth / 2 + 50;
+
+            const x =
+              rect.left -
+              containerRect.left +
+              rect.width / 2 -
+              tooltipWidth / 2 +
+              50;
             const y = rect.top - containerRect.top - tooltipHeight + 10;
-          
+
             tooltipElement.innerHTML = `<div><strong>${event.title}</strong></div>`;
             tooltipElement.style.opacity = 0.9;
             tooltipElement.style.left = `${x}px`;
@@ -169,8 +199,9 @@
           on:mouseleave={() => {
             tooltipElement.style.opacity = 0;
           }}
-          style="position: absolute; left: calc({event.x}px - {buttonWidth /
-            2}px); bottom: 0;"
+          style="position: absolute; left: {dictionary_position[
+            event.id
+          ]}px; bottom: 0;"
           tabindex="0"
         >
           <Icon name={event.icon} />

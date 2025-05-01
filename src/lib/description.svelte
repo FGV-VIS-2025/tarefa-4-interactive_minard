@@ -202,7 +202,7 @@
     }
     .event-image {
         width: 100%;
-        max-width: 230px;
+        max-width: 270px;
         height: auto;
     }
     .reset-button {
