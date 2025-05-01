@@ -305,12 +305,7 @@
     }
 
     // Atualiza os marcadores de eventos
-    $: if (
-        svg &&
-        typeof x === "function" &&
-        typeof y === "function" &&
-        Object.keys(eventInfo).length > 0
-    ) {
+    $: if (svg && typeof x === "function" && typeof y === "function" && Object.keys(eventInfo).length > 0) {
         const eventPoints = Object.entries(eventInfo).map(([id, info]) => ({
             id,
             ...info,
@@ -327,6 +322,7 @@
             .enter()
             .append("foreignObject")
             .attr("class", "event-marker")
+            .style("cursor", "pointer")
             .attr("width", 20)
             .attr("height", 20)
             .html((d) => markerHtml(d))
@@ -357,6 +353,7 @@
             .merge(enter)
             .attr("x", (d) => x(d.lon) - 10)
             .attr("y", (d) => y(d.lat) - 10)
+            .style("cursor", "pointer")
             .html((d) => markerHtml(d));
 
         markers.exit().remove();
