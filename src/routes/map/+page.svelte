@@ -43,6 +43,7 @@
     let colorScale;
     let sizeScale;
     let height;
+    let projection;
 
     let chartWidth = 800;
 
@@ -192,13 +193,17 @@
             .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
             .range([height - margin.bottom, margin.top]);
 
+        const moscowCoords = [37.518, 55.751];
+
+        console.log(y(minLat + (maxLat - minLat)/2));
+        console.log((minLat + maxLat)/2)
+
         // Add geographical map background - NEW CODE
         // Create a D3 projection that aligns with our x,y scales
-        const projection = d3.geoMercator()
+        projection = d3.geoMercator()
             .translate([x(minLong + (maxLong - minLong)/2), y(minLat + (maxLat - minLat)/2)])
-            .scale(1200)
+            .scale(2000)
             .center([(minLong + maxLong)/2, (minLat + maxLat)/2]);
-
         const geoPath = d3.geoPath().projection(projection);
 
         // Create geoJSON from the topoJSON world data
@@ -208,8 +213,6 @@
         // You'll need to map country ids to names appropriately - these are example IDs
         const countryIds = ["643", "440", "428", "112"]; // Example IDs for Russia, Lithuania, Latvia, Belarus
         const filteredCountries = countries.features.filter(d => countryIds.includes(d.id));
-
-        console.log(filteredCountries)
 
         // Create a clip path to limit the map to our region of interest
         svg.append("defs")
@@ -248,6 +251,22 @@
             .attr("stroke", "#eeeeee")
             .attr("stroke-width", 0.2);
         // End of map background code
+
+        if (!svg.select(".landmarks-group").node()) {
+            svg.append("g").attr("class", "landmarks-group");
+        }
+
+        // Adiciona o ponto de Moscou
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "moscow-dot")
+            .attr("cx", projection(moscowCoords)[0])
+            .attr("cy", projection(moscowCoords)[1])
+            .attr("r", 6) // Tamanho do ponto
+            .attr("fill", "red")
+            .attr("stroke", "white")
+            .attr("stroke-width", 1)
+            .attr("opacity", 0.9);
 
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
@@ -355,8 +374,8 @@
             .merge(circles);
 
         circlesUpdate
-            .attr("cx", (d) => x(d.lon))
-            .attr("cy", (d) => y(d.lat))
+            .attr("cx", (d) => projection([d.lon, d.lat])[0])
+            .attr("cy", (d) => projection([d.lon, d.lat])[1])
             .attr("r", (d) => Math.sqrt(sizeScale(d.size) / Math.PI))
             .attr("fill", (d) => colorScale(d.direction))
             .attr("stroke", (d) =>
@@ -416,8 +435,8 @@
 
         markers
             .merge(enter)
-            .attr("x", (d) => x(d.lon) - 10)
-            .attr("y", (d) => y(d.lat) - 10)
+            .attr("x", (d) => projection([d.lon, d.lat])[0] - 10)
+            .attr("y", (d) => projection([d.lon, d.lat])[1] - 10)
             .style("cursor", "pointer")
             .html((d) => markerHtml(d));
 
