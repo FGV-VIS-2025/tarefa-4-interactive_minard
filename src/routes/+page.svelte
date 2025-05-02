@@ -232,6 +232,7 @@
                 currentTime = newTime + 1;
                 setTimeout(() => (currentTime = newTime), 0);
             }
+            if (playing) {togglePlay();}
         }
     }
 
@@ -450,7 +451,13 @@
         </div>
 
         <div class="text-container">
-            <Description bind:selectedEvent bind:currentTimeInput={currentTime} onTogglePlay={togglePlay} bind:playing={playing} minTime = {minTime}/>
+            <Description 
+                bind:selectedEvent
+                bind:currentTimeInput={currentTime}
+                onTogglePlay={togglePlay}
+                bind:playing={playing}
+                minTime = {minTime}
+            />
         </div>
     </div>
 </div>
