@@ -183,15 +183,45 @@
                     on:mouseleave={handleMouseLeave}
                 >timeline</span> 
                 above to track the army’s decline by the
-                shrinking circles on the map, or click the play button to view
+                shrinking circles on the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('map')}
+                    on:mouseleave={handleMouseLeave}
+                >map</span>,
+                or click the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('play_button')}
+                    on:mouseleave={handleMouseLeave}
+                >play button</span>
+                to view
                 it continuously.
             </li>
             <li>
-                Click timeline buttons or map markers to jump to specific events
+                Click 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('event_buttons')}
+                    on:mouseleave={handleMouseLeave}
+                >timeline buttons</span>
+                or 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('markers')}
+                    on:mouseleave={handleMouseLeave}
+                >map markers</span>
+                to jump to specific events
                 and read their descriptions.
             </li>
             <li>
-                Hover over circles while static to see approximate details about
+                Hover over 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('circles')}
+                    on:mouseleave={handleMouseLeave}
+                >circles</span>
+                while static to see approximate details about
                 each troop at that point.
             </li>
         </ul>
