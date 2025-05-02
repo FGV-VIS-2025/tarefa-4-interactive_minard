@@ -4,6 +4,7 @@
 
     let pages = [
         { url: "/", title: "Iterative Graph" },
+        { url: "/map", title: "Map" },
         { url: "/autores", title: "Authors" },
         { url: "/minard", title: "Original Minard" },
         {
