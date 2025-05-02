@@ -55,7 +55,10 @@
                 }
 
                 // Store the closest event before the current time
-                if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
+                if (
+                    !closestDate ||
+                    (eventDate < currentTime && eventDate > closestDate)
+                ) {
                     closestEvent = key;
                     closestDate = eventDate;
                     // Se passamos da data, podemos retornar
@@ -130,17 +133,17 @@
         <p class="image_description">
             {#if orderedEvents[selectedEvent].image}
                 <a
-                href={orderedEvents[selectedEvent].image}
-                target="_blank"
-                rel="noopener noreferrer"
-                style="cursor: pointer;"
-            >
-                <img
-                    src={orderedEvents[selectedEvent].image}
-                    alt="{orderedEvents[selectedEvent].label} image"
-                    class="event-image hoverable-image"
-                />
-        </a>
+                    href={orderedEvents[selectedEvent].image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="cursor: pointer;"
+                >
+                    <img
+                        src={orderedEvents[selectedEvent].image}
+                        alt="{orderedEvents[selectedEvent].label} image"
+                        class="event-image hoverable-image"
+                    />
+                </a>
             {/if}
         </p>
         <div class="event-description">
@@ -153,19 +156,31 @@
 {:else}
     <div class="description-container">
         <h3 class="title-description">Minard and French invasion of Russia</h3>
-        <img
+        <!-- <img class = "image-intro"
             src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg"
             alt="napoleaon invasion"
-            class="event-image"
-        />
-        <p class= "container-intro">
-            Napoleon's campaign in Russia was famously depicted by Charles
-            Minard in his 1869 infographic, illustrating the army’s decline by
-            combining geography, temperature and troop strength. We propose
-            making it interactive to better understand Minard’s message,
-            highlighting key battles and events as users scroll through the
-            historical journey.
+        /> -->
+        <p class="container-intro">
+            <a href="./minard">Charles Minard's 1869 infographic</a> famously visualized
+            Napoleon's Russian campaign by combining geography, temperature, and
+            troop size. This interactive version enhances the original by letting
+            users explore key battles and events along the journey.
         </p>
+        <ul class="container-intro">
+            <li>
+                Use the timeline above to track the army’s decline by the
+                shrinking circles on the map, or click the play button to view
+                it continuously.
+            </li>
+            <li>
+                Click timeline buttons or map markers to jump to specific events
+                and read their descriptions.
+            </li>
+            <li>
+                Hover over circles while static to see approximate details about
+                each troop at that point.
+            </li>
+        </ul>
     </div>
 {/if}
 
@@ -202,8 +217,7 @@
         line-height: 1.2;
         text-align: justify;
     }
-    .container-intro
-    {
+    .container-intro {
         text-align: justify;
         line-height: 1.2;
     }
@@ -242,11 +256,24 @@
         transform: translateY(0);
     }
     .hoverable-image {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
 
-.hoverable-image:hover {
-    transform: scale(1.01);
-}
+    .hoverable-image:hover {
+        transform: scale(1.01);
+    }
+
+    a {
+        color: #1a73e8;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s ease, border-bottom 0.2s ease;
+        cursor: pointer;
+    }
+
+    a:hover {
+        color: #0c47b7;
+        border-bottom: 1px solid #0c47b7;
+    }
 </style>
