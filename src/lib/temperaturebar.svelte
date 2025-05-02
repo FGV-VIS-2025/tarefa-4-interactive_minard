@@ -10,9 +10,12 @@
     let yScale;
     let barGroup;
     let tempBar;
+    let tempBar2;
     let tempAxisGroup;
+    let defs;
+    let gradient;
 
-    const TEMP_MIN = -35;
+    const TEMP_MIN = -33;
     const TEMP_MAX = 0;
 
     function setupBar() {
@@ -65,14 +68,67 @@
 
         tempAxisGroup.selectAll(".tick text").style("font-size", "10px");
 
+        defs = svg.append("defs");
+
+        defs.append("linearGradient")
+            .attr("id", "temp-gradient")
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "0%")
+            .attr("y2", "100%")
+            .selectAll("stop")
+            .data([
+                {offset: "0%", color: "#b3d9ff"},
+                {offset: "100%", color: "#004080"}
+            ])
+            .enter()
+            .append("stop")
+            .attr("offset", d => d.offset)
+            .attr("stop-color", d => d.color);
+
+        barGroup.append("rect")
+            .attr("class", "gradient-bar")
+            .attr("x", 0)
+            .attr("y", yScale(TEMP_MAX))
+            .attr("width", 10)
+            .attr("height", yScale(TEMP_MIN) - yScale(TEMP_MAX))
+            .attr("fill", "url(#temp-gradient)");
+
+        tempBar2 = barGroup
+            .append("rect")
+            .attr("x", 0)
+            .attr("width", 10)
+            .attr("fill", "white")
+            .attr("style", "transition: opacity 0.1s ease")
+            .attr("pointer-events", "none")
+            .style("display", "block")
+            .style("opacity", 0)
+            .attr("y", yScale(TEMP_MAX))
+            .attr("height", yScale(TEMP_MIN) - yScale(TEMP_MAX));
         tempBar = barGroup
             .append("rect")
             .attr("x", 0)
             .attr("width", 10)
-            .attr("fill", "#9c7873")
-            .attr("opacity", 0.8)
-            .style("display", "none")
-            .attr("style", "transition: opacity 0.1s ease");
+            .attr("fill", "white")
+            .attr("style", "transition: opacity 0.1s ease")
+            .attr("pointer-events", "none");
+
+        barGroup.append("text")
+                .attr("class", "temp-placeholder-text")
+                .attr("x", -67)
+                .attr("y", yScale(TEMP_MAX) + 105)
+                .text("No temperature")
+                .attr("font-size", "12px")
+                .attr("fill", "#555")
+                .attr("style", "transition: opacity 0.1s ease");
+        barGroup.append("text")
+                .attr("class", "temp-placeholder-text")
+                .attr("x", -70)
+                .attr("y", yScale(TEMP_MAX) + 118)
+                .text("data for this date")
+                .attr("font-size", "12px")
+                .attr("fill", "#555")
+                .attr("style", "transition: opacity 0.1s ease");
     }
 
     onMount(() => {
@@ -91,36 +147,40 @@
         if (pointWithTemp) {
             const temp = pointWithTemp.temp;
 
-            const yTop = yScale(TEMP_MAX);
             const yBottom = yScale(temp);
 
             tempBar
-                .attr("y", yTop)
-                .attr("height", yBottom - yTop)
                 .style("display", "block")
-                .style("opacity", 0.8);
+                .attr("y", yBottom)
+                .attr("height", yScale(TEMP_MIN) - yBottom);
 
             tempAxisGroup.style("opacity", 1).style("pointer-events", "all");
+            barGroup.selectAll(".temp-placeholder-text").style("opacity", 0);
+            tempBar2.style("opacity", 0);
+
         } else {
             if (
                 data.length > 0 &&
                 parseDate(data[0].date) > parseDate("1812-12-06")
             ) {
                 const temp = -26;
-
-                const yTop = yScale(TEMP_MAX);
                 const yBottom = yScale(temp);
 
                 tempBar
-                    .attr("y", yTop)
-                    .attr("height", yBottom - yTop)
                     .style("display", "block")
-                    .style("opacity", 0.3);
+                    .attr("y", yBottom)
+                    .attr("height", yScale(TEMP_MIN) - yBottom);
+
             } else {
-                tempBar.style("display", "none");
+                tempBar.style("display", "block")
+                       .attr("y", yScale(TEMP_MAX))
+                       .attr("height", yScale(TEMP_MIN) - yScale(TEMP_MAX))
+                       .style("opacity", 1);
             }
 
-            tempAxisGroup.style("opacity", 0.3).style("pointer-events", "none");
+            tempAxisGroup.style("opacity", 0.1).style("pointer-events", "none");
+            barGroup.selectAll(".temp-placeholder-text").style("opacity", 0.8);
+            tempBar2.style("opacity", 0.9);
         }
     }
 </script>
