@@ -114,6 +114,14 @@
         }
         currentTimeInput = minTime;
     }
+
+    function handleMouseEnter(id) {
+        dispatch('highlight', { id });
+    }
+
+    function handleMouseLeave() {
+        dispatch('highlight', { id: null });
+    }
 </script>
 
 {#if showStart && selectedEvent}
@@ -168,7 +176,13 @@
         </p>
         <ul class="container-intro">
             <li>
-                Use the timeline above to track the army’s decline by the
+                Use the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('timeline')}
+                    on:mouseleave={handleMouseLeave}
+                >timeline</span> 
+                above to track the army’s decline by the
                 shrinking circles on the map, or click the play button to view
                 it continuously.
             </li>
@@ -277,5 +291,14 @@
     a:hover {
         color: #0c47b7;
         border-bottom: 1px solid #0c47b7;
+    }
+
+    .hoverable-word {
+        text-decoration: underline dotted;
+        cursor: pointer;
+    }
+
+    .hoverable-word:hover {
+        background-color: #fffae6;
     }
 </style>

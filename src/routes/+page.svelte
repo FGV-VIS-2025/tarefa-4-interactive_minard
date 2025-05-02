@@ -406,7 +406,30 @@
             clearInterval(playInterval);
         }
     }
+
+    let highlightTarget = null;
+
+    function handleHighlight(event) {
+        highlightTarget = event.detail.id;
+    }
+
+    const highlightStyles = {
+        timeline: { top: '155px', left: '160px', width: '735px', height: '145px' },
+        chart: { top: '150px', left: '50px', width: '400px', height: '300px' }
+    };
 </script>
+
+{#if highlightTarget}
+    <div
+        class="highlight-rect"
+        style="
+            top: {highlightStyles[highlightTarget].top};
+            left: {highlightStyles[highlightTarget].left};
+            width: {highlightStyles[highlightTarget].width};
+            height: {highlightStyles[highlightTarget].height};
+        "
+    ></div>
+{/if}
 
 <div class="page-container">
     <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
@@ -423,7 +446,7 @@
                     />
                 </div>
 
-                <div class="timebar-wrapper">
+                <div class="timebar-wrapper {highlightTarget === 'timeline' ? 'highlighted' : ''}">
                     <Timebar
                         events={eventInfo}
                         {minTime}
@@ -457,6 +480,7 @@
                 onTogglePlay={togglePlay}
                 bind:playing={playing}
                 minTime = {minTime}
+                on:highlight={handleHighlight}
             />
         </div>
     </div>
@@ -564,5 +588,15 @@
         position: relative;
         bottom: 95px;
         right: -240px; 
+    }
+
+    .highlight-rect {
+        position: absolute;
+        border: 3px dashed black;
+        background-color: rgba(255, 255, 0, 0.1);
+        border-radius: 8px;
+        z-index: 999;
+        pointer-events: none;
+        transition: all 0.1s ease;
     }
 </style>
