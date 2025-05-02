@@ -216,10 +216,12 @@
         margin-top: 15px;
         line-height: 1.2;
         text-align: justify;
+        font-size: 14px;
     }
     .container-intro {
         text-align: justify;
         line-height: 1.2;
+        font-size: 14px;
     }
     .event-image {
         width: 100%;

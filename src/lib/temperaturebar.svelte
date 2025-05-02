@@ -179,7 +179,7 @@
             }
 
             tempAxisGroup.style("opacity", 0.1).style("pointer-events", "none");
-            barGroup.selectAll(".temp-placeholder-text").style("opacity", 0.8);
+            barGroup.selectAll(".temp-placeholder-text").style("opacity", 1);
             tempBar2.style("opacity", 0.9);
         }
     }

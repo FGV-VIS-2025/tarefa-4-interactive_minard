@@ -414,14 +414,14 @@
     <div class="main-container">
         <div class="chart-container">
             <div class="top-bar">
-                <PlayButton
-                    {playing}
-                    onTogglePlay={togglePlay}
-                />
-
-                <p class="date-text">
-                    {formatDate(parseDate(currentTime))}
-                </p>
+                <div class="left-info">
+                    <p class="date-name">Date</p>
+                    <p class="date-text">{formatDate(parseDate(currentTime))}</p>
+                    <PlayButton
+                        {playing}
+                        onTogglePlay={togglePlay}
+                    />
+                </div>
 
                 <div class="timebar-wrapper">
                     <Timebar
@@ -498,11 +498,19 @@
     .top-bar {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 20px;
         width: 800px;
         margin-bottom: 10px;
-        position: relative;
+    }
+
+    .left-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        min-width: 100px;
+        flex-shrink: 0;
     }
 
     svg#chart {
@@ -511,10 +519,17 @@
 
     .date-text {
         font-size: 16px;
-        font-weight: bold;
+        /* font-weight: bold; */
         width: 100px;
         text-align: center;
         margin-top: -20px;
+    }
+
+    .date-name {
+        font-weight: bold;
+        width: 100px;
+        text-align: center;
+        margin-top: -40px;
     }
 
     #chart {
