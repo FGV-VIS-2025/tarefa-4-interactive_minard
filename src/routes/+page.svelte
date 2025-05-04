@@ -76,7 +76,7 @@
         // Legenda de tamanhos
         const sizeLegend = svg
             .append("g")
-            .attr("transform", "translate(20, 150)");
+            .attr("transform", "translate(-115, 120)");
 
         const sizeLegendScale = d3
             .scaleLinear()
@@ -187,7 +187,7 @@
         const countryData = [
             { id: "643", name: "Russia", color: "#e9e9e9" },
             { id: "440", name: "Lithuania", color: "#808080" },
-            { id: "428", name: "Latvia", color: "#a9a9a9" },
+            { id: "428", name: "Latvia", color: "#708090" },
             { id: "112", name: "Belarus", color: "#bdbebd" }
         ];
 
@@ -216,6 +216,15 @@
             .attr("class", "map-group")
             .attr("clip-path", "url(#map-clip)");
 
+        mapGroup.append("rect")
+            .attr("x", x(minLong))
+            .attr("y", y(maxLat))
+            .attr("width", x(maxLong) - x(minLong))
+            .attr("height", y(minLat) - y(maxLat))
+            .attr("fill", "none")
+            .attr("stroke", "#000000")
+            .attr("stroke-width", 2);
+
         // Draw the countries
         mapGroup.selectAll(".country")
             .data(filteredCountries)
@@ -227,7 +236,6 @@
             .attr("stroke",  "#000000")
             .attr("stroke-width", 0.8)
             .attr("opacity", 0.6);
-
 
         if (!svg.select(".landmarks-group").node()) {
             svg.append("g").attr("class", "landmarks-group");
@@ -297,6 +305,56 @@
             .attr("text-anchor", "start");
         // ------------------------------------------------------ End of map background ------------------------------------------------------
 
+        // Legenda paises
+        const countryLegend = svg
+            .append("g")
+            .attr("class", "legend-group")
+            .attr("transform", "translate(170,  120)");
+
+        const countryLegendRects = countryLegend
+            .append("g")
+            .attr("transform", "translate(550, 180)");
+
+        countryLegendRects
+            .append("rect")
+            .attr("x", -60)
+            .attr("y", -25)
+            .attr("width", 100)
+            .attr("height", 70)
+            .attr("fill", "white")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.7)
+            .attr("rx", 5)
+            .attr("ry", 5);
+
+        // Quadrados coloridos
+        countryLegendRects
+            .selectAll("rect.color-box")
+            .data(countryData)
+            .enter()
+            .append("rect")
+            .attr("class", "color-box")
+            .attr("x", -50)
+            .attr("y", (d, i) => i * 14 - 15)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", d => d.color)
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.5);
+
+        // Nomes
+        countryLegendRects
+            .selectAll("text.country-name")
+            .data(countryData)
+            .enter()
+            .append("text")
+            .attr("class", "country-name")
+            .attr("x", -35)
+            .attr("y", (d, i) => i * 14 - 5.5)
+            .text(d => d.name)
+            .attr("font-size", "11px")
+            .attr("text-anchor", "start");
+
         // legenda de cores
         const colorLegend = svg
             .append("g")
@@ -323,33 +381,6 @@
             .attr("y", (d, i) => i * 20 + 15)
             .text((d) => (d === "A" ? "Advance" : "Retreat"))
             .style("font-size", "14px");
-
-        svg.append("g")
-            .attr("transform", `translate(0, ${height - margin.bottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
-
-        svg.append("g")
-            .attr("transform", `translate(${margin.left}, 0)`)
-            .call(d3.axisLeft(y).ticks((y.domain()[1] - y.domain()[0]) * 2))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
-
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("x", width / 2 + 75)
-            .attr("y", height - 15) // um pouco abaixo do eixo X
-            .text("Longitude (°)")
-            .style("font-size", "16px");
-
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("transform", `rotate(-90)`)
-            .attr("x", -height / 2 + 20)
-            .attr("y", 120) // um pouco à esquerda do eixo Y
-            .text("Latitude (°)")
-            .style("font-size", "16px");
     });
 
     let selectedEvent = null;
@@ -765,8 +796,8 @@
 
     .doughnut-container {
         position: relative;
-        bottom: 95px;
-        right: -240px;
+        bottom: 120px;
+        right: -195px;
     }
 
     .highlight-rect {
