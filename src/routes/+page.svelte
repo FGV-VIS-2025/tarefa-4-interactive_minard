@@ -15,6 +15,7 @@
     import Description from "$lib/description.svelte";
     import Doughnut from "$lib/doughnut.svelte";
     import PlayButton from "$lib/PlayButton.svelte";
+    import Icon from "$lib/icon.svelte";
 
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter((d) => parseDate(d.date));
@@ -653,6 +654,44 @@
 
 <div class="page-container">
     <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
+
+    <div class="description-container">
+        <p>
+            This interactive visualization offers a modern reinterpretation of Charles Minard’s iconic 1869 map, which depicts Napoleon’s Russian campaign of 1812.
+            You can view the original version in the “Original Minard” tab for comparison.
+            At the top, the event timeline highlights key moments of the campaign. Each symbol represents a specific type of event:
+        </p>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 1em;">
+            <div style="text-align: center;">
+                <div><Icon name="river" width_icon={20} height_icon={20}/></div>
+                <div>River Crossing</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="burned" width_icon={20} height_icon={20}/></div>
+                <div>City Capture</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="battle" width_icon={20} height_icon={20}/></div>
+                <div>Battle</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="artillery" width_icon={20} height_icon={20}/></div>
+                <div>Preparing for War</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="out" width_icon={20} height_icon={20}/></div>
+                <div>Retreat</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="napoleon" width_icon={20} height_icon={20}/></div>
+                <div>Napoleon Retreats</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="depot" width_icon={20} height_icon={20}/></div>
+                <div>Supply Depot </div>
+            </div>
+        </div>
+    </div>
 
     <div class="main-container" bind:this={markersEl}>
         <div class="chart-container" bind:this={mapEl}>
