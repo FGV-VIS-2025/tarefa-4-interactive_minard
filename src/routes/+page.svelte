@@ -358,10 +358,21 @@
         // legenda de cores
         const colorLegend = svg
             .append("g")
-            .attr("transform", "translate(20, 20)");
+            .attr("transform", "translate(21, 22)");
 
         colorLegend
-            .selectAll("rect")
+            .append("rect")
+            .attr("x", 154)
+            .attr("y", -4)
+            .attr("width", 95)
+            .attr("height", 50)
+            .attr("fill", "white")
+            .attr("fill-opacity", 0.9)
+            .attr("stroke", "#ccc")
+            .attr("rx", 4);
+
+        colorLegend
+            .selectAll("rect.color")
             .data(colorScale.domain())
             .enter()
             .append("rect")
@@ -369,8 +380,7 @@
             .attr("y", (d, i) => i * 20)
             .attr("width", 20)
             .attr("height", 20)
-            .attr("fill", colorScale)
-            .attr("fill-opacity", 1);
+            .attr("fill", colorScale);
 
         colorLegend
             .selectAll("text")
