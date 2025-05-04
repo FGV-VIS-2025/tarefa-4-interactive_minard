@@ -1,7 +1,7 @@
 <script>
     const items = [
         {
-            src: "/images/Kauan.jpeg",
+            src: "./images/Kauan.jpeg",
             name: "Kauan Mariani Ferreira",
             description:
                 "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
@@ -11,7 +11,7 @@
             },
         },
         {
-            src: "/images/Pedro.png",
+            src: "./images/Pedro.png",
             name: "Pedro Henrique Coterli",
             description:
                 "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
@@ -22,7 +22,7 @@
             },
         },
         {
-            src: "/images/Gustavo.jpeg",
+            src: "./images/Gustavo.jpeg",
             name: "Gustavo Tironi",
             description:
                 "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
