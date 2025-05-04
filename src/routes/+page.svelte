@@ -613,8 +613,8 @@
         map: { top: 160, left: 95, width: -120, height: -265 },
         play_button: { top: -45, left: 5, width: -15, height: 65 },
         event_buttons: { top: -10, left: 100, width: -65, height: -90 },
-        markers: { top: 170, left: 480, width: -840, height: -440 },
-        circles: { top: -215, left: -60, width: -685, height: 40 },
+        markers: { top: 220, left: 485, width: -840, height: -480 },
+        circles: { top: -200, left: -23, width: -685, height: 40 },
     };
 
     function handleHighlight(event) {
