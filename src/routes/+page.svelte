@@ -1,6 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import * as d3 from "d3";
+    import { feature } from "topojson-client";
+    import worldTopojson from "$lib/data/world-atlas-50m.json";
     import { join } from "$lib/utils";
     import { interpolatePoints } from "$lib/utils";
     import { parseDate } from "$lib/utils";
@@ -13,6 +15,7 @@
     import Description from "$lib/description.svelte";
     import Doughnut from "$lib/doughnut.svelte";
     import PlayButton from "$lib/PlayButton.svelte";
+    import Icon from "$lib/icon.svelte";
 
     var joinedData = join(army, temperature, eventsDate);
     joinedData = joinedData.filter((d) => parseDate(d.date));
@@ -41,8 +44,14 @@
     let colorScale;
     let sizeScale;
     let height;
+    let projection;
 
     let chartWidth = 800;
+
+    const minLat = 54.05;
+    const maxLat = 56;
+    const minLong = 22;
+    const maxLong = 40;
 
     // Configurações do gráfico
     onMount(() => {
@@ -65,35 +74,10 @@
             .attr("width", width)
             .attr("height", 1.3 * height);
 
-        const colorLegend = svg
-            .append("g")
-            .attr("transform", "translate(20, 20)");
-
-        colorLegend
-            .selectAll("rect")
-            .data(colorScale.domain())
-            .enter()
-            .append("rect")
-            .attr("x", 160)
-            .attr("y", (d, i) => i * 20)
-            .attr("width", 20)
-            .attr("height", 20)
-            .attr("fill", colorScale);
-
-        colorLegend
-            .selectAll("text")
-            .data(colorScale.domain())
-            .enter()
-            .append("text")
-            .attr("x", 185)
-            .attr("y", (d, i) => i * 20 + 15)
-            .text((d) => (d === "A" ? "Advance" : "Retreat"))
-            .style("font-size", "14px");
-
         // Legenda de tamanhos
         const sizeLegend = svg
             .append("g")
-            .attr("transform", "translate(20, 150)");
+            .attr("transform", "translate(-115, 120)");
 
         const sizeLegendScale = d3
             .scaleLinear()
@@ -113,7 +97,7 @@
             .attr("fill", "white") // cor de fundo
             .attr("stroke", "black") // borda
             .attr("stroke-width", 0.7)
-            .attr("rx", 5) // bordas arredondadas (opcional)
+            .attr("rx", 5) // bordas arredondadas
             .attr("ry", 5);
 
         sizeLegend
@@ -184,32 +168,230 @@
             .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
             .range([height - margin.bottom, margin.top]);
 
-        svg.append("g")
-            .attr("transform", `translate(0, ${height - margin.bottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
+        // ------------------------------------------------------ Start of map background ------------------------------------------------------
 
-        svg.append("g")
-            .attr("transform", `translate(${margin.left}, 0)`)
-            .call(d3.axisLeft(y).ticks((y.domain()[1] - y.domain()[0]) * 2))
-            .selectAll(".tick text")
-            .style("font-size", "12px");
 
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("x", width / 2 + 75)
-            .attr("y", height - 15) // um pouco abaixo do eixo X
-            .text("Longitude (°)")
-            .style("font-size", "16px");
+        // Define capital coordinates
+        const moscowCoords = [37.518, 55.751];
+        const vilniusCoords = [25.279, 54.487];
+        const minskCoords = [27.567, 53.893];
 
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("transform", `rotate(-90)`)
-            .attr("x", -height / 2 + 20)
-            .attr("y", 120) // um pouco à esquerda do eixo Y
-            .text("Latitude (°)")
-            .style("font-size", "16px");
+        // Create the backgroundmap
+        projection = d3.geoMercator()
+            .translate([x(minLong + (maxLong - minLong)/2), y(minLat + (maxLat - minLat)/2)])
+            .scale(2000)
+            .center([(minLong + maxLong)/2, (minLat + maxLat)/2]);
+        const geoPath = d3.geoPath().projection(projection);
+
+        const countries = feature(worldTopojson, worldTopojson.objects.countries);
+
+        const countryData = [
+            { id: "643", name: "Russia", color: "#e9e9e9" },
+            { id: "440", name: "Lithuania", color: "#808080" },
+            { id: "428", name: "Latvia", color: "#708090" },
+            { id: "112", name: "Belarus", color: "#bdbebd" }
+        ];
+
+        const countryIds = countryData.map(d => d.id);
+        const filteredCountries = countries.features.filter(d => countryIds.includes(d.id));
+
+        // Add country information to each feature
+        filteredCountries.forEach(feature => {
+            const countryInfo = countryData.find(d => d.id === feature.id);
+            feature.properties = feature.properties || {};
+            feature.properties.name = countryInfo.name;
+            feature.properties.color = countryInfo.color;
+        });
+
+        // Create a clip path to limit the map to our region of interest
+        svg.append("defs")
+            .append("clipPath")
+            .attr("id", "map-clip")
+            .append("rect")
+            .attr("x", x(minLong))
+            .attr("y", y(maxLat))
+            .attr("width", x(maxLong) - x(minLong))
+            .attr("height", y(minLat) - y(maxLat));
+
+        const mapGroup = svg.insert("g", ".armies-group")
+            .attr("class", "map-group")
+            .attr("clip-path", "url(#map-clip)");
+
+        mapGroup.append("rect")
+            .attr("x", x(minLong))
+            .attr("y", y(maxLat))
+            .attr("width", x(maxLong) - x(minLong))
+            .attr("height", y(minLat) - y(maxLat))
+            .attr("fill", "none")
+            .attr("stroke", "#000000")
+            .attr("stroke-width", 2);
+
+        // Draw the countries
+        mapGroup.selectAll(".country")
+            .data(filteredCountries)
+            .enter()
+            .append("path")
+            .attr("class",  d => "country ${d.properties.name.toLowerCase()}")
+            .attr("d", geoPath)
+            .attr("fill", d => d.properties.color)
+            .attr("stroke",  "#000000")
+            .attr("stroke-width", 0.6)
+            .attr("opacity", 0.4);
+
+        if (!svg.select(".landmarks-group").node()) {
+            svg.append("g").attr("class", "landmarks-group");
+        }
+
+        // Add Moscow -----
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "moscow-dot")
+            .attr("cx", projection(moscowCoords)[0])
+            .attr("cy", projection(moscowCoords)[1])
+            .attr("r", 6)
+            .attr("fill", "red")
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "moscow-label")
+            .attr("x", projection(moscowCoords)[0] - 15)
+            .attr("y", projection(moscowCoords)[1] + 15)
+            .text("Moscow")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+
+        // Add Minsk -----
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "minsk-dot")
+            .attr("cx", projection(minskCoords)[0])
+            .attr("cy", projection(minskCoords)[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "minsk-label")
+            .attr("x", projection(minskCoords)[0] - 11)
+            .attr("y", projection(minskCoords)[1] + 15)
+            .text("Minsk")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+
+        // Add Vilnus -----
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "vilnius-dot")
+            .attr("cx", projection(vilniusCoords)[0])
+            .attr("cy", projection(vilniusCoords)[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "vilnius-label")
+            .attr("x", projection(vilniusCoords)[0] - 25)
+            .attr("y", projection(vilniusCoords)[1] + 11)
+            .text("Vilnius")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+        // ------------------------------------------------------ End of map background ------------------------------------------------------
+
+        // Legenda paises
+        const countryLegend = svg
+            .append("g")
+            .attr("class", "legend-group")
+            .attr("transform", "translate(170,  120)");
+
+        const countryLegendRects = countryLegend
+            .append("g")
+            .attr("transform", "translate(550, 180)");
+
+        countryLegendRects
+            .append("rect")
+            .attr("x", -60)
+            .attr("y", -25)
+            .attr("width", 100)
+            .attr("height", 70)
+            .attr("fill", "white")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.7)
+            .attr("rx", 5)
+            .attr("ry", 5);
+
+        // Quadrados coloridos
+        countryLegendRects
+            .selectAll("rect.color-box")
+            .data(countryData)
+            .enter()
+            .append("rect")
+            .attr("class", "color-box")
+            .attr("x", -50)
+            .attr("y", (d, i) => i * 14 - 15)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", d => d.color)
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.5);
+
+        // Nomes
+        countryLegendRects
+            .selectAll("text.country-name")
+            .data(countryData)
+            .enter()
+            .append("text")
+            .attr("class", "country-name")
+            .attr("x", -35)
+            .attr("y", (d, i) => i * 14 - 5.5)
+            .text(d => d.name)
+            .attr("font-size", "11px")
+            .attr("text-anchor", "start");
+
+        // legenda de cores
+        const colorLegend = svg
+            .append("g")
+            .attr("transform", "translate(21, 22)");
+
+        colorLegend
+            .append("rect")
+            .attr("x", 154)
+            .attr("y", -4)
+            .attr("width", 95)
+            .attr("height", 50)
+            .attr("fill", "white")
+            .attr("fill-opacity", 0.9)
+            .attr("stroke", "#ccc")
+            .attr("rx", 4);
+
+        colorLegend
+            .selectAll("rect.color")
+            .data(colorScale.domain())
+            .enter()
+            .append("rect")
+            .attr("x", 160)
+            .attr("y", (d, i) => i * 20)
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", colorScale);
+
+        colorLegend
+            .selectAll("text")
+            .data(colorScale.domain())
+            .enter()
+            .append("text")
+            .attr("x", 185)
+            .attr("y", (d, i) => i * 20 + 15)
+            .text((d) => (d === "A" ? "Advance" : "Retreat"))
+            .style("font-size", "14px");
     });
 
     let selectedEvent = null;
@@ -291,8 +473,8 @@
             .merge(circles);
 
         circlesUpdate
-            .attr("cx", (d) => x(d.lon))
-            .attr("cy", (d) => y(d.lat))
+            .attr("cx", (d) => projection([d.lon, d.lat])[0])
+            .attr("cy", (d) => projection([d.lon, d.lat])[1])
             .attr("r", (d) => Math.sqrt(sizeScale(d.size) / Math.PI))
             .attr("fill", (d) => colorScale(d.direction))
             .attr("stroke", (d) =>
@@ -348,13 +530,13 @@
             .on("click", (event, d) => {
                 currentTime = parseDate(d.date); // <- Atualiza o currentTime no clique
                 if (playing) {togglePlay();}
-                
+
             });
 
         markers
             .merge(enter)
-            .attr("x", (d) => x(d.lon) - 10)
-            .attr("y", (d) => y(d.lat) - 10)
+            .attr("x", (d) => projection([d.lon, d.lat])[0] - 10)
+            .attr("y", (d) => projection([d.lon, d.lat])[1] - 10)
             .style("cursor", "pointer")
             .html((d) => markerHtml(d));
 
@@ -431,8 +613,8 @@
         map: { top: 160, left: 95, width: -120, height: -265 },
         play_button: { top: -45, left: 5, width: -15, height: 65 },
         event_buttons: { top: -10, left: 100, width: -65, height: -90 },
-        markers: { top: 170, left: 480, width: -840, height: -440 },
-        circles: { top: -215, left: -60, width: -685, height: 40 },
+        markers: { top: 220, left: 485, width: -840, height: -480 },
+        circles: { top: -200, left: -23, width: -685, height: 40 },
     };
 
     function handleHighlight(event) {
@@ -472,6 +654,44 @@
 
 <div class="page-container">
     <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
+
+    <div class="description-container">
+        <p>
+            This interactive visualization offers a modern reinterpretation of Charles Minard’s iconic 1869 map, which depicts Napoleon’s Russian campaign of 1812.
+            You can view the original version in the “Original Minard” tab for comparison.
+            At the top, the event timeline highlights key moments of the campaign. Each symbol represents a specific type of event:
+        </p>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 1em;">
+            <div style="text-align: center;">
+                <div><Icon name="river" width_icon={20} height_icon={20}/></div>
+                <div>River Crossing</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="burned" width_icon={20} height_icon={20}/></div>
+                <div>City Capture</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="battle" width_icon={20} height_icon={20}/></div>
+                <div>Battle</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="artillery" width_icon={20} height_icon={20}/></div>
+                <div>Preparing for War</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="out" width_icon={20} height_icon={20}/></div>
+                <div>Retreat</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="napoleon" width_icon={20} height_icon={20}/></div>
+                <div>Napoleon Retreats</div>
+            </div>
+            <div style="text-align: center;">
+                <div><Icon name="depot" width_icon={20} height_icon={20}/></div>
+                <div>Supply Depot </div>
+            </div>
+        </div>
+    </div>
 
     <div class="main-container" bind:this={markersEl}>
         <div class="chart-container" bind:this={mapEl}>
@@ -513,7 +733,7 @@
         </div>
 
         <div class="text-container">
-            <Description 
+            <Description
                 bind:selectedEvent
                 bind:currentTimeInput={currentTime}
                 onTogglePlay={togglePlay}
@@ -529,8 +749,8 @@
     .page-container {
         display: flex;
         flex-direction: column;
-        align-items: center; 
-        gap: 20px; 
+        align-items: center;
+        gap: 20px;
         height: 80vh;
         text-align: center;
         margin-left: -20px;
@@ -601,32 +821,32 @@
 
     .timebar-wrapper {
         position: relative;
-        top: 0; 
-        margin-bottom: 10px; 
-        width: 100%; 
+        top: 0;
+        margin-bottom: 10px;
+        width: 100%;
         flex-grow: 1;
         min-width: 600px;
         max-height: 600px;
     }
 
     .text-container {
-        width: 250px; 
+        width: 250px;
         padding-left: 10px;
-        max-width: 100%; 
-        box-sizing: border-box; 
+        max-width: 100%;
+        box-sizing: border-box;
         margin-top: 70px;
     }
 
     h1 {
-        margin-top: 10px; 
+        margin-top: 10px;
         font-size: 30px;
         margin-bottom: -5px;
     }
 
     .doughnut-container {
         position: relative;
-        bottom: 95px;
-        right: -240px; 
+        bottom: 120px;
+        right: -195px;
     }
 
     .highlight-rect {

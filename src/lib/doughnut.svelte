@@ -59,7 +59,7 @@
 <!-- Container para alinhar o SVG + o texto -->
 <div style="display: flex; flex-direction: row; align-items: center;">
   <!-- Texto à esquerda do grÃ¡fico -->
-  <div style="font-size: {size * 0.15}px; margin-right: 10px;">
+  <div style="font-size: {size * 0.15}px; margin-right: 10px; font-family: sans-serif;">
     <strong>Army Size</strong>
   </div>
 
