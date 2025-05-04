@@ -235,8 +235,8 @@
             .attr("d", geoPath)
             .attr("fill", d => d.properties.color)
             .attr("stroke",  "#000000")
-            .attr("stroke-width", 0.8)
-            .attr("opacity", 0.6);
+            .attr("stroke-width", 0.6)
+            .attr("opacity", 0.4);
 
         if (!svg.select(".landmarks-group").node()) {
             svg.append("g").attr("class", "landmarks-group");
