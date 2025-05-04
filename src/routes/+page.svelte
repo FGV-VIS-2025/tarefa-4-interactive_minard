@@ -232,6 +232,7 @@
                 currentTime = newTime + 1;
                 setTimeout(() => (currentTime = newTime), 0);
             }
+            if (playing) {togglePlay();}
         }
     }
 
@@ -346,7 +347,8 @@
             })
             .on("click", (event, d) => {
                 currentTime = parseDate(d.date); // <- Atualiza o currentTime no clique
-                togglePlay();
+                if (playing) {togglePlay();}
+                
             });
 
         markers
@@ -404,24 +406,86 @@
             clearInterval(playInterval);
         }
     }
+
+    let highlightTarget = null;
+    let highlightBox = null;
+
+    let mapEl;
+    let timelineEl;
+    let playEl;
+    let eventEl;
+    let markersEl;
+    let circlesEl;
+
+    const elementRefs = {
+        map: () => mapEl,
+        timeline: () => timelineEl,
+        play_button: () => playEl,
+        event_buttons: () => eventEl,
+        markers: () => markersEl,
+        circles: () => circlesEl
+    };
+
+    const highlightOffsets = {
+        timeline: { top: 50, left: -20, width: 55, height: -105 },
+        map: { top: 160, left: 95, width: -120, height: -265 },
+        play_button: { top: -45, left: 5, width: -15, height: 65 },
+        event_buttons: { top: -10, left: 100, width: -65, height: -90 },
+        markers: { top: 170, left: 480, width: -840, height: -440 },
+        circles: { top: -215, left: -60, width: -685, height: 40 },
+    };
+
+    function handleHighlight(event) {
+        const id = event.detail.id;
+        highlightTarget = id;
+
+        if (id && elementRefs[id]) {
+            const el = elementRefs[id]();
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                const offset = highlightOffsets[id] || { top: 0, left: 0, width: 0, height: 0 };
+
+                highlightBox = {
+                    top: rect.top + window.scrollY + offset.top,
+                    left: rect.left + window.scrollX + offset.left,
+                    width: rect.width + offset.width,
+                    height: rect.height + offset.height
+                };
+            }
+        } else {
+            highlightBox = null;
+        }
+    }
 </script>
+
+{#if highlightBox}
+    <div
+        class="highlight-rect"
+        style="
+            top: {highlightBox.top}px;
+            left: {highlightBox.left}px;
+            width: {highlightBox.width}px;
+            height: {highlightBox.height}px;
+        "
+    ></div>
+{/if}
 
 <div class="page-container">
     <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
 
-    <div class="main-container">
-        <div class="chart-container">
-            <div class="top-bar">
-                <PlayButton
-                    {playing}
-                    onTogglePlay={togglePlay}
-                />
+    <div class="main-container" bind:this={markersEl}>
+        <div class="chart-container" bind:this={mapEl}>
+            <div class="top-bar" bind:this={eventEl}>
+                <div class="left-info" bind:this={playEl}>
+                    <p class="date-name">Date</p>
+                    <p class="date-text">{formatDate(parseDate(currentTime))}</p>
+                    <PlayButton
+                        {playing}
+                        onTogglePlay={togglePlay}
+                    />
+                </div>
 
-                <p class="date-text">
-                    {formatDate(parseDate(currentTime))}
-                </p>
-
-                <div class="timebar-wrapper">
+                <div class="timebar-wrapper" bind:this={timelineEl}>
                     <Timebar
                         events={eventInfo}
                         {minTime}
@@ -443,13 +507,20 @@
                 <!-- Aqui dentro fica o scatter também -->
             </svg>
 
-            <div class="doughnut-container">
+            <div class="doughnut-container" bind:this={circlesEl}>
                 <Doughnut data={interpolatedData} />
             </div>
         </div>
 
         <div class="text-container">
-            <Description bind:selectedEvent bind:currentTimeInput={currentTime} onTogglePlay={togglePlay} bind:playing={playing} minTime = {minTime}/>
+            <Description 
+                bind:selectedEvent
+                bind:currentTimeInput={currentTime}
+                onTogglePlay={togglePlay}
+                bind:playing={playing}
+                minTime = {minTime}
+                on:highlight={handleHighlight}
+            />
         </div>
     </div>
 </div>
@@ -490,11 +561,19 @@
     .top-bar {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 20px;
         width: 800px;
         margin-bottom: 10px;
-        position: relative;
+    }
+
+    .left-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        min-width: 100px;
+        flex-shrink: 0;
     }
 
     svg#chart {
@@ -503,10 +582,17 @@
 
     .date-text {
         font-size: 16px;
-        font-weight: bold;
+        /* font-weight: bold; */
         width: 100px;
         text-align: center;
         margin-top: -20px;
+    }
+
+    .date-name {
+        font-weight: bold;
+        width: 100px;
+        text-align: center;
+        margin-top: -40px;
     }
 
     #chart {
@@ -541,5 +627,16 @@
         position: relative;
         bottom: 95px;
         right: -240px; 
+    }
+
+    .highlight-rect {
+        position: absolute;
+        border: 3px dashed black;
+        opacity: 0.5;
+        background-color: rgba(255, 255, 0, 0.1);
+        border-radius: 8px;
+        z-index: 1000;
+        pointer-events: none;
+        transition: all 0.2s ease;
     }
 </style>

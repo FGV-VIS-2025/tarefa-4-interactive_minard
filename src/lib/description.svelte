@@ -55,7 +55,10 @@
                 }
 
                 // Store the closest event before the current time
-                if (!closestDate || (eventDate < currentTime && eventDate > closestDate)) {
+                if (
+                    !closestDate ||
+                    (eventDate < currentTime && eventDate > closestDate)
+                ) {
                     closestEvent = key;
                     closestDate = eventDate;
                     // Se passamos da data, podemos retornar
@@ -111,6 +114,14 @@
         }
         currentTimeInput = minTime;
     }
+
+    function handleMouseEnter(id) {
+        dispatch('highlight', { id });
+    }
+
+    function handleMouseLeave() {
+        dispatch('highlight', { id: null });
+    }
 </script>
 
 {#if showStart && selectedEvent}
@@ -129,11 +140,18 @@
         </p>
         <p class="image_description">
             {#if orderedEvents[selectedEvent].image}
-                <img
-                    src={orderedEvents[selectedEvent].image}
-                    alt="{orderedEvents[selectedEvent].label} image"
-                    class="event-image"
-                />
+                <a
+                    href={orderedEvents[selectedEvent].image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="cursor: pointer;"
+                >
+                    <img
+                        src={orderedEvents[selectedEvent].image}
+                        alt="{orderedEvents[selectedEvent].label} image"
+                        class="event-image hoverable-image"
+                    />
+                </a>
             {/if}
         </p>
         <div class="event-description">
@@ -146,19 +164,67 @@
 {:else}
     <div class="description-container">
         <h3 class="title-description">Minard and French invasion of Russia</h3>
-        <img
+        <!-- <img class = "image-intro"
             src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg"
             alt="napoleaon invasion"
-            class="event-image"
-        />
-        <p class= "container-intro">
-            Napoleon's campaign in Russia was famously depicted by Charles
-            Minard in his 1869 infographic, illustrating the army’s decline by
-            combining geography, temperature and troop strength. We propose
-            making it interactive to better understand Minard’s message,
-            highlighting key battles and events as users scroll through the
-            historical journey.
+        /> -->
+        <p class="container-intro">
+            <a href="./minard">Charles Minard's 1869 infographic</a> famously visualized
+            Napoleon's Russian campaign by combining geography, temperature, and
+            troop size. This interactive version enhances the original by letting
+            users explore key battles and events along the journey.
         </p>
+        <ul class="container-intro">
+            <li>
+                Use the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('timeline')}
+                    on:mouseleave={handleMouseLeave}
+                >timeline</span> 
+                above to track the army’s decline by the
+                shrinking circles on the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('map')}
+                    on:mouseleave={handleMouseLeave}
+                >map</span>,
+                or click the 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('play_button')}
+                    on:mouseleave={handleMouseLeave}
+                >play button</span>
+                to view
+                it continuously.
+            </li>
+            <li>
+                Click 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('event_buttons')}
+                    on:mouseleave={handleMouseLeave}
+                >timeline buttons</span>
+                or 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('markers')}
+                    on:mouseleave={handleMouseLeave}
+                >map markers</span>
+                to jump to specific events
+                and read their descriptions.
+            </li>
+            <li>
+                Hover over 
+                <span
+                    class="hoverable-word"
+                    on:mouseenter={() => handleMouseEnter('circles')}
+                    on:mouseleave={handleMouseLeave}
+                >circles</span>
+                while static to see approximate details about
+                each troop at that point.
+            </li>
+        </ul>
     </div>
 {/if}
 
@@ -194,15 +260,16 @@
         margin-top: 15px;
         line-height: 1.2;
         text-align: justify;
+        font-size: 14px;
     }
-    .container-intro
-    {
+    .container-intro {
         text-align: justify;
         line-height: 1.2;
+        font-size: 14px;
     }
     .event-image {
         width: 100%;
-        max-width: 230px;
+        max-width: 270px;
         height: auto;
     }
     .reset-button {
@@ -233,5 +300,35 @@
     .reset-button:active {
         background-color: #464646;
         transform: translateY(0);
+    }
+    .hoverable-image {
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .hoverable-image:hover {
+        transform: scale(1.01);
+    }
+
+    a {
+        color: #1a73e8;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s ease, border-bottom 0.2s ease;
+        cursor: pointer;
+    }
+
+    a:hover {
+        color: #0c47b7;
+        border-bottom: 1px solid #0c47b7;
+    }
+
+    .hoverable-word {
+        text-decoration: underline dotted;
+        cursor: pointer;
+    }
+
+    .hoverable-word:hover {
+        background-color: #fffae6;
     }
 </style>

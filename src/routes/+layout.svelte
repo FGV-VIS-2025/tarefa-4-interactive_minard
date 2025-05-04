@@ -16,10 +16,10 @@
 
 <div class="layout">
     <nav>
-        {#each pages as p}
+        {#each pages as p (p.url)}
             <a
                 href={p.url.startsWith("http") ? p.url : `${base}${p.url}`}
-                class:current={$page.route.id === p.url}
+                class:current={$page.url.pathname.replace(/\/$/, '') === p.url.replace(/\/$/, '')}
                 target={p.url.startsWith("http") ? "_blank" : undefined}
             >
                 {p.title}
