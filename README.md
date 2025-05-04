@@ -42,7 +42,8 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
   - Partes desenvolvidas:
     - Geração dos dados utilizados por meio de interpolação;
     - Funcionalidades do mapa, com as atribuições de cor e tamanho e suas respectivas legendas;
-    - Gráfico de barra da temperatura.
+    - Gráfico de barra da temperatura;
+    - Destaques na tela por meio de hover no texto introdutório.
   - A parte mais trabalhosa foi a primeira, pois exigiu um entendimento profundo dos dados que estavam disponíveis de modo a aproveitá-los o máximo possível para realizar os cálculos de informações aproximadas e obter estimativas tão precisas quanto fosse permitido.
   - Tempo estimado de desenvolvimento (até o momento): 23 horas.
 
