@@ -48,9 +48,9 @@
     let chartWidth = 800;
 
     const minLat = 54.05;
-    const maxLat = 55.96;
+    const maxLat = 56;
     const minLong = 22;
-    const maxLong = 38;
+    const maxLong = 40;
 
     // Configurações do gráfico
     onMount(() => {
@@ -72,31 +72,6 @@
             .select(svgElement)
             .attr("width", width)
             .attr("height", 1.3 * height);
-
-        const colorLegend = svg
-            .append("g")
-            .attr("transform", "translate(20, 20)");
-
-        colorLegend
-            .selectAll("rect")
-            .data(colorScale.domain())
-            .enter()
-            .append("rect")
-            .attr("x", 160)
-            .attr("y", (d, i) => i * 20)
-            .attr("width", 20)
-            .attr("height", 20)
-            .attr("fill", colorScale);
-
-        colorLegend
-            .selectAll("text")
-            .data(colorScale.domain())
-            .enter()
-            .append("text")
-            .attr("x", 185)
-            .attr("y", (d, i) => i * 20 + 15)
-            .text((d) => (d === "A" ? "Advance" : "Retreat"))
-            .style("font-size", "14px");
 
         // Legenda de tamanhos
         const sizeLegend = svg
@@ -121,7 +96,7 @@
             .attr("fill", "white") // cor de fundo
             .attr("stroke", "black") // borda
             .attr("stroke-width", 0.7)
-            .attr("rx", 5) // bordas arredondadas (opcional)
+            .attr("rx", 5) // bordas arredondadas
             .attr("ry", 5);
 
         sizeLegend
@@ -192,7 +167,13 @@
             .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
             .range([height - margin.bottom, margin.top]);
 
-            const moscowCoords = [37.518, 55.751];
+        // ------------------------------------------------------ Start of map background ------------------------------------------------------
+
+
+        // Define capital coordinates
+        const moscowCoords = [37.518, 55.751];
+        const vilniusCoords = [25.279, 54.487];
+        const minskCoords = [27.567, 53.893];
 
         // Create the backgroundmap
         projection = d3.geoMercator()
@@ -203,8 +184,23 @@
 
         const countries = feature(worldTopojson, worldTopojson.objects.countries);
 
-        const countryIds = ["643", "440", "428", "112"]; // IDs for Russia, Lithuania, Latvia, Belarus
+        const countryData = [
+            { id: "643", name: "Russia", color: "#e9e9e9" },
+            { id: "440", name: "Lithuania", color: "#808080" },
+            { id: "428", name: "Latvia", color: "#a9a9a9" },
+            { id: "112", name: "Belarus", color: "#bdbebd" }
+        ];
+
+        const countryIds = countryData.map(d => d.id);
         const filteredCountries = countries.features.filter(d => countryIds.includes(d.id));
+
+        // Add country information to each feature
+        filteredCountries.forEach(feature => {
+            const countryInfo = countryData.find(d => d.id === feature.id);
+            feature.properties = feature.properties || {};
+            feature.properties.name = countryInfo.name;
+            feature.properties.color = countryInfo.color;
+        });
 
         // Create a clip path to limit the map to our region of interest
         svg.append("defs")
@@ -225,38 +221,108 @@
             .data(filteredCountries)
             .enter()
             .append("path")
-            .attr("class", "country")
+            .attr("class",  d => "country ${d.properties.name.toLowerCase()}")
             .attr("d", geoPath)
-            .attr("fill", "#f9f9f9")
-            .attr("stroke", "#cccccc")
-            .attr("stroke-width", 0.5)
-            .attr("opacity", 1);
-
-        // Add country borders
-        mapGroup.append("path")
-            .datum(d3.geoGraticule().step([1, 1]))
-            .attr("class", "graticule")
-            .attr("d", geoPath)
-            .attr("fill", "none")
-            .attr("stroke", "#eeeeee")
-            .attr("stroke-width", 0.2);
+            .attr("fill", d => d.properties.color)
+            .attr("stroke",  "#000000")
+            .attr("stroke-width", 0.8)
+            .attr("opacity", 0.6);
 
 
         if (!svg.select(".landmarks-group").node()) {
             svg.append("g").attr("class", "landmarks-group");
         }
 
-        // Adiciona o ponto de Moscou
+        // Add Moscow -----
         svg.select(".landmarks-group")
             .append("circle")
             .attr("class", "moscow-dot")
             .attr("cx", projection(moscowCoords)[0])
             .attr("cy", projection(moscowCoords)[1])
-            .attr("r", 6) // Tamanho do ponto
+            .attr("r", 6)
             .attr("fill", "red")
-            .attr("stroke", "white")
-            .attr("stroke-width", 1)
-        // End of map background
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "moscow-label")
+            .attr("x", projection(moscowCoords)[0] - 15)
+            .attr("y", projection(moscowCoords)[1] + 15)
+            .text("Moscow")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+
+        // Add Minsk -----
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "minsk-dot")
+            .attr("cx", projection(minskCoords)[0])
+            .attr("cy", projection(minskCoords)[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "minsk-label")
+            .attr("x", projection(minskCoords)[0] - 11)
+            .attr("y", projection(minskCoords)[1] + 15)
+            .text("Minsk")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+
+        // Add Vilnus -----
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "vilnius-dot")
+            .attr("cx", projection(vilniusCoords)[0])
+            .attr("cy", projection(vilniusCoords)[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke-width", 1.5);
+
+        svg.select(".landmarks-group")
+            .append("text")
+            .attr("class", "vilnius-label")
+            .attr("x", projection(vilniusCoords)[0] - 25)
+            .attr("y", projection(vilniusCoords)[1] + 11)
+            .text("Vilnius")
+            .attr("font-size", "8px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000000")
+            .attr("text-anchor", "start");
+        // ------------------------------------------------------ End of map background ------------------------------------------------------
+
+        // legenda de cores
+        const colorLegend = svg
+            .append("g")
+            .attr("transform", "translate(20, 20)");
+
+        colorLegend
+            .selectAll("rect")
+            .data(colorScale.domain())
+            .enter()
+            .append("rect")
+            .attr("x", 160)
+            .attr("y", (d, i) => i * 20)
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", colorScale)
+            .attr("fill-opacity", 1);
+
+        colorLegend
+            .selectAll("text")
+            .data(colorScale.domain())
+            .enter()
+            .append("text")
+            .attr("x", 185)
+            .attr("y", (d, i) => i * 20 + 15)
+            .text((d) => (d === "A" ? "Advance" : "Retreat"))
+            .style("font-size", "14px");
 
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
