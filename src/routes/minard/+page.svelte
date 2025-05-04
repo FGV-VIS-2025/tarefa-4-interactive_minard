@@ -1,6 +1,10 @@
 <script>
-    let image = "./images/Minard.png"; // ajuste o caminho da sua imagem aqui
+    let image = "https://raw.githubusercontent.com/FGV-VIS-2025/tarefa-4-interactive_minard/5144a5a4d720bbc4b2dba0a97e938ea9f3b336a3/static/images/Minard.png";
 </script>
+
+<svelte:head>
+    <link rel="preload" href={image} as="image" />
+</svelte:head>
 
 <div class="container">
     <div class="content">
