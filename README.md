@@ -55,11 +55,11 @@ Abaixo estão os desenvolvedores desse projeto e suas respectivas principais par
 - **Gustavo Tironi**
   - Partes Desenvolvidas:
       - Implementação do doughnut plot com iteratividade
-      - Desenvolvimento do sistema de paginação para organizar o conteúdo exibido
-      - Estruturação da barra de navegação
-      - Início da implementação do background para o gráfico (minard e mapa)
-  - A parte mais trabalhosa foi a implementação da interatividade no doughnut plot. Além disso, tive muitos problemas tentando replicar o gráfico original utilizando a biblioteca D3.js, não conseguindo obter o resultado esperado e abandonando a ideia. Trabalhar com mapas também está apresentando desafios, principalmente para sincronização das projeções do mapa (que usa mercator) com a transformação da latitude e longitude usadas para os dados no scatter plot.
-  - Tempo estimado de desenvolvimento: 11 horas.
+      - Desenvolvimento do sistema de paginação e páginas para organizar o conteúdo exibido
+      - Legendas e descrições para a visualização
+      - Implementação do background (mapa) para o gráfico
+ - A parte mais desafiadora foi lidar com o mapa e a implementação da interatividade no gráfico de doughnut. Trabalhar com mapas, especialmente no contexto que precisávamos, foi complicado, pois havia pouca documentação sobre como fazer o clipping de uma região específica. Além disso, foi necessário um esforço para sincronizar as projeções do mapa (que utilizam Mercator) com a transformação das coordenadas de latitude e longitude usadas no gráfico de dispersão (que usavam uma transformação linear).
+  - Tempo estimado de desenvolvimento: 16 horas.
 
 ## Uso de IA
 
