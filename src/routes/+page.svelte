@@ -1,6 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import * as d3 from "d3";
+    import { feature } from "topojson-client";
+    import worldTopojson from "$lib/data/world-atlas-50m.json";
     import { join } from "$lib/utils";
     import { interpolatePoints } from "$lib/utils";
     import { parseDate } from "$lib/utils";
@@ -41,8 +43,14 @@
     let colorScale;
     let sizeScale;
     let height;
+    let projection;
 
     let chartWidth = 800;
+
+    const minLat = 54.05;
+    const maxLat = 55.96;
+    const minLong = 22;
+    const maxLong = 38;
 
     // Configurações do gráfico
     onMount(() => {
@@ -184,6 +192,72 @@
             .domain([yExtent[0] - yPadding, yExtent[1] + yPadding])
             .range([height - margin.bottom, margin.top]);
 
+            const moscowCoords = [37.518, 55.751];
+
+        // Create the backgroundmap
+        projection = d3.geoMercator()
+            .translate([x(minLong + (maxLong - minLong)/2), y(minLat + (maxLat - minLat)/2)])
+            .scale(2000)
+            .center([(minLong + maxLong)/2, (minLat + maxLat)/2]);
+        const geoPath = d3.geoPath().projection(projection);
+
+        const countries = feature(worldTopojson, worldTopojson.objects.countries);
+
+        const countryIds = ["643", "440", "428", "112"]; // IDs for Russia, Lithuania, Latvia, Belarus
+        const filteredCountries = countries.features.filter(d => countryIds.includes(d.id));
+
+        // Create a clip path to limit the map to our region of interest
+        svg.append("defs")
+            .append("clipPath")
+            .attr("id", "map-clip")
+            .append("rect")
+            .attr("x", x(minLong))
+            .attr("y", y(maxLat))
+            .attr("width", x(maxLong) - x(minLong))
+            .attr("height", y(minLat) - y(maxLat));
+
+        const mapGroup = svg.insert("g", ".armies-group")
+            .attr("class", "map-group")
+            .attr("clip-path", "url(#map-clip)");
+
+        // Draw the countries
+        mapGroup.selectAll(".country")
+            .data(filteredCountries)
+            .enter()
+            .append("path")
+            .attr("class", "country")
+            .attr("d", geoPath)
+            .attr("fill", "#f9f9f9")
+            .attr("stroke", "#cccccc")
+            .attr("stroke-width", 0.5)
+            .attr("opacity", 1);
+
+        // Add country borders
+        mapGroup.append("path")
+            .datum(d3.geoGraticule().step([1, 1]))
+            .attr("class", "graticule")
+            .attr("d", geoPath)
+            .attr("fill", "none")
+            .attr("stroke", "#eeeeee")
+            .attr("stroke-width", 0.2);
+
+
+        if (!svg.select(".landmarks-group").node()) {
+            svg.append("g").attr("class", "landmarks-group");
+        }
+
+        // Adiciona o ponto de Moscou
+        svg.select(".landmarks-group")
+            .append("circle")
+            .attr("class", "moscow-dot")
+            .attr("cx", projection(moscowCoords)[0])
+            .attr("cy", projection(moscowCoords)[1])
+            .attr("r", 6) // Tamanho do ponto
+            .attr("fill", "red")
+            .attr("stroke", "white")
+            .attr("stroke-width", 1)
+        // End of map background
+
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
             .call(d3.axisBottom(x))
@@ -291,8 +365,8 @@
             .merge(circles);
 
         circlesUpdate
-            .attr("cx", (d) => x(d.lon))
-            .attr("cy", (d) => y(d.lat))
+            .attr("cx", (d) => projection([d.lon, d.lat])[0])
+            .attr("cy", (d) => projection([d.lon, d.lat])[1])
             .attr("r", (d) => Math.sqrt(sizeScale(d.size) / Math.PI))
             .attr("fill", (d) => colorScale(d.direction))
             .attr("stroke", (d) =>
@@ -348,13 +422,13 @@
             .on("click", (event, d) => {
                 currentTime = parseDate(d.date); // <- Atualiza o currentTime no clique
                 if (playing) {togglePlay();}
-                
+
             });
 
         markers
             .merge(enter)
-            .attr("x", (d) => x(d.lon) - 10)
-            .attr("y", (d) => y(d.lat) - 10)
+            .attr("x", (d) => projection([d.lon, d.lat])[0] - 10)
+            .attr("y", (d) => projection([d.lon, d.lat])[1] - 10)
             .style("cursor", "pointer")
             .html((d) => markerHtml(d));
 
@@ -513,7 +587,7 @@
         </div>
 
         <div class="text-container">
-            <Description 
+            <Description
                 bind:selectedEvent
                 bind:currentTimeInput={currentTime}
                 onTogglePlay={togglePlay}
@@ -529,8 +603,8 @@
     .page-container {
         display: flex;
         flex-direction: column;
-        align-items: center; 
-        gap: 20px; 
+        align-items: center;
+        gap: 20px;
         height: 80vh;
         text-align: center;
         margin-left: -20px;
@@ -601,24 +675,24 @@
 
     .timebar-wrapper {
         position: relative;
-        top: 0; 
-        margin-bottom: 10px; 
-        width: 100%; 
+        top: 0;
+        margin-bottom: 10px;
+        width: 100%;
         flex-grow: 1;
         min-width: 600px;
         max-height: 600px;
     }
 
     .text-container {
-        width: 250px; 
+        width: 250px;
         padding-left: 10px;
-        max-width: 100%; 
-        box-sizing: border-box; 
+        max-width: 100%;
+        box-sizing: border-box;
         margin-top: 70px;
     }
 
     h1 {
-        margin-top: 10px; 
+        margin-top: 10px;
         font-size: 30px;
         margin-bottom: -5px;
     }
@@ -626,7 +700,7 @@
     .doughnut-container {
         position: relative;
         bottom: 95px;
-        right: -240px; 
+        right: -240px;
     }
 
     .highlight-rect {
