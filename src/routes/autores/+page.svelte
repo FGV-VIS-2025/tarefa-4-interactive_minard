@@ -4,7 +4,7 @@
             src: "https://raw.githubusercontent.com/FGV-VIS-2025/tarefa-4-interactive_minard/5144a5a4d720bbc4b2dba0a97e938ea9f3b336a3/static/images/Kauan.jpeg",
             name: "Kauan Mariani Ferreira",
             description:
-                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+                "Graduando em Ciência de Dados e Inteligência Artificial pela FGV.",
             contact: {
                 linkedin: "https://www.linkedin.com/in/kauanmferreira/",
                 github: "https://github.com/kauanmaf",
@@ -14,7 +14,7 @@
             src: "https://raw.githubusercontent.com/FGV-VIS-2025/tarefa-4-interactive_minard/5144a5a4d720bbc4b2dba0a97e938ea9f3b336a3/static/images/Pedro.png",
             name: "Pedro Henrique Coterli",
             description:
-                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+                "Graduando em Ciência de Dados e Inteligência Artificial pela FGV.",
             contact: {
                 linkedin:
                     "https://www.linkedin.com/in/pedro-henrique-coterli-8b05562b2/",
@@ -25,7 +25,7 @@
             src: "https://raw.githubusercontent.com/FGV-VIS-2025/tarefa-4-interactive_minard/5144a5a4d720bbc4b2dba0a97e938ea9f3b336a3/static/images/Gustavo.jpeg",
             name: "Gustavo Tironi",
             description:
-                "Graduando em Ciencia de Dados e Inteligencia Irtificila pela FGV",
+                "Graduando em Ciência de Dados e Inteligência Artificial pela FGV.",
             contact: {
                 linkedin: "https://www.linkedin.com/in/gustavotironi/",
                 github: "https://github.com/gtironi",
