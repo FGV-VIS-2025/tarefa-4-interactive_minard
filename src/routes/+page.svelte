@@ -657,8 +657,7 @@
 
     <div class="description-container">
         <p>
-            This interactive visualization offers a modern reinterpretation of Charles Minard’s iconic 1869 map, which depicts Napoleon’s Russian campaign of 1812.
-            You can view the original version in the “Original Minard” tab for comparison.
+            This interactive visualization offers a modern reinterpretation of <a href="./minard">Charles Minard's 1869 iconic infographic</a> , which depicts Napoleon’s Russian campaign of 1812.
             At the top, the event timeline highlights key moments of the campaign. Each symbol represents a specific type of event:
         </p>
         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 1em;">
@@ -763,6 +762,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 20px;
+        margin-top: 30px;
         flex-wrap: wrap;
     }
 

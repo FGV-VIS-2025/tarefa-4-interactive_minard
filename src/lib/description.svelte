@@ -163,33 +163,23 @@
     </div>
 {:else}
     <div class="description-container">
-        <h3 class="title-description">Minard and French invasion of Russia</h3>
-        <!-- <img class = "image-intro"
-            src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg"
-            alt="napoleaon invasion"
-        /> -->
-        <p class="container-intro">
-            <a href="./minard">Charles Minard's 1869 infographic</a> famously visualized
-            Napoleon's Russian campaign by combining geography, temperature, and
-            troop size. This interactive version enhances the original by letting
-            users explore key battles and events along the journey.
-        </p>
+        <h3 class="title-description">How to Interact with the Visualization </h3>
         <ul class="container-intro">
             <li>
-                Use the 
+                Use the
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('timeline')}
                     on:mouseleave={handleMouseLeave}
-                >timeline</span> 
+                >timeline</span>
                 above to track the army’s decline by the
-                shrinking circles on the 
+                shrinking circles on the
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('map')}
                     on:mouseleave={handleMouseLeave}
                 >map</span>,
-                or click the 
+                or click the
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('play_button')}
@@ -199,13 +189,13 @@
                 it continuously.
             </li>
             <li>
-                Click 
+                Click
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('event_buttons')}
                     on:mouseleave={handleMouseLeave}
                 >timeline buttons</span>
-                or 
+                or
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('markers')}
@@ -215,7 +205,7 @@
                 and read their descriptions.
             </li>
             <li>
-                Hover over 
+                Hover over
                 <span
                     class="hoverable-word"
                     on:mouseenter={() => handleMouseEnter('circles')}
@@ -225,6 +215,11 @@
                 each troop at that point.
             </li>
         </ul>
+        <!-- <img class = "image-intro"
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Raevsky_saltanovka.jpg"
+            alt="napoleaon invasion"
+            height="200"
+        /> -->
     </div>
 {/if}
 
@@ -266,6 +261,7 @@
         text-align: justify;
         line-height: 1.2;
         font-size: 14px;
+        margin-right: 2em;
     }
     .event-image {
         width: 100%;
