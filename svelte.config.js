@@ -5,7 +5,7 @@ const config = {
 	kit: {
 		adapter: adapter({ fallback: '404.html' }),
 		paths: {
-			base: dev ? '' : '/tarefa-4-interactive_minard'
+			base: process.argv.includes('dev') ? '' : '/tarefa-4-interactive_minard',
 		},
 	},
 };

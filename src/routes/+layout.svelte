@@ -28,44 +28,6 @@
     <main>
         <slot />
     </main>
-    {#if $page.url.pathname === base + '/'}
-        <footer>
-            <div class="footer-inner">
-                <div class="footer-row">
-                    <div class="footer-block">
-                        <h4>Inspiration</h4>
-                        <a href="https://www.masswerk.at/minard/" target="_blank">
-                            Norbert Landsteiner (2013)
-                        </a>
-                    </div>
-                    <div class="footer-block">
-                        <h4>Data Sources</h4>
-                        <a href="https://github.com/stdlib-js/datasets-minard-napoleons-march" target="_blank">
-                            Minard March Dataset
-                        </a>
-                    </div>
-                    <div class="footer-block">
-                        <h4>Event Info</h4>
-                        <a href="https://www.masswerk.at/minard/" target="_blank">
-                            Norbert Landsteiner (2013)
-                        </a>
-                    </div>
-                    <div class="footer-block">
-                        <h4>Geographic Data</h4>
-                        <a href="https://github.com/topojson/world-atlas" target="_blank">
-                            TopoJSON World Atlas
-                        </a>
-                    </div>
-                    <div class="footer-block">
-                        <h4>Images</h4>
-                        <a href="https://pt.wikipedia.org/wiki/Wikip%C3%A9dia:P%C3%A1gina_principal" target="_blank">
-                            Wikipedia (historical events)
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    {/if}
 </div>
 
 <style>
@@ -125,49 +87,4 @@
         max-width: 1000px;
         margin: 0 auto;
     }
-
-    footer {
-    width: 100%;
-    background-color: #fafafa;
-    border-top: 2px solid #e0e0e0;
-    font-size: 0.9rem;
-    color: #333;
-    padding: 1rem 0;
-    }
-
-    .footer-inner {
-        max-width: 80%;
-        margin: 0 auto;
-    }
-
-    .footer-row {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 2rem;
-        align-items: flex-start;
-    }
-
-    .footer-block {
-        min-width: 180px;
-        max-width: 240px;
-        flex: 1;
-    }
-
-    .footer-block h4 {
-        margin-bottom: 0.3rem;
-        font-size: 0.8rem;
-        color: #444;
-    }
-
-    footer a {
-        color: #007acc;
-        text-decoration: none;
-    }
-
-    footer a:hover {
-        text-decoration: underline;
-    }
-
-
 </style>

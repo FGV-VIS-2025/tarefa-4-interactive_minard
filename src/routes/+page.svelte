@@ -742,6 +742,37 @@
             />
         </div>
     </div>
+
+    <reference>
+        <div class="reference-inner">
+            <div class="reference-row">
+                <div class="reference-block">
+                    <h4>Inspiration & Event Info</h4>
+                    <a href="https://www.masswerk.at/minard/" target="_blank">
+                        Norbert Landsteiner (2013)
+                    </a>
+                </div>
+                <div class="reference-block">
+                    <h4>Data Sources</h4>
+                    <a href="https://github.com/stdlib-js/datasets-minard-napoleons-march" target="_blank">
+                        Minard March Dataset
+                    </a>
+                </div>
+                <div class="reference-block">
+                    <h4>Geographic Data</h4>
+                    <a href="https://github.com/topojson/world-atlas" target="_blank">
+                        TopoJSON World Atlas
+                    </a>
+                </div>
+                <div class="reference-block">
+                    <h4>Images</h4>
+                    <a href="https://pt.wikipedia.org/wiki/Wikip%C3%A9dia:P%C3%A1gina_principal" target="_blank">
+                        Wikipedia (historical events)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </reference>
 </div>
 
 <style>
@@ -873,6 +904,51 @@
 }
 
     
+
+    reference {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        background-color: #fafafa;
+        border: 2px solid #e0e0e0;
+        font-size: 0.7rem;
+        color: #333;
+        padding: 1rem 0;
+    }
+
+    .reference-inner {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    .reference-row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+    }
+
+    .reference-block {
+        min-width: 180px;
+        max-width: 240px;
+        flex: 1;
+    }
+
+    .reference-block h4 {
+        margin-bottom: 0.3rem;
+        font-size: 0.7rem;
+        color: #444;
+    }
+
+    reference a {
+        color: #007acc;
+        text-decoration: none;
+    }
+
+    reference a:hover {
+        text-decoration: underline;
+    }
 
 
 </style>
