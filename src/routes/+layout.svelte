@@ -11,6 +11,8 @@
             title: "Github",
         },
     ];
+
+    $: isHomePage = !(/autores|minard/i.test($page.url.pathname));
 </script>
 
 <div class="layout">
@@ -28,7 +30,7 @@
     <main>
         <slot />
     </main>
-    {#if $page.url.pathname === '/'}
+    {#if isHomePage}
         <footer>
             <div class="footer-inner">
                 <div class="footer-row">
