@@ -656,8 +656,8 @@
     <h1>Interactive Minard: a new perspective on Napoleon's march</h1>
 
     <div class="description-container">
-        <p>
-            This interactive visualization offers a modern reinterpretation of <a href="./minard">Charles Minard's 1869 iconic infographic</a> , which depicts Napoleon’s Russian campaign of 1812.
+        <p class="text-description">
+            This interactive visualization offers a modern reinterpretation of <a href="./minard" class="no-style">Charles Minard's 1869 iconic infographic</a> , which depicts Napoleon’s Russian campaign of 1812.
             At the top, the event timeline highlights key moments of the campaign. Each symbol represents a specific type of event:
         </p>
         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 1em;">
@@ -691,7 +691,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="main-container" bind:this={markersEl}>
         <div class="chart-container" bind:this={mapEl}>
             <div class="top-bar" bind:this={eventEl}>
@@ -859,6 +859,20 @@
         pointer-events: none;
         transition: all 0.2s ease;
     }
+    .text-description {
+    font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 1rem;
+        text-align: justify;
+
+    }
+
+    .no-style {
+    color: inherit;
+    text-decoration: underline;
+}
+
+    
 
 
 </style>
