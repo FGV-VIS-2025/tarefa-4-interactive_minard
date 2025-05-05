@@ -610,7 +610,7 @@
 
     const highlightOffsets = {
         timeline: { top: 50, left: -20, width: 55, height: -105 },
-        map: { top: 160, left: 95, width: -120, height: -265 },
+        map: { top: 160, left: 160, width: -175, height: -305 },
         play_button: { top: -45, left: 5, width: -15, height: 65 },
         event_buttons: { top: -10, left: 100, width: -65, height: -90 },
         markers: { top: 220, left: 485, width: -840, height: -480 },
@@ -660,38 +660,38 @@
             This interactive visualization offers a modern reinterpretation of <a href="./minard" class="no-style">Charles Minard's 1869 iconic infographic</a> , which depicts Napoleon’s Russian campaign of 1812.
             At the top, the event timeline highlights key moments of the campaign. Each symbol represents a specific type of event:
         </p>
-        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 1em;">
-            <div style="text-align: center;">
+        <div class="icon-container">
+            <div class="icon-block">
                 <div><Icon name="river" width_icon={20} height_icon={20}/></div>
                 <div>River Crossing</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="burned" width_icon={20} height_icon={20}/></div>
                 <div>City Capture</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="battle" width_icon={20} height_icon={20}/></div>
                 <div>Battle</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="artillery" width_icon={20} height_icon={20}/></div>
                 <div>Preparing for War</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="out" width_icon={20} height_icon={20}/></div>
                 <div>Retreat</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="napoleon" width_icon={20} height_icon={20}/></div>
                 <div>Napoleon Retreats</div>
             </div>
-            <div style="text-align: center;">
+            <div class="icon-block">
                 <div><Icon name="depot" width_icon={20} height_icon={20}/></div>
-                <div>Supply Depot </div>
+                <div>Supply Depot</div>
             </div>
         </div>
     </div>
-    
+
     <div class="main-container" bind:this={markersEl}>
         <div class="chart-container" bind:this={mapEl}>
             <div class="top-bar" bind:this={eventEl}>
@@ -793,7 +793,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 20px;
-        margin-top: 30px;
+        padding-top: 20px;
         flex-wrap: wrap;
     }
 
@@ -901,9 +901,7 @@
     .no-style {
     color: inherit;
     text-decoration: underline;
-}
-
-    
+    }
 
     reference {
         width: 100%;
@@ -948,6 +946,23 @@
 
     reference a:hover {
         text-decoration: underline;
+    }
+
+    .icon-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1em;
+    padding: 5px;
+    border: 2px solid #b6b5b5;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .icon-block {
+        text-align: center;
     }
 
 
